@@ -1,0 +1,78 @@
+<footer class="footer-principal">
+
+    <div class="footer-contenido">
+
+        <!-- Logo -->
+        <div class="footer-logo">
+            <img src="/Proyecto-Moran/vistas/Recursos/Imagenes/logo.png" alt="Logo La Morán">
+        </div>
+
+        <!-- Frase principal -->
+        <div class="footer-titulo">
+            <h2>LO MEJOR, CON AMOR, SIEMPRE MORÁN.</h2>
+        </div>
+
+        <!-- Información -->
+        <div class="footer-seccion footer-informacion">
+            <h3>INFORMACIÓN</h3>
+            <a href="#">Sobre Nosotros</a>
+            <a href="#">Nuestros Productos</a>
+        </div>
+
+        <!-- Ubicación -->
+        <div class="footer-seccion footer-ubicacion">
+            <h3>UBICACIÓN</h3>
+            <p>San Carlos</p>
+        </div>
+
+        <!-- Servicios -->
+        <div class="footer-seccion footer-servicios">
+            <h3>SERVICIOS</h3>
+            <a href="#">Pedido de pollo</a>
+            <a href="#">Pedido de huevos</a>
+        </div>
+
+        <!-- Contacto -->
+        <div class="footer-seccion footer-contacto">
+            <h3>CONTACTO</h3>
+            <p>lamoran837@gmail.com</p>
+            <p>+506 6091 6609</p>
+        </div>
+
+        <!-- Redes sociales -->
+        <div class="footer-seccion footer-redes">
+            <h3>SÍGANOS</h3>
+
+            <div class="redes-iconos">
+                <a href="#">Instagram</a>
+                <a href="#">LinkedIn</a>
+                <a href="#">Facebook</a>
+                <a href="#">YouTube</a>
+            </div>
+        </div>
+
+        <!-- Suscripción -->
+        <div class="footer-suscripcion">
+            <h3>ÚNETE A NOSOTROS</h3>
+
+            <form>
+                <input
+                    type="email"
+                    placeholder="INGRESE SU EMAIL"
+                >
+            </form>
+        </div>
+
+        <!-- Navegación inferior -->
+        <nav class="footer-menu-inferior">
+            <a href="#">CERRAR<br>SESIÓN</a>
+            <a href="#">NUESTROS<br>PRODUCTOS</a>
+            <a href="#">SOBRE<br>NOSOTROS</a>
+        </nav>
+
+    </div>
+
+</footer>
+<!-- cierra la pagina que se abrio en el header.php -->
+</body>
+</html>
