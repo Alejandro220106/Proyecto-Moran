@@ -73,6 +73,5 @@
     </div>
 
 </footer>
-<!-- cierra la pagina que se abrio en el header.php -->
 </body>
 </html>
