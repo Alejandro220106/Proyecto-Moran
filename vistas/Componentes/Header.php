@@ -3,7 +3,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>La Moran</title>
-    <link rel="stylesheet" href="/Proyecto-Moran/vistas/Recursos/estilos.css">
+    <link rel="stylesheet" href="Recursos/estilos.css">
 </head>
 <body>
 <header class="header">
@@ -16,7 +16,7 @@
 
         <!-- Logo de la Moran -->
         <div class="logo-contenedor">
-            <img src="/Proyecto-Moran/vistas/Recursos/Imagenes/logo.png" alt="Logo" class="logo">
+            <img src="Recursos/Imagenes/logo_la_moran_limpio_transparente.png" alt="Logo" class="logo">
         </div>
 
 

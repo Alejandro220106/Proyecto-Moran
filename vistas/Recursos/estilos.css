@@ -17,7 +17,7 @@ body{
 /* Franja de imagen superior */
 .linea-superior {
     height: 85px;
-    background-image: url("/Proyecto-Moran/vistas/Recursos/Imagenes/header-superior.png");
+    background-image: url("Imagenes/header-superior.png");
     background-size: cover;
     background-position: center;
 }
@@ -42,11 +42,11 @@ body{
 
 /* Logo */
 .logo {
-    width: 130px;
-    height: 130px;
+    width: 160px;
+    height: 160px;
     object-fit: contain;
     position: absolute;
-    top: -22px;
+    top: -35px;
 }
 
 /* Menú */

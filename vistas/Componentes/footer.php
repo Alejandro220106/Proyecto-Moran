@@ -4,7 +4,7 @@
 
         <!-- Logo -->
         <div class="footer-logo">
-            <img src="/Proyecto-Moran/vistas/Recursos/Imagenes/logo.png" alt="Logo La Morán">
+            <img src="Recursos/Imagenes/logo_la_moran_limpio_transparente.png" alt="Logo La Morán">
         </div>
 
         <!-- Frase principal -->
