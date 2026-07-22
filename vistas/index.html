@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<!--
+  Página de inicio ("Productos"). Convertida desde index.php: ya no usa
+  PHP ni require_once para el header/footer -esos ahora son plantillas
+  HTML compartidas que se cargan con "Recursos/plantillas.js" (ver
+  Componentes/encabezado.html y pie-pagina.html)-.
+-->
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos | La Morán</title>
+    <link rel="stylesheet" href="Recursos/estilos.css">
+    <link rel="stylesheet" href="Recursos/index.css">
+</head>
+<body>
+
+    <!-- El header compartido se inserta aquí en tiempo de carga. -->
+    <div id="encabezado"></div>
+
+    <main class="inicio">
+
+    </main>
+
+    <!-- El footer compartido se inserta aquí en tiempo de carga. -->
+    <div id="pie-pagina"></div>
+
+    <script src="Recursos/plantillas.js" defer></script>
+</body>
+</html>

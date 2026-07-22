@@ -1,0 +1,156 @@
+/*
+  Estilos de la pantalla de login (vistas/login.html).
+
+  Convención de nombres: las clases utilitarias de Bootstrap se dejan tal
+  cual las define el framework (en inglés: row, col-md-6, form-control,
+  btn, w-100, etc.). Cualquier clase que definimos nosotros aquí va en
+  español, siguiendo el mismo estilo que ya usa "estilos.css".
+*/
+
+/* Paleta aproximada, tomada a ojo del diseño compartido (no son valores
+   extraídos con precisión de la imagen) — ajustar si no calzan bien
+   contra el diseño real al compararlos en el navegador. */
+:root {
+  --color-fondo-pagina: #121212;
+  --color-panel-marca: #2b1d16;
+  --color-panel-acceso: #e8e5e0;
+  --color-acento-oxblood: #5c2020;
+  --color-acento-oxblood-hover: #712828;
+  --color-texto-eslogan: #f2ede3;
+}
+
+/* Fondo de toda la página, detrás de la tarjeta de login. */
+.pagina-login {
+  background-color: var(--color-fondo-pagina);
+}
+
+/* Tarjeta contenedora de los dos paneles (marca + acceso). */
+.tarjeta-login {
+  width: 100%;
+  max-width: 960px;
+  margin: 24px;
+  border-radius: 18px;
+  overflow: hidden; /* recorta los paneles internos a las esquinas redondeadas */
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+/* Panel izquierdo: identidad de marca sobre fondo texturizado. */
+.panel-marca {
+  background-image: url("Imagenes/textura-cafe.avif");
+  background-size: cover;
+  background-position: center;
+  /* Color de respaldo: si el navegador no soporta AVIF, la imagen de fondo
+     simplemente no se pinta y queda visible este color sólido, sin
+     necesidad de detectar el soporte por JS. */
+  background-color: var(--color-panel-marca);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  padding: 48px 32px;
+  min-height: 480px;
+  text-align: center;
+}
+
+.insignia-logo {
+  width: 190px;
+  height: auto;
+}
+
+.eslogan-marca {
+  /* Fuente serif websafe: el proyecto no incluye ninguna tipografía propia
+     todavía, así que se usa una pila que existe en cualquier sistema. */
+  font-family: Georgia, "Times New Roman", serif;
+  font-style: italic;
+  font-size: 1.7rem;
+  line-height: 1.4;
+  color: var(--color-texto-eslogan);
+  max-width: 320px; /* controla dónde envuelve el texto, en vez de <br> fijos */
+  margin: 0;
+}
+
+/* Panel derecho: formulario de acceso. */
+.panel-acceso {
+  background-color: var(--color-panel-acceso);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* deja el bloque de íconos abajo, como en el diseño */
+  padding: 48px 40px;
+  min-height: 480px;
+}
+
+/* Ajustes puntuales sobre los inputs de Bootstrap para acercarlos al mock. */
+.campo-usuario,
+.campo-password {
+  background-color: #ffffff;
+  border-color: #cfcac2;
+}
+
+/* Botón principal de acceso, sobre la base del .btn de Bootstrap. */
+.boton-ingresar {
+  background-color: var(--color-acento-oxblood);
+  color: #ffffff;
+  border: none;
+  padding: 10px 0;
+  margin-top: 4px;
+}
+
+.boton-ingresar:hover {
+  background-color: var(--color-acento-oxblood-hover);
+  color: #ffffff;
+}
+
+/* Enlaces de "olvidaste tu contraseña" / "registrarse". */
+.enlaces-cuenta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 14px;
+}
+
+.enlaces-cuenta a {
+  font-size: 0.85rem;
+  color: #3a3a3a;
+  text-decoration: underline;
+}
+
+.enlaces-cuenta a:hover {
+  color: var(--color-acento-oxblood);
+}
+
+/* Fila de accesos con redes sociales. */
+.iconos-redes-login {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 32px;
+}
+
+.icono-red {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-acento-oxblood);
+  color: var(--color-acento-oxblood);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.2s;
+}
+
+.icono-red:hover {
+  background-color: var(--color-acento-oxblood);
+  color: #ffffff;
+}
+
+/* En pantallas angostas, los dos paneles se apilan en una sola columna.
+   Esto no está en el mock (pensado a ancho fijo), pero es una mejora
+   mínima de usabilidad para que el login no se rompa en celulares. */
+@media (max-width: 768px) {
+  .panel-marca,
+  .panel-acceso {
+    min-height: auto;
+  }
+}
