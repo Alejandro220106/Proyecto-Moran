@@ -162,5 +162,10 @@ administración.
   También se construyó el **listado de huevos** (`productos-huevos.html` +
   `Recursos/productos-huevos.css`), destino del botón MOSTRAR de Huevos:
   hero con banda verde de calidad y lista de presentaciones (30/15/6/4) con
-  botón ORDENAR, sobre el fondo de madera café. El listado de **pollo** es
-  su gemelo y queda pendiente.
+  botón ORDENAR, sobre el fondo de madera café.
+- **2026-07-24 (2)**: se agregó el **listado de pollo** (`productos-pollo.html`,
+  gemelo del de huevos: pechuga/muslo/alas/entero). Como ambos listados
+  comparten el mismo diseño, su CSS se unificó en **`productos-listado.css`**
+  (se eliminó `productos-huevos.css`). Los botones MOSTRAR del catálogo ya
+  enlazan a cada listado. Las fotos de portada y de producto siguen como
+  marcadores hasta tener las imágenes reales.

@@ -1,23 +1,23 @@
 <!DOCTYPE html>
 <!--
-  Listado de productos de HUEVOS (vista del cliente). Es la pantalla a la
-  que se llega al tocar "MOSTRAR" en la categoría Huevos del catálogo.
+  Listado de productos de POLLO (vista del cliente). Es la pantalla a la
+  que se llega al tocar "MOSTRAR" en la categoría Pollo del catálogo.
 
-  Estructura: un hero con foto + la banda verde "PRODUCTOS FRESCOS DE ALTA
-  CALIDAD", y debajo la lista de presentaciones de huevo (por cantidad),
-  cada una con su botón ORDENAR. Todo sobre el fondo de madera café.
+  Gemelo de productos-huevos.html: misma estructura y mismos estilos
+  (Recursos/productos-listado.css), solo cambian las presentaciones
+  (pechuga, muslo, alas, entero) y la foto de portada.
 
   Página del sitio (no standalone): usa header/footer compartidos
   (#encabezado / #pie-pagina + plantillas.js). Servir con servidor local.
 
-  Las cantidades (30/15/6/4) son las del diseño; en producción vendrán de
-  la base de datos, igual que las fotos de cada presentación.
+  Las presentaciones son las del diseño; en producción vendrán de la base
+  de datos, igual que las fotos de cada corte.
 -->
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Huevos | La Morán</title>
+    <title>Pollo | La Morán</title>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="Recursos/estilos.css">
@@ -35,7 +35,7 @@
         <!-- Hero: foto de portada + banda verde con el lema de calidad. -->
         <section class="hero-productos">
             <div class="imagen-hero">
-                <span class="marcador-foto">Foto de portada (huevos)</span>
+                <span class="marcador-foto">Foto de portada (pollo)</span>
             </div>
             <div class="banda-calidad">PRODUCTOS FRESCOS DE ALTA CALIDAD</div>
         </section>
@@ -43,16 +43,14 @@
         <!-- Llamado a la acción. -->
         <h1 class="titulo-pedidos">HAZ TUS PEDIDOS / ENCARGOS AQUÍ</h1>
 
-        <!-- Lista de presentaciones de huevo. -->
+        <!-- Lista de cortes de pollo. -->
         <div class="lista-productos">
 
-            <!-- Cada tarjeta se repetirá desde la base de datos a futuro. -->
             <article class="tarjeta-pedido">
                 <div class="imagen-producto"><span class="marcador-foto">Foto</span></div>
                 <div class="info-producto">
-                    <h2 class="nombre-producto">Huevos</h2>
+                    <h2 class="nombre-producto">Pechuga</h2>
                     <p class="detalle-producto">Cantidad: 30</p>
-                    <p class="detalle-producto">Color: cafés</p>
                 </div>
                 <a href="#" class="btn boton-ordenar">ORDENAR</a>
             </article>
@@ -60,9 +58,8 @@
             <article class="tarjeta-pedido">
                 <div class="imagen-producto"><span class="marcador-foto">Foto</span></div>
                 <div class="info-producto">
-                    <h2 class="nombre-producto">Huevos</h2>
-                    <p class="detalle-producto">Cantidad: 15</p>
-                    <p class="detalle-producto">Color: cafés</p>
+                    <h2 class="nombre-producto">Muslo</h2>
+                    <p class="detalle-producto">Cantidad: 30</p>
                 </div>
                 <a href="#" class="btn boton-ordenar">ORDENAR</a>
             </article>
@@ -70,9 +67,8 @@
             <article class="tarjeta-pedido">
                 <div class="imagen-producto"><span class="marcador-foto">Foto</span></div>
                 <div class="info-producto">
-                    <h2 class="nombre-producto">Huevos</h2>
-                    <p class="detalle-producto">Cantidad: 6</p>
-                    <p class="detalle-producto">Color: cafés</p>
+                    <h2 class="nombre-producto">Alas</h2>
+                    <p class="detalle-producto">Cantidad: 30</p>
                 </div>
                 <a href="#" class="btn boton-ordenar">ORDENAR</a>
             </article>
@@ -80,9 +76,8 @@
             <article class="tarjeta-pedido">
                 <div class="imagen-producto"><span class="marcador-foto">Foto</span></div>
                 <div class="info-producto">
-                    <h2 class="nombre-producto">Huevos</h2>
-                    <p class="detalle-producto">Cantidad: 4</p>
-                    <p class="detalle-producto">Color: cafés</p>
+                    <h2 class="nombre-producto">Entero</h2>
+                    <p class="detalle-producto">Cantidad: —</p>
                 </div>
                 <a href="#" class="btn boton-ordenar">ORDENAR</a>
             </article>

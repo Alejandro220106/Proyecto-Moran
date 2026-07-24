@@ -1,5 +1,9 @@
 /*
-  Estilos del listado de productos de huevos (vistas/productos-huevos.html).
+  Estilos COMPARTIDOS de los listados de productos (huevos y pollo).
+  Los usan tanto vistas/productos-huevos.html como vistas/productos-pollo.html,
+  porque las dos pantallas tienen exactamente el mismo diseño y solo cambian
+  los datos (foto de portada y presentaciones). Editar el layout aquí una vez
+  se refleja en ambos listados.
 
   Convención del proyecto: clases de Bootstrap en inglés, clases propias en
   español. Ver la skill moran-frontend y CONTEXTO_PROYECTO.md.
@@ -26,13 +30,21 @@
 /* ---- Hero de portada ---- */
 .hero-productos { position: relative; }
 
-/* Marcador de la foto de portada (temporal hasta tener la imagen real). */
+/* Marcador de la foto de portada (temporal hasta tener la imagen real).
+   Mismo estilo de placeholder que el catálogo: recuadro claro con borde
+   punteado y etiqueta. */
 .imagen-hero {
   height: 260px;
-  background-color: #3a281d;
+  background-color: #ffffff;
+  border: 2px dashed #b9c08f;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.imagen-hero .marcador-foto {
+  color: #8a9160;
+  font-size: 0.95rem;
 }
 
 /* Banda verde con el lema, pegada al pie del hero. */
@@ -77,12 +89,14 @@
   padding: 14px 18px;
 }
 
-/* Marcador de la foto de cada presentación. */
+/* Marcador de la foto de cada presentación (mismo criterio: recuadro claro
+   con borde punteado, como en el catálogo). */
 .imagen-producto {
   flex: none;
   width: 92px;
   height: 92px;
   background-color: #ffffff;
+  border: 2px dashed #b9c08f;
   border-radius: 8px;
   display: flex;
   align-items: center;
@@ -90,7 +104,7 @@
 }
 
 .marcador-foto {
-  color: #8a7f74;
+  color: #8a9160;
   font-size: 0.72rem;
   font-weight: 600;
   text-align: center;
