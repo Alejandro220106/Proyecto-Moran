@@ -1,0 +1,110 @@
+/*
+  Estilos del detalle del pedido (vistas/Paginas/detalle-pedido.html).
+
+  Convención del proyecto: clases de Bootstrap en inglés, clases propias en
+  español. Ver la skill moran-frontend y CONTEXTO_PROYECTO.md.
+  Nota de rutas: este CSS vive en Recursos/, así que las imágenes se
+  referencian con "Imagenes/..." (relativo a este archivo), no con "../".
+*/
+
+:root {
+  --verde-pedido: #6f7d45;   /* respaldo mientras carga fondo-verde.jpg */
+  --campo-fondo: #d9d9d9;    /* gris claro de los inputs, como en el diseño */
+  --campo-borde: #c2c2c2;
+  --ambar-boton: #d99a4e;
+  --ambar-boton-hover: #c4863a;
+}
+
+/* Lienzo: fondo verde oliva que cubre todo. */
+.detalle-pedido {
+  background-color: var(--verde-pedido);
+  background-image: url("Imagenes/fondo-verde.jpg");
+  background-size: cover;
+  background-position: center;
+  padding: 40px 24px;
+}
+
+/* Contenedor del formulario, centrado y con ancho máximo. */
+.formulario-pedido {
+  max-width: 1040px;
+  margin: 0 auto;
+}
+
+/* Cada grupo etiqueta + campo. */
+.grupo-campo {
+  margin-bottom: 20px;
+}
+
+/* Etiquetas: blancas, en mayúsculas, sobre el verde. */
+.etiqueta-campo {
+  display: block;
+  color: #ffffff;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+/* Campos de texto (gris claro), sobre la base .form-control de Bootstrap. */
+.campo-pedido {
+  background-color: var(--campo-fondo);
+  border: 1px solid var(--campo-borde);
+}
+
+.campo-pedido:focus {
+  background-color: #ffffff;
+}
+
+/* Fila: dirección de entrega (ancha) + su cantidad (angosta). */
+.fila-entrega {
+  display: flex;
+  gap: 8px;
+}
+
+.fila-entrega .campo-pedido {
+  flex: 1 1 auto;
+}
+
+/* Campo de cantidad angosto junto a cada punto de entrega. */
+.campo-cantidad {
+  flex: 0 0 64px;
+  width: 64px;
+  text-align: center;
+  background-color: var(--campo-fondo);
+  border: 1px solid var(--campo-borde);
+}
+
+/* Título de la sección de múltiples puntos. */
+.titulo-multiples {
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+/* Nota aclaratoria al pie de la columna de múltiples puntos. */
+.nota-entrega {
+  color: #f0f2e6;
+  font-size: 0.82rem;
+  margin-top: 8px;
+}
+
+/* Botón AGREGAR AL CARRITO (ámbar de la marca) sobre la base .btn. */
+.boton-carrito {
+  display: inline-block;
+  margin-top: 12px;
+  background-color: var(--ambar-boton);
+  color: #ffffff;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  padding: 10px 26px;
+  border: none;
+}
+
+.boton-carrito:hover {
+  background-color: var(--ambar-boton-hover);
+  color: #ffffff;
+}

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<!--
+  Detalle del pedido (vista del cliente). Es la pantalla a la que se llega
+  al tocar "ORDENAR" en un producto: se definen cantidad, método de pago,
+  indicaciones y los puntos de entrega (con su cantidad cada uno), y se
+  agrega al carrito.
+
+  Página del sitio (no standalone): usa header/footer compartidos
+  (#encabezado / #pie-pagina + plantillas.js). Servir con servidor local.
+
+  El formulario todavía no tiene "action": la lógica (guardar el pedido /
+  carrito) llega con la capa de base de datos. Los valores "N/A" son los
+  del diseño, como marcadores.
+-->
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle del pedido | La Morán</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../Recursos/estilos.css">
+    <link rel="stylesheet" href="../Recursos/detalle-pedido.css">
+</head>
+<body>
+
+    <!-- Header compartido. -->
+    <div id="encabezado"></div>
+
+    <!-- Contenido sobre fondo verde. -->
+    <main class="detalle-pedido">
+        <form class="formulario-pedido row g-4">
+
+            <!-- Columna 1: datos generales del pedido + botón. -->
+            <div class="col-12 col-lg-4">
+                <div class="grupo-campo">
+                    <label class="etiqueta-campo" for="cantidad">Cantidad</label>
+                    <input type="text" id="cantidad" name="cantidad" class="form-control campo-pedido">
+                </div>
+                <div class="grupo-campo">
+                    <label class="etiqueta-campo" for="metodo-pago">Método de pago</label>
+                    <input type="text" id="metodo-pago" name="metodo_pago" class="form-control campo-pedido">
+                </div>
+                <div class="grupo-campo">
+                    <label class="etiqueta-campo" for="indicacion">Indicación</label>
+                    <input type="text" id="indicacion" name="indicacion" class="form-control campo-pedido">
+                </div>
+
+                <a href="#" class="btn boton-carrito">AGREGAR AL CARRITO</a>
+            </div>
+
+            <!-- Columna 2: puntos de entrega principales, cada uno con su cantidad. -->
+            <div class="col-12 col-lg-4">
+                <div class="grupo-campo">
+                    <label class="etiqueta-campo" for="entrega">Punto de entrega</label>
+                    <div class="fila-entrega">
+                        <input type="text" id="entrega" name="entrega" class="form-control campo-pedido">
+                        <input type="text" name="entrega_cant" class="form-control campo-cantidad" aria-label="Cantidad para el punto de entrega">
+                    </div>
+                </div>
+                <div class="grupo-campo">
+                    <label class="etiqueta-campo" for="entrega-alt">Punto de entrega alternativo</label>
+                    <div class="fila-entrega">
+                        <input type="text" id="entrega-alt" name="entrega_alt" class="form-control campo-pedido">
+                        <input type="text" name="entrega_alt_cant" class="form-control campo-cantidad" aria-label="Cantidad para el punto de entrega alternativo">
+                    </div>
+                </div>
+                <div class="grupo-campo">
+                    <label class="etiqueta-campo" for="preferencia">Preferencia para la entrega del pedido</label>
+                    <div class="fila-entrega">
+                        <input type="text" id="preferencia" name="preferencia" class="form-control campo-pedido">
+                        <input type="text" name="preferencia_cant" class="form-control campo-cantidad" aria-label="Cantidad para la preferencia de entrega">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Columna 3: múltiples puntos de entrega adicionales. -->
+            <div class="col-12 col-lg-4">
+                <h2 class="titulo-multiples">Múltiples puntos de entrega</h2>
+
+                <!-- Cuatro puntos opcionales; cada fila = dirección + cantidad. -->
+                <div class="grupo-campo">
+                    <div class="fila-entrega">
+                        <input type="text" name="multi_1" class="form-control campo-pedido" placeholder="N/A" aria-label="Punto de entrega adicional 1">
+                        <input type="text" name="multi_1_cant" class="form-control campo-cantidad" aria-label="Cantidad del punto adicional 1">
+                    </div>
+                </div>
+                <div class="grupo-campo">
+                    <div class="fila-entrega">
+                        <input type="text" name="multi_2" class="form-control campo-pedido" placeholder="N/A" aria-label="Punto de entrega adicional 2">
+                        <input type="text" name="multi_2_cant" class="form-control campo-cantidad" aria-label="Cantidad del punto adicional 2">
+                    </div>
+                </div>
+                <div class="grupo-campo">
+                    <div class="fila-entrega">
+                        <input type="text" name="multi_3" class="form-control campo-pedido" placeholder="N/A" aria-label="Punto de entrega adicional 3">
+                        <input type="text" name="multi_3_cant" class="form-control campo-cantidad" aria-label="Cantidad del punto adicional 3">
+                    </div>
+                </div>
+                <div class="grupo-campo">
+                    <div class="fila-entrega">
+                        <input type="text" name="multi_4" class="form-control campo-pedido" placeholder="N/A" aria-label="Punto de entrega adicional 4">
+                        <input type="text" name="multi_4_cant" class="form-control campo-cantidad" aria-label="Cantidad del punto adicional 4">
+                    </div>
+                </div>
+
+                <p class="nota-entrega">Si no querés puntos de entrega, dejá los espacios en blanco.</p>
+            </div>
+
+        </form>
+    </main>
+
+    <!-- Footer compartido. -->
+    <div id="pie-pagina"></div>
+
+    <script src="../Recursos/plantillas.js" defer></script>
+</body>
+</html>

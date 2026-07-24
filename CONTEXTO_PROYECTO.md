@@ -190,3 +190,9 @@ administración.
   `plantillas.js` y el logo de los componentes también usan `../`. Se dejó
   un `vistas/index.html` de redirección hacia `Paginas/index.html` para que
   la raíz siga cargando. Ver "Estructura de carpetas".
+- **2026-07-24 (4)**: se agregó el **detalle del pedido**
+  (`detalle-pedido.html` + `Recursos/detalle-pedido.css`): cantidad, método
+  de pago, indicación, puntos de entrega (principal/alternativo/preferencia
+  y hasta 4 adicionales, cada uno con su cantidad) y botón AGREGAR AL
+  CARRITO, sobre el fondo verde. Los botones ORDENAR de los listados ya
+  enlazan aquí. Sin `action` todavía (pendiente de la capa de BD).
