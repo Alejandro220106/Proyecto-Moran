@@ -23,6 +23,6 @@ async function cargarPlantilla(selectorContenedor, rutaFragmento) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    cargarPlantilla('#encabezado', 'Componentes/encabezado.html');
-    cargarPlantilla('#pie-pagina', 'Componentes/pie-pagina.html');
+    cargarPlantilla('#encabezado', '../Componentes/encabezado.html');
+    cargarPlantilla('#pie-pagina', '../Componentes/pie-pagina.html');
 });

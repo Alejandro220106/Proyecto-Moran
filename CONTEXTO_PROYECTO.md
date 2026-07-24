@@ -40,12 +40,28 @@ distribución de huevo y pollo que se presenta bajo la marca **"Eggs Unlimited"*
    de `vistas/Recursos/login.css` (`.tarjeta-login`, `.panel-marca`,
    `.boton-ingresar`, etc.).
 2. **Un CSS por página**: cada vista nueva trae su propio archivo de estilos
-   en `vistas/Recursos/` (p. ej. `login.html` → `Recursos/login.css`),
-   siguiendo la convención que ya existía con `index.php` → `index.css`.
+   en `vistas/Recursos/` (p. ej. `login.html` → `login.css`). Excepción:
+   cuando dos páginas tienen el mismo diseño comparten una hoja (p. ej. los
+   listados de pollo y huevos usan `productos-listado.css`).
 3. **Documentación completa**: todo el HTML y CSS de este proyecto debe
    llevar comentarios que expliquen el porqué de las decisiones no obvias
    (fallbacks, exclusiones, elecciones de layout) — no solo qué hace el
    código, sino por qué se hizo así.
+
+## Estructura de carpetas (dentro de `vistas/`)
+
+```
+vistas/
+  index.html          <- redirección de entrada a Paginas/index.html
+  Paginas/            <- TODAS las páginas HTML del sitio
+  Componentes/        <- encabezado.html, pie-pagina.html (plantillas compartidas)
+  Recursos/           <- CSS, plantillas.js, e Imagenes/
+```
+
+Regla de rutas: como todas las páginas viven en `Paginas/` (un nivel), se
+referencian los recursos con `../` — `../Recursos/...` y (en `plantillas.js`
+y en el logo de los componentes) `../Componentes/...`. Si algún día se
+anidan páginas a otra profundidad, hay que ajustar ese `../`.
 
 ## Header y footer compartidos
 
@@ -60,15 +76,15 @@ el header/footer entre páginas. En su lugar:
   `<div id="pie-pagina"></div>`.
 - Toda página nueva de la vista normal de usuario cliente (no standalone
   como el login) debe incluir esos dos `<div>` en el lugar correspondiente
-  y `<script src="Recursos/plantillas.js" defer></script>` antes de
+  y `<script src="../Recursos/plantillas.js" defer></script>` antes de
   `</body>`.
 - **Requisito importante**: `fetch()` no funciona abriendo el HTML directo
   con doble clic (`file://`) — los navegadores lo bloquean por CORS. Hay
   que servir `vistas/` con un servidor local, por ejemplo:
   `php -S localhost:8000 -t vistas` o `python3 -m http.server` parado
-  dentro de `vistas/`.
-- `vistas/index.html` es el ejemplo de referencia de una página que usa
-  este mecanismo (antes era `index.php`).
+  dentro de `vistas/`. La raíz (`/`) redirige a `Paginas/index.html`.
+- `vistas/Paginas/index.html` es el ejemplo de referencia de una página que
+  usa este mecanismo (antes era `index.php`).
 
 Las tres antiguas `Head.php`, `Header.php` y `Footer.php` fueron borradas.
 
@@ -169,3 +185,8 @@ administración.
   (se eliminó `productos-huevos.css`). Los botones MOSTRAR del catálogo ya
   enlazan a cada listado. Las fotos de portada y de producto siguen como
   marcadores hasta tener las imágenes reales.
+- **2026-07-24 (3)**: se reorganizó la estructura — todas las páginas HTML
+  se movieron a `vistas/Paginas/` y sus rutas a recursos pasaron a `../`.
+  `plantillas.js` y el logo de los componentes también usan `../`. Se dejó
+  un `vistas/index.html` de redirección hacia `Paginas/index.html` para que
+  la raíz siga cargando. Ver "Estructura de carpetas".
