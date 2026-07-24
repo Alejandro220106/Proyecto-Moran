@@ -1,0 +1,134 @@
+/*
+  Estilos del listado de productos de huevos (vistas/productos-huevos.html).
+
+  Convención del proyecto: clases de Bootstrap en inglés, clases propias en
+  español. Ver la skill moran-frontend y CONTEXTO_PROYECTO.md.
+*/
+
+:root {
+  --cafe-fondo: #2b1d16;      /* respaldo del fondo de madera café */
+  --verde-banda: #7c8c4f;     /* banda "productos frescos" */
+  --ambar-boton: #d99a4e;
+  --ambar-boton-hover: #c4863a;
+  --panel-oscuro: rgba(20, 13, 9, 0.55); /* tarjetas translúcidas sobre la madera */
+}
+
+/* Lienzo de la página: fondo de madera café que cubre todo. */
+.pagina-productos {
+  background-color: var(--cafe-fondo);
+  background-image: url("Imagenes/fondo-cafe.jpg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed; /* la madera queda fija mientras se hace scroll de la lista */
+  padding-bottom: 40px;
+}
+
+/* ---- Hero de portada ---- */
+.hero-productos { position: relative; }
+
+/* Marcador de la foto de portada (temporal hasta tener la imagen real). */
+.imagen-hero {
+  height: 260px;
+  background-color: #3a281d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Banda verde con el lema, pegada al pie del hero. */
+.banda-calidad {
+  background-color: var(--verde-banda);
+  color: #ffffff;
+  text-align: center;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 12px 16px;
+}
+
+/* ---- Llamado a la acción ---- */
+.titulo-pedidos {
+  color: #ffffff;
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  margin: 28px 16px;
+}
+
+/* ---- Lista de presentaciones ---- */
+.lista-productos {
+  max-width: 760px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 0 16px;
+}
+
+/* Cada tarjeta: foto | info | botón, en fila. Panel translúcido oscuro para
+   que el texto blanco se lea bien sobre la textura de madera. */
+.tarjeta-pedido {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  background-color: var(--panel-oscuro);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  padding: 14px 18px;
+}
+
+/* Marcador de la foto de cada presentación. */
+.imagen-producto {
+  flex: none;
+  width: 92px;
+  height: 92px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.marcador-foto {
+  color: #8a7f74;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* La info ocupa el espacio del medio y empuja el botón a la derecha. */
+.info-producto { flex: 1 1 auto; color: #ffffff; }
+
+.nombre-producto {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0 0 4px;
+}
+
+.detalle-producto {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #e7ded6;
+}
+
+/* Botón ORDENAR (ámbar de la marca) sobre la base .btn de Bootstrap. */
+.boton-ordenar {
+  flex: none;
+  background-color: var(--ambar-boton);
+  color: #ffffff;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  padding: 8px 22px;
+  border: none;
+}
+
+.boton-ordenar:hover {
+  background-color: var(--ambar-boton-hover);
+  color: #ffffff;
+}
+
+/* En pantallas angostas la tarjeta se apila para no apretujar los elementos. */
+@media (max-width: 480px) {
+  .tarjeta-pedido { flex-direction: column; text-align: center; }
+  .info-producto { text-align: center; }
+}

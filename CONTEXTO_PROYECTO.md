@@ -159,3 +159,8 @@ administración.
   (`catalogo.html` + `Recursos/catalogo.css`), con las categorías POLLO y
   HUEVOS sobre el fondo verde. Las fotos de producto quedaron como
   marcadores temporales (pendientes de las imágenes reales del equipo/Figma).
+  También se construyó el **listado de huevos** (`productos-huevos.html` +
+  `Recursos/productos-huevos.css`), destino del botón MOSTRAR de Huevos:
+  hero con banda verde de calidad y lista de presentaciones (30/15/6/4) con
+  botón ORDENAR, sobre el fondo de madera café. El listado de **pollo** es
+  su gemelo y queda pendiente.
