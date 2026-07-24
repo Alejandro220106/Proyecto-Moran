@@ -76,11 +76,16 @@ Las tres antiguas `Head.php`, `Header.php` y `Footer.php` fueron borradas.
 
 | Archivo | Estado |
 |---|---|
-| `logo_la_moran_limpio_transparente.png` | **Logo canónico** — el único que se usa hoy en Header/Footer/login. No modificar ni regenerar, solo referenciar. |
+| `logo_la_moran_limpio_transparente.png` | **Logo canónico** — el único logo que se usa (header, footer, login). No modificar ni regenerar, solo referenciar. |
 | `logo.png` | Legado, sin uso actualmente. |
-| `header-superior.png` | En uso (franja superior del header del sitio principal). |
-| `fondo-footer.png` | Sin uso actualmente. |
-| `textura-cafe.avif` | Usado como fondo del panel de marca en `login.css` (con color sólido de respaldo si el navegador no soporta AVIF). |
+| `fondo-paja.jpg` | Textura de paja/heno. Franja superior del header (`.linea-superior` en `estilos.css`). |
+| `fondo-cafe.jpg` | Textura de madera café oscuro. Panel de marca del login (`.panel-marca` en `login.css`). |
+| `fondo-azul.jpg` | Textura de mezclilla azul. Fondo del footer (`.footer-principal` en `estilos.css`, con degradado que la oscurece para el texto). |
+| `fondo-verde.jpg` | Textura verde oliva. Fondo del catálogo (`.catalogo` en `catalogo.css`) y, a futuro, paneles de administración. |
+
+Los cuatro `fondo-*.jpg` son fotos de Unsplash (licencia libre, uso comercial sin atribución), optimizadas. Reemplazaron a las imágenes pesadas anteriores (`header-superior.png` 2.9 MB, `fondo-footer.png`, `textura-cafe.avif`), que se eliminaron. Cada fondo lleva un `background-color` de respaldo en su CSS por si la foto no carga. Si más adelante llegan las texturas del Figma, se reemplazan estos archivos manteniendo el mismo nombre.
+
+> Nota: primero se exploró generar estos fondos por código con filtros SVG (`feTurbulence`) por su peso mínimo, pero se optó por fotos reales por fidelidad al diseño. Los SVG candidatos se descartaron.
 
 ## Paleta de marca (aproximada)
 
@@ -146,3 +151,11 @@ administración.
   `Recursos/plantillas.js` vía `fetch()` — ver sección "Header y footer
   compartidos". `index.php` se convirtió a `index.html` usando este mismo
   mecanismo, para no dejarlo roto.
+- **2026-07-24**: se definieron los fondos texturizados con **fotos reales**
+  (Unsplash, licencia libre): `fondo-paja.jpg` (header), `fondo-cafe.jpg`
+  (login), `fondo-azul.jpg` (footer), `fondo-verde.jpg` (catálogo). Se
+  eliminaron las imágenes pesadas anteriores y se cableó cada fondo en su
+  CSS. Se construyó la primera pantalla post-login: el **catálogo**
+  (`catalogo.html` + `Recursos/catalogo.css`), con las categorías POLLO y
+  HUEVOS sobre el fondo verde. Las fotos de producto quedaron como
+  marcadores temporales (pendientes de las imágenes reales del equipo/Figma).

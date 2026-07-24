@@ -34,14 +34,12 @@
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
 }
 
-/* Panel izquierdo: identidad de marca sobre fondo texturizado. */
+/* Panel izquierdo: identidad de marca sobre fondo texturizado de madera café. */
 .panel-marca {
-  background-image: url("Imagenes/textura-cafe.avif");
+  background-image: url("Imagenes/fondo-cafe.jpg");
   background-size: cover;
   background-position: center;
-  /* Color de respaldo: si el navegador no soporta AVIF, la imagen de fondo
-     simplemente no se pinta y queda visible este color sólido, sin
-     necesidad de detectar el soporte por JS. */
+  /* Color de respaldo (café oscuro) que se ve mientras carga la foto o si falla. */
   background-color: var(--color-panel-marca);
 
   display: flex;

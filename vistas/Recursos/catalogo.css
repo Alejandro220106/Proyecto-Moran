@@ -1,0 +1,93 @@
+/*
+  Estilos de la página de catálogo (vistas/catalogo.html).
+
+  Misma convención del proyecto: las clases de Bootstrap se usan en inglés
+  tal cual; las clases propias van en español. Ver la skill moran-frontend
+  y CONTEXTO_PROYECTO.md para el detalle.
+*/
+
+/* Variables de esta página (acento ámbar de la marca, tomado del footer). */
+:root {
+  --verde-catalogo: #6f7d45;   /* respaldo mientras carga fondo-verde.jpg */
+  --ambar-boton: #d99a4e;
+  --ambar-boton-hover: #c4863a;
+}
+
+/* Lienzo de la página: fondo verde oliva (foto) que cubre toda el área. */
+.catalogo {
+  min-height: 70vh;
+  background-color: var(--verde-catalogo);
+  background-image: url("Imagenes/fondo-verde.jpg");
+  background-size: cover;
+  background-position: center;
+  padding: 48px 24px;
+}
+
+/* Panel que agrupa las dos categorías. Se centra y se limita el ancho para
+   que no se estire demasiado en pantallas grandes. */
+.panel-categorias {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* Cada categoría (POLLO / HUEVOS): columna centrada verticalmente. */
+.categoria {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  padding: 40px 32px;
+}
+
+/* Línea divisoria entre las dos categorías, solo en pantallas medianas y
+   más grandes (en móvil se apilan y no hace falta). */
+@media (min-width: 768px) {
+  .categoria:first-child {
+    border-right: 1px solid rgba(255, 255, 255, 0.35);
+  }
+}
+
+/* Marcador donde irá la foto real del producto. Se ve como un recuadro
+   claro con una etiqueta; es temporal hasta tener las fotos definitivas. */
+.imagen-producto {
+  width: 100%;
+  max-width: 340px;
+  aspect-ratio: 1 / 1;
+  background-color: #ffffff;
+  border: 2px dashed #b9c08f;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.marcador-foto {
+  color: #8a9160;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+/* Nombre de la categoría, en blanco sobre el verde. */
+.nombre-producto {
+  color: #ffffff;
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  margin: 0;
+}
+
+/* Botón MOSTRAR (ámbar de la marca), sobre la base .btn de Bootstrap. */
+.boton-mostrar {
+  background-color: var(--ambar-boton);
+  color: #ffffff;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  padding: 8px 34px;
+  border: none;
+}
+
+.boton-mostrar:hover {
+  background-color: var(--ambar-boton-hover);
+  color: #ffffff;
+}

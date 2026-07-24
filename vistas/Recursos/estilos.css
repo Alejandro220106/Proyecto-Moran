@@ -14,10 +14,12 @@ body{
     background-color: white;
 }
 
-/* Franja de imagen superior */
+/* Franja de imagen superior (textura de paja/heno del header).
+   background-color dorado como respaldo mientras carga la foto o si falla. */
 .linea-superior {
     height: 85px;
-    background-image: url("Imagenes/header-superior.png");
+    background-color: #b8892f;
+    background-image: url("Imagenes/fondo-paja.jpg");
     background-size: cover;
     background-position: center;
 }
@@ -78,7 +80,15 @@ body{
 
 .footer-principal {
     width: 100%;
+    /* Textura de mezclilla azul (fondo-azul.jpg). El degradado semitransparente
+       encima la oscurece un poco para que el texto blanco y los títulos ámbar
+       se lean bien; el background-color #17485e queda de respaldo. */
     background-color: #17485e;
+    background-image:
+        linear-gradient(rgba(18, 52, 74, 0.62), rgba(18, 52, 74, 0.62)),
+        url("Imagenes/fondo-azul.jpg");
+    background-size: cover;
+    background-position: center;
     color: white;
     border-top: 4px solid white;
 
