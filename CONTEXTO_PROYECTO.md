@@ -196,3 +196,10 @@ administración.
   y hasta 4 adicionales, cada uno con su cantidad) y botón AGREGAR AL
   CARRITO, sobre el fondo verde. Los botones ORDENAR de los listados ya
   enlazan aquí. Sin `action` todavía (pendiente de la capa de BD).
+- **2026-07-24 (5)**: se agregó la pantalla de **pago** (`pago.html` +
+  `Recursos/pago.css`): dos tablas de productos (huevos/pollo) con
+  cantidad, método de pago (efectivo/tarjeta), número de tarjeta, CVV,
+  guardar información y botón CANCELAR FACTURA, sobre el fondo verde. El
+  botón AGREGAR AL CARRITO del detalle ya enlaza aquí. Se corrigieron
+  typos del diseño (TARGETA→tarjeta, CVI→CVV, CANSELAR→cancelar). Flujo
+  navegable completo: catálogo → listado → detalle → pago.

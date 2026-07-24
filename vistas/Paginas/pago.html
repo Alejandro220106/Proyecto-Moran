@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<!--
+  Pantalla de PAGO (vista del cliente). Resume los productos del pedido
+  (huevos y pollo) con su cantidad, y recoge la forma de pago (efectivo o
+  tarjeta, número de tarjeta, CVV) para cancelar (pagar) la factura.
+
+  Página del sitio (no standalone): usa header/footer compartidos
+  (#encabezado / #pie-pagina + plantillas.js). Servir con servidor local.
+
+  El formulario todavía no tiene "action" ni cálculo real de totales: eso
+  llega con la capa de base de datos. Las cantidades "N/A" son marcadores
+  del diseño; en producción vendrán del carrito.
+
+  Nota: se corrigieron los textos del diseño ("TARGETA" -> "tarjeta",
+  "CVI" -> "CVV", "CANSELAR" -> "cancelar"). "Cancelar la factura" se usa
+  aquí en el sentido de pagarla.
+-->
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pago | La Morán</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../Recursos/estilos.css">
+    <link rel="stylesheet" href="../Recursos/pago.css">
+</head>
+<body>
+
+    <!-- Header compartido. -->
+    <div id="encabezado"></div>
+
+    <!-- Contenido sobre fondo verde. -->
+    <main class="pago">
+        <form class="formulario-pago">
+
+            <!-- Resumen de productos: dos tablas (huevos / pollo). -->
+            <div class="tablas-productos row g-4">
+
+                <div class="col-12 col-md-6">
+                    <table class="tabla-pago">
+                        <thead>
+                            <tr><th>Producto</th><th>Cantidad</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Cartón 30 unidades</td><td>N/A</td></tr>
+                            <tr><td>Cartón 15 unidades</td><td>N/A</td></tr>
+                            <tr><td>Cartón 6 unidades</td><td>N/A</td></tr>
+                            <tr><td>Cartón 4 unidades</td><td>N/A</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="col-12 col-md-6">
+                    <table class="tabla-pago">
+                        <thead>
+                            <tr><th>Producto</th><th>Cantidad</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Muslo</td><td>N/A</td></tr>
+                            <tr><td>Pechuga</td><td>N/A</td></tr>
+                            <tr><td>Pollo entero</td><td>N/A</td></tr>
+                            <tr><td>Alas de pollo</td><td>N/A</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Controles de la forma de pago. -->
+            <div class="panel-pago">
+
+                <!-- Método de pago: efectivo y/o tarjeta. -->
+                <div class="grupo-metodo">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="efectivo" name="efectivo">
+                        <label class="form-check-label etiqueta-pago" for="efectivo">Efectivo</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="tarjeta" name="tarjeta">
+                        <label class="form-check-label etiqueta-pago" for="tarjeta">Tarjeta</label>
+                    </div>
+                </div>
+
+                <!-- Monto total a pagar (se calculará a futuro desde el carrito). -->
+                <div class="grupo-pago">
+                    <label class="etiqueta-pago" for="monto">Monto a cancelar</label>
+                    <input type="text" id="monto" name="monto" class="form-control campo-pago" placeholder="N/A" readonly>
+                </div>
+
+                <!-- Datos de la tarjeta. -->
+                <div class="grupo-pago">
+                    <label class="etiqueta-pago" for="numero-tarjeta">Número de tarjeta</label>
+                    <input type="text" id="numero-tarjeta" name="numero_tarjeta" class="form-control campo-pago" inputmode="numeric" autocomplete="cc-number">
+                </div>
+                <div class="grupo-pago grupo-cvv">
+                    <label class="etiqueta-pago" for="cvv">CVV</label>
+                    <input type="text" id="cvv" name="cvv" class="form-control campo-pago" inputmode="numeric" autocomplete="cc-csc">
+                </div>
+
+                <!-- Guardar los datos para futuras compras. -->
+                <div class="form-check grupo-guardar">
+                    <input class="form-check-input" type="checkbox" id="guardar" name="guardar">
+                    <label class="form-check-label etiqueta-pago" for="guardar">Guardar información</label>
+                </div>
+
+                <button type="submit" class="btn boton-pagar">CANCELAR FACTURA</button>
+            </div>
+
+        </form>
+    </main>
+
+    <!-- Footer compartido. -->
+    <div id="pie-pagina"></div>
+
+    <script src="../Recursos/plantillas.js" defer></script>
+</body>
+</html>

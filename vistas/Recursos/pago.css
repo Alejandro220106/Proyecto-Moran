@@ -1,0 +1,129 @@
+/*
+  Estilos de la pantalla de pago (vistas/Paginas/pago.html).
+
+  Convención del proyecto: clases de Bootstrap en inglés, clases propias en
+  español. Ver la skill moran-frontend y CONTEXTO_PROYECTO.md.
+  Rutas: este CSS vive en Recursos/, así que las imágenes van con
+  "Imagenes/..." (relativo a este archivo), no con "../".
+*/
+
+:root {
+  --verde-pago: #6f7d45;    /* respaldo mientras carga fondo-verde.jpg */
+  --campo-fondo: #d9d9d9;   /* gris claro de los inputs */
+  --campo-borde: #c2c2c2;
+  --celda-fondo: #e9e9e4;   /* fondo de las celdas de la tabla */
+  --celda-encabezado: #cfd2c2;
+  --ambar-boton: #d99a4e;
+  --ambar-boton-hover: #c4863a;
+}
+
+/* Lienzo: fondo verde oliva que cubre todo. */
+.pago {
+  background-color: var(--verde-pago);
+  background-image: url("Imagenes/fondo-verde.jpg");
+  background-size: cover;
+  background-position: center;
+  padding: 40px 24px;
+}
+
+.formulario-pago {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* ---- Tablas de productos ---- */
+.tabla-pago {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--celda-fondo);
+}
+
+.tabla-pago th,
+.tabla-pago td {
+  border: 1px solid #b7b9ac;
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 0.9rem;
+}
+
+.tabla-pago th {
+  background-color: var(--celda-encabezado);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+/* ---- Panel de forma de pago ---- */
+.panel-pago {
+  margin-top: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 20px 28px;
+}
+
+/* Bloque de los dos checkboxes (efectivo / tarjeta) apilados. */
+.grupo-metodo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Cada grupo etiqueta + campo. */
+.grupo-pago {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* El CVV es angosto. */
+.grupo-cvv .campo-pago {
+  width: 90px;
+}
+
+/* Etiquetas blancas sobre el verde. */
+.etiqueta-pago {
+  color: #ffffff;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+/* Campos de texto (gris claro) sobre la base .form-control de Bootstrap. */
+.campo-pago {
+  background-color: var(--campo-fondo);
+  border: 1px solid var(--campo-borde);
+  min-width: 200px;
+}
+
+.campo-pago:focus {
+  background-color: #ffffff;
+}
+
+/* El checkbox "guardar información" se alinea al fondo de la fila. */
+.grupo-guardar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Botón CANCELAR FACTURA (ámbar de la marca) sobre la base .btn. */
+.boton-pagar {
+  background-color: var(--ambar-boton);
+  color: #ffffff;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  padding: 10px 24px;
+  border: none;
+}
+
+.boton-pagar:hover {
+  background-color: var(--ambar-boton-hover);
+  color: #ffffff;
+}
+
+/* En pantallas angostas, el panel de pago se apila en una columna. */
+@media (max-width: 600px) {
+  .panel-pago { flex-direction: column; align-items: stretch; }
+}
