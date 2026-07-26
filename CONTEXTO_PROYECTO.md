@@ -211,3 +211,42 @@ administración.
   pantallas angostas vía `flex-wrap`); `.lista-productos` sigue funcionando
   igual que siempre para el listado standalone de pollo. Header/footer sin
   cambios.
+- **2026-07-26 (2)**: se agregó la pantalla de **registro**
+  (`registro.html` + `Recursos/registro.css`). A diferencia de `login.html`
+  (standalone), esta sí usa el header/footer compartidos. Se reordenaron
+  los campos del diseño de referencia por tipo de dato (identidad: usuario,
+  correo, teléfono | seguridad: contraseña, confirmar contraseña) en vez
+  del agrupamiento original sin lógica clara, y el botón REGISTRARSE quedó
+  de ancho completo en el panel derecho para un blanco de clic mayor. El
+  enlace "Registrarse" de `login.html` ya apunta aquí. Sin `action` ni
+  JavaScript todavía (a propósito, pendiente de validación de contraseñas
+  y envío); los campos ya tienen id/name listos para engancharlo. Se
+  probó con Playwright headless (desktop y 375px): el formulario se apila
+  correctamente en móvil sin overflow propio.
+
+  **Hallazgo, no atribuible a esta sesión**: al probar se vio que el commit
+  `486d452` ("eliminar logos sin uso") borró por error
+  `logo_la_moran_limpio_transparente.png`, el logo canónico marcado en este
+  mismo documento como "no modificar ni regenerar". Esto rompe el logo en
+  header/footer/login de **todo el sitio** (404), no solo en esta pantalla.
+  Pendiente de que el equipo decida restaurarlo desde el historial de git.
+- **2026-07-26 (3)**: se revisó `Contraseña-login.html` +
+  `Recursos/Contraseña-login.css` (pantalla de recuperar contraseña, ya
+  creada por un compañero) para alinearla con la convención del proyecto:
+  se agregó el comentario de documentación que faltaba, se corrigió el
+  `<title>` (decía "Crear cuenta", copiado de otra pantalla), se
+  renombraron los ids de camelCase a kebab-case en español
+  (`formEnviarCodigo` → `formulario-enviar-codigo`, `nuevaPassword` →
+  `nueva-contrasena`, etc.), se capa `form-control`/`.btn` de Bootstrap
+  sobre los campos y botones (antes sin clases), y se alinearon los
+  colores ámbar y el estilo de los campos (borde sin relleno, labels en
+  mayúscula) con `registro.css`, por ser pantallas hermanas del mismo
+  flujo de cuenta. El enlace "¿Olvidaste la contraseña?" de `login.html`
+  ya apunta aquí, y se agregó "Volver a iniciar sesión" de regreso. Los
+  dos paneles (enviar código / digitar código + nueva contraseña) se
+  muestran siempre juntos por ahora; mostrar/ocultar según el paso queda
+  para la futura capa de JavaScript, igual que el envío real del código.
+  Nombre de archivo con mayúscula y "ñ" (`Contraseña-login`), inconsistente
+  con el resto (`login.html`, `registro.html`, todo en minúsculas sin
+  acentos) — se dejó igual a propósito por no tocar el estado de git en
+  esta sesión; pendiente de que el equipo decida si renombrarlo.

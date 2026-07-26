@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<!--
+  Recuperar contraseña (vista del cliente). Se llega aquí desde el enlace
+  "¿Olvidaste la contraseña?" del login.
+
+  Página del sitio (no standalone): usa header/footer compartidos
+  (#encabezado / #pie-pagina + plantillas.js), igual que registro.html.
+
+  Dos paneles, mismo flujo de dos pasos que pide el diseño:
+  1. Enviar código (panel izquierdo): correo o teléfono.
+  2. Digitar código + nueva contraseña (panel derecho).
+
+  Por ahora los dos paneles se muestran siempre juntos, uno junto al otro
+  (sin mostrar/ocultar el segundo hasta que llegue el código). Eso es
+  trabajo de la futura capa de JavaScript -junto con el envío real del
+  código y el cambio de contraseña-, que todavía no se agrega a propósito.
+  Los ids ya están listos para engancharla sin tocar el markup.
+-->
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperar contraseña | La Morán</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../Recursos/estilos.css">
+    <link rel="stylesheet" href="../Recursos/Contraseña-login.css">
+</head>
+<body>
+
+    <!-- Header compartido. -->
+    <div id="encabezado"></div>
+
+    <!-- Contenido sobre fondo oscuro. -->
+    <main class="pagina-recuperacion">
+        <section class="contenedor-recuperacion">
+
+            <!-- Panel izquierdo: paso 1, pedir el código. -->
+            <div class="panel panel-envio">
+                <h2>Recuperar contraseña</h2>
+
+                <form id="formulario-enviar-codigo">
+                    <div class="grupo-campo">
+                        <label for="usuario">Correo electrónico o número telefónico</label>
+                        <input type="text" id="usuario" name="usuario"
+                               class="form-control campo-recuperacion"
+                               placeholder="Ingrese su correo o teléfono"
+                               autocomplete="username" required>
+                    </div>
+
+                    <button type="submit" id="boton-enviar-codigo" class="btn boton-recuperacion w-100">
+                        Enviar código
+                    </button>
+                </form>
+            </div>
+
+            <!-- Panel derecho: paso 2, digitar el código y la nueva contraseña. -->
+            <div class="panel panel-codigo">
+                <h2>Digite el código de seguridad</h2>
+
+                <form id="formulario-cambiar-contrasena">
+                    <div class="codigo-contenedor">
+                        <input type="text" maxlength="1" class="codigo" inputmode="numeric" aria-label="Dígito 1 del código">
+                        <input type="text" maxlength="1" class="codigo" inputmode="numeric" aria-label="Dígito 2 del código">
+                        <input type="text" maxlength="1" class="codigo" inputmode="numeric" aria-label="Dígito 3 del código">
+                        <input type="text" maxlength="1" class="codigo" inputmode="numeric" aria-label="Dígito 4 del código">
+                        <input type="text" maxlength="1" class="codigo" inputmode="numeric" aria-label="Dígito 5 del código">
+                        <input type="text" maxlength="1" class="codigo" inputmode="numeric" aria-label="Dígito 6 del código">
+                        <input type="text" maxlength="1" class="codigo" inputmode="numeric" aria-label="Dígito 7 del código">
+                        <input type="text" maxlength="1" class="codigo" inputmode="numeric" aria-label="Dígito 8 del código">
+                    </div>
+
+                    <div class="grupo-campo">
+                        <label for="nueva-contrasena">Nueva contraseña</label>
+                        <input type="password" id="nueva-contrasena" name="nueva_contrasena"
+                               class="form-control campo-recuperacion"
+                               placeholder="Ingrese la nueva contraseña"
+                               autocomplete="new-password" minlength="8" required>
+                    </div>
+
+                    <div class="grupo-campo">
+                        <label for="confirmar-contrasena">Confirmar contraseña</label>
+                        <input type="password" id="confirmar-contrasena" name="confirmar_contrasena"
+                               class="form-control campo-recuperacion"
+                               placeholder="Confirme la contraseña"
+                               autocomplete="new-password" minlength="8" required>
+                    </div>
+
+                    <button type="submit" id="boton-confirmar" class="btn boton-recuperacion w-100">
+                        Confirmar
+                    </button>
+                </form>
+            </div>
+
+        </section>
+
+        <a href="login.html" class="enlace-volver-login">Volver a iniciar sesión</a>
+    </main>
+
+    <!-- Footer compartido. -->
+    <div id="pie-pagina"></div>
+
+    <script src="../Recursos/plantillas.js" defer></script>
+</body>
+</html>
