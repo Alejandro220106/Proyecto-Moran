@@ -4,14 +4,16 @@
   que se llega al tocar "MOSTRAR" en la categoría Huevos del catálogo.
 
   Estructura: un hero con foto + la banda verde "PRODUCTOS FRESCOS DE ALTA
-  CALIDAD", y debajo la lista de presentaciones de huevo (por cantidad),
+  CALIDAD", y debajo las dos listas de presentaciones lado a lado: huevos
+  a la izquierda y pollo a la derecha (copiada de productos-pollo.html),
   cada una con su botón ORDENAR. Todo sobre el fondo de madera café.
 
   Página del sitio (no standalone): usa header/footer compartidos
   (#encabezado / #pie-pagina + plantillas.js). Servir con servidor local.
 
-  Las cantidades (30/15/6/4) son las del diseño; en producción vendrán de
-  la base de datos, igual que las fotos de cada presentación.
+  Las cantidades (30/15/6/4) y presentaciones de pollo son las del diseño;
+  en producción vendrán de la base de datos, igual que las fotos de cada
+  presentación.
 -->
 <html lang="es">
 <head>
@@ -43,49 +45,101 @@
         <!-- Llamado a la acción. -->
         <h1 class="titulo-pedidos">HAZ TUS PEDIDOS / ENCARGOS AQUÍ</h1>
 
-        <!-- Lista de presentaciones de huevo. -->
-        <div class="lista-productos">
+        <!-- Contenedor de las dos listas: huevos a la izquierda, pollo a la derecha. -->
+        <div class="contenedor-dos-listas">
 
-            <!-- Cada tarjeta se repetirá desde la base de datos a futuro. -->
-            <article class="tarjeta-pedido">
-                <div class="imagen-producto"><span class="marcador-foto">Foto</span></div>
-                <div class="info-producto">
-                    <h2 class="nombre-producto">Huevos</h2>
-                    <p class="detalle-producto">Cantidad: 30</p>
-                    <p class="detalle-producto">Color: cafés</p>
-                </div>
-                <a href="detalle-pedido.html" class="btn boton-ordenar">ORDENAR</a>
-            </article>
+            <!-- Columna izquierda: presentaciones de huevo. -->
+            <div class="columna-lista">
+                <h2 class="subtitulo-columna">Huevos</h2>
+                <div class="lista-productos">
 
-            <article class="tarjeta-pedido">
-                <div class="imagen-producto"><span class="marcador-foto">Foto</span></div>
-                <div class="info-producto">
-                    <h2 class="nombre-producto">Huevos</h2>
-                    <p class="detalle-producto">Cantidad: 15</p>
-                    <p class="detalle-producto">Color: cafés</p>
-                </div>
-                <a href="detalle-pedido.html" class="btn boton-ordenar">ORDENAR</a>
-            </article>
+                    <!-- Cada tarjeta se repetirá desde la base de datos a futuro. -->
+                    <article class="tarjeta-pedido">
+                        <div class="imagen-producto"><span class="marcador-foto">Foto</span></div>
+                        <div class="info-producto">
+                            <h3 class="nombre-producto">Huevos</h3>
+                            <p class="detalle-producto">Cantidad: 30</p>
+                            <p class="detalle-producto">Color: cafés</p>
+                        </div>
+                        <a href="detalle-pedido.html" class="btn boton-ordenar">ORDENAR</a>
+                    </article>
 
-            <article class="tarjeta-pedido">
-                <div class="imagen-producto"><span class="marcador-foto">Foto</span></div>
-                <div class="info-producto">
-                    <h2 class="nombre-producto">Huevos</h2>
-                    <p class="detalle-producto">Cantidad: 6</p>
-                    <p class="detalle-producto">Color: cafés</p>
-                </div>
-                <a href="detalle-pedido.html" class="btn boton-ordenar">ORDENAR</a>
-            </article>
+                    <article class="tarjeta-pedido">
+                        <div class="imagen-producto"><span class="marcador-foto">Foto</span></div>
+                        <div class="info-producto">
+                            <h3 class="nombre-producto">Huevos</h3>
+                            <p class="detalle-producto">Cantidad: 15</p>
+                            <p class="detalle-producto">Color: cafés</p>
+                        </div>
+                        <a href="detalle-pedido.html" class="btn boton-ordenar">ORDENAR</a>
+                    </article>
 
-            <article class="tarjeta-pedido">
-                <div class="imagen-producto"><span class="marcador-foto">Foto</span></div>
-                <div class="info-producto">
-                    <h2 class="nombre-producto">Huevos</h2>
-                    <p class="detalle-producto">Cantidad: 4</p>
-                    <p class="detalle-producto">Color: cafés</p>
+                    <article class="tarjeta-pedido">
+                        <div class="imagen-producto"><span class="marcador-foto">Foto</span></div>
+                        <div class="info-producto">
+                            <h3 class="nombre-producto">Huevos</h3>
+                            <p class="detalle-producto">Cantidad: 6</p>
+                            <p class="detalle-producto">Color: cafés</p>
+                        </div>
+                        <a href="detalle-pedido.html" class="btn boton-ordenar">ORDENAR</a>
+                    </article>
+
+                    <article class="tarjeta-pedido">
+                        <div class="imagen-producto"><span class="marcador-foto">Foto</span></div>
+                        <div class="info-producto">
+                            <h3 class="nombre-producto">Huevos</h3>
+                            <p class="detalle-producto">Cantidad: 4</p>
+                            <p class="detalle-producto">Color: cafés</p>
+                        </div>
+                        <a href="detalle-pedido.html" class="btn boton-ordenar">ORDENAR</a>
+                    </article>
+
                 </div>
-                <a href="detalle-pedido.html" class="btn boton-ordenar">ORDENAR</a>
-            </article>
+            </div>
+
+            <!-- Columna derecha: cortes de pollo (copiada de productos-pollo.html). -->
+            <div class="columna-lista">
+                <h2 class="subtitulo-columna">Pollo</h2>
+                <div class="lista-productos">
+
+                    <article class="tarjeta-pedido">
+                        <div class="imagen-producto"><span class="marcador-foto">Foto</span></div>
+                        <div class="info-producto">
+                            <h3 class="nombre-producto">Pechuga</h3>
+                            <p class="detalle-producto">Cantidad: 30</p>
+                        </div>
+                        <a href="detalle-pedido.html" class="btn boton-ordenar">ORDENAR</a>
+                    </article>
+
+                    <article class="tarjeta-pedido">
+                        <div class="imagen-producto"><span class="marcador-foto">Foto</span></div>
+                        <div class="info-producto">
+                            <h3 class="nombre-producto">Muslo</h3>
+                            <p class="detalle-producto">Cantidad: 30</p>
+                        </div>
+                        <a href="detalle-pedido.html" class="btn boton-ordenar">ORDENAR</a>
+                    </article>
+
+                    <article class="tarjeta-pedido">
+                        <div class="imagen-producto"><span class="marcador-foto">Foto</span></div>
+                        <div class="info-producto">
+                            <h3 class="nombre-producto">Alas</h3>
+                            <p class="detalle-producto">Cantidad: 30</p>
+                        </div>
+                        <a href="detalle-pedido.html" class="btn boton-ordenar">ORDENAR</a>
+                    </article>
+
+                    <article class="tarjeta-pedido">
+                        <div class="imagen-producto"><span class="marcador-foto">Foto</span></div>
+                        <div class="info-producto">
+                            <h3 class="nombre-producto">Entero</h3>
+                            <p class="detalle-producto">Cantidad: —</p>
+                        </div>
+                        <a href="detalle-pedido.html" class="btn boton-ordenar">ORDENAR</a>
+                    </article>
+
+                </div>
+            </div>
 
         </div>
     </main>

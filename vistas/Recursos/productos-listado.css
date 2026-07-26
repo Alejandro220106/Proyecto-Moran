@@ -77,6 +77,41 @@
   padding: 0 16px;
 }
 
+/* ---- Dos listas juntas (huevos + pollo en productos-huevos.html) ---- */
+.contenedor-dos-listas {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 32px;
+  padding: 0 16px;
+}
+
+.columna-lista {
+  flex: 1 1 420px;
+  max-width: 560px;
+}
+
+/* Dentro de una columna la lista ya no necesita su propio ancho/centrado. */
+.columna-lista .lista-productos {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+.subtitulo-columna {
+  color: #ffffff;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  margin: 0 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--verde-banda);
+}
+
 /* Cada tarjeta: foto | info | botón, en fila. Panel translúcido oscuro para
    que el texto blanco se lea bien sobre la textura de madera. */
 .tarjeta-pedido {

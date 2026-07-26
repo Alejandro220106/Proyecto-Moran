@@ -203,3 +203,11 @@ administración.
   botón AGREGAR AL CARRITO del detalle ya enlaza aquí. Se corrigieron
   typos del diseño (TARGETA→tarjeta, CVI→CVV, CANSELAR→cancelar). Flujo
   navegable completo: catálogo → listado → detalle → pago.
+- **2026-07-26**: `productos-huevos.html` ahora muestra **las dos listas
+  juntas**: huevos a la izquierda, pollo a la derecha (copiado de
+  `productos-pollo.html`, que se dejó intacto por ahora). Se agregaron las
+  clases `.contenedor-dos-listas` / `.columna-lista` / `.subtitulo-columna`
+  en `productos-listado.css` para el layout de dos columnas (se apilan en
+  pantallas angostas vía `flex-wrap`); `.lista-productos` sigue funcionando
+  igual que siempre para el listado standalone de pollo. Header/footer sin
+  cambios.
