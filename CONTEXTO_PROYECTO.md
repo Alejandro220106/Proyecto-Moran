@@ -250,3 +250,43 @@ administración.
   con el resto (`login.html`, `registro.html`, todo en minúsculas sin
   acentos) — se dejó igual a propósito por no tocar el estado de git en
   esta sesión; pendiente de que el equipo decida si renombrarlo.
+- **2026-07-26 (4)**: se revisó `Actualizar-Datos.html` +
+  `Recursos/Actualizar-Datos.css` (actualizar datos de usuario, ya creada
+  por un compañero) con el mismo criterio que `Contraseña-login`: se
+  agregó el comentario de documentación, se corrigió el `<title>` (decía
+  "Actualizar-Datos-Usuario", ahora "Actualizar datos"), se renombraron
+  los ids de camelCase (`formActualizarDatos` → `formulario-actualizar-datos`,
+  `btnActualizar` → `boton-actualizar`), se capa `form-control`/`.btn` de
+  Bootstrap sobre campos/botón, y se alinearon los colores ámbar con
+  `registro.css`/`Contraseña-login.css`. **Conexión**: se agregó el enlace
+  "ACTUALIZAR DATOS" al header compartido (`encabezado.html`, junto a
+  CERRAR SESIÓN) porque no existía ningún punto de entrada a esta
+  pantalla — confirmado con el usuario antes de tocar un componente
+  compartido por todo el sitio. Se probó con Playwright: el header con 6
+  ítems no desborda a 1280px, y la navegación catálogo → actualizar datos
+  funciona.
+
+  **Hallazgo, no atribuible a esta sesión**: `Contacto.html` reutiliza
+  `Recursos/Actualizar-Datos.css` pero usa sus propias clases
+  (`.pagina-contacto`, `.contenedor-contacto`, `.grupo-mensaje`), que no
+  existen en ese archivo — la pantalla de contacto queda prácticamente sin
+  estilo. Su `<title>` también quedó copiado como "Actualizar-Datos-Usuario".
+  No se tocó porque no fue parte de lo pedido en esta sesión; pendiente de
+  revisión igual que las demás.
+- **2026-07-26 (5)**: se revisó `Contacto.html` + se creó
+  `Recursos/Contacto.css` (antes reutilizaba `Actualizar-Datos.css` por
+  error, con clases —`.pagina-contacto`, `.contenedor-contacto`,
+  `.grupo-mensaje`— que no existían ahí, así que quedaba casi sin estilo;
+  ver hallazgo de la entrada anterior). El nuevo `Contacto.css` mantiene el
+  layout de 4 columnas y el mensaje ocupando la fila 2 junto a "Empresa"
+  (decisión ya tomada por el compañero que armó el HTML, no se rediseñó),
+  solo se alinearon los colores ámbar, se agregaron variables `:root` y se
+  reemplazaron los selectores por id (`#btnEnviar`) por clases
+  (`.boton-enviar`) capadas sobre `.btn`/`.form-control` de Bootstrap. El
+  `<title>` y el `href` del CSS ya habían sido corregidos por el usuario
+  antes de esta revisión. **Conexión**: el enlace "CONTACTO" del header
+  compartido, que ya existía apuntando a "#", ahora apunta a
+  `Contacto.html` (no fue necesario tocar la estructura del nav, a
+  diferencia de "ACTUALIZAR DATOS"). Se probó con Playwright: navegación
+  catálogo → contacto sin errores de consola, layout de 4 columnas y
+  apilado en móvil correctos.
