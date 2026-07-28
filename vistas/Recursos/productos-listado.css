@@ -1,9 +1,9 @@
 /*
-  Estilos COMPARTIDOS de los listados de productos (huevos y pollo).
-  Los usan tanto vistas/productos-huevos.html como vistas/productos-pollo.html,
-  porque las dos pantallas tienen exactamente el mismo diseño y solo cambian
-  los datos (foto de portada y presentaciones). Editar el layout aquí una vez
-  se refleja en ambos listados.
+  Estilos del listado de productos (vistas/Paginas/productos.html), que
+  muestra huevos y pollo juntos. Antes había dos pantallas separadas
+  (productos-huevos.html / productos-pollo.html) que compartían este mismo
+  archivo; se unificaron en una sola página, pero el nombre del CSS se dejó
+  igual porque ya era genérico.
 
   Convención del proyecto: clases de Bootstrap en inglés, clases propias en
   español. Ver la skill moran-frontend y CONTEXTO_PROYECTO.md.
@@ -77,7 +77,7 @@
   padding: 0 16px;
 }
 
-/* ---- Dos listas juntas (huevos + pollo en productos-huevos.html) ---- */
+/* ---- Dos listas juntas (huevos + pollo en productos.html) ---- */
 .contenedor-dos-listas {
   max-width: 1200px;
   margin: 0 auto;
@@ -160,6 +160,49 @@
   color: #e7ded6;
 }
 
+/* Fila de precio + disponibilidad, debajo del resto de detalles. */
+.fila-precio-disponibilidad {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.precio-producto {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--ambar-boton);
+}
+
+/* Etiqueta de disponibilidad: mismo criterio de "chip" de color que usan
+   los estados de GestionPedidos.css en el panel admin, adaptado a esta
+   pantalla. */
+.disponibilidad {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.disponibilidad.disponible {
+  background-color: #3f8f4f;
+  color: #ffffff;
+}
+
+.disponibilidad.pocas-unidades {
+  background-color: var(--ambar-boton);
+  color: #ffffff;
+}
+
+.disponibilidad.agotado {
+  background-color: #6b6b6b;
+  color: #f0f0f0;
+}
+
 /* Botón ORDENAR (ámbar de la marca) sobre la base .btn de Bootstrap. */
 .boton-ordenar {
   flex: none;
@@ -174,6 +217,15 @@
 .boton-ordenar:hover {
   background-color: var(--ambar-boton-hover);
   color: #ffffff;
+}
+
+/* Producto agotado: el botón queda deshabilitado en vez de enlazar a un
+   pedido que no se puede cumplir (mejora de UX sin necesitar JS todavía). */
+.boton-agotado,
+.boton-agotado:hover {
+  background-color: #555555;
+  color: #bbbbbb;
+  cursor: not-allowed;
 }
 
 /* En pantallas angostas la tarjeta se apila para no apretujar los elementos. */

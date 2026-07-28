@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<!--
+  Gestión de pedidos, módulo del panel de administración (vista de
+  personal, no de cliente). Se llega aquí desde la tarjeta "Gestión de
+  pedidos" de Home-admin.html.
+
+  Usa header/footer compartidos (#encabezado / #pie-pagina + plantillas.js)
+  igual que el resto de vistas, con su propio layout: resumen, filtros,
+  acciones, tabla de pedidos y un panel de detalle (aside) que hace de
+  modal.
+
+  Todo está listo para el JavaScript que todavía no se agrega:
+  - Las dos filas de la tabla son de ejemplo; JS las reemplazará con los
+    pedidos reales.
+  - Los botones "Ver"/"Editar" comparten `data-pedido-id` (qué pedido) y
+    difieren solo en `data-accion` ("ver"/"editar"), para poder leerlos
+    desde un único listener delegado en <tbody> en vez de necesitar un
+    atributo distinto por acción.
+  - El panel de detalle (`.panel-detalle-pedido`) empieza oculto
+    (`.oculto`, con `display:none`) y ya lleva `role="dialog"` +
+    `aria-modal` + `aria-labelledby` para que sea accesible en cuanto el
+    JS lo muestre/oculte; el botón de cerrar lleva `aria-label` porque su
+    contenido es solo el símbolo "✕".
+-->
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de pedidos | La Morán</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../Recursos/estilos.css">
+    <link rel="stylesheet" href="../Recursos/GestionPedidos.css">
+</head>
+<body>
+
+    <!-- Header compartido. -->
+    <div id="encabezado"></div>
+
+    <!-- Contenido sobre fondo oscuro. -->
+    <main class="pagina-pedidos">
+
+        <!-- Encabezado -->
+        <section class="encabezado-pedidos">
+            <h1>Gestión de Pedidos</h1>
+            <p>
+                Administre los pedidos registrados, consulte su estado y
+                gestione el proceso de entrega.
+            </p>
+        </section>
+
+        <!-- Resumen -->
+        <section class="resumen-pedidos">
+            <article class="tarjeta-resumen">
+                <h3 id="pedidos-pendientes">0</h3>
+                <span>Pedidos pendientes</span>
+            </article>
+
+            <article class="tarjeta-resumen">
+                <h3 id="pedidos-preparacion">0</h3>
+                <span>En preparación</span>
+            </article>
+
+            <article class="tarjeta-resumen">
+                <h3 id="pedidos-entregados">0</h3>
+                <span>Entregados hoy</span>
+            </article>
+
+            <article class="tarjeta-resumen">
+                <h3 id="ventas-dia">₡0</h3>
+                <span>Ventas del día</span>
+            </article>
+        </section>
+
+        <!-- Filtros -->
+        <section class="panel-filtros">
+            <form id="formulario-filtros-pedidos" class="formulario-filtros">
+                <div class="grupo-campo">
+                    <label for="buscar-pedido">Buscar pedido</label>
+                    <input type="search" id="buscar-pedido" name="buscar_pedido"
+                           class="form-control campo-filtro"
+                           placeholder="Número de pedido, cliente o teléfono">
+                </div>
+
+                <div class="grupo-campo">
+                    <label for="estado-pedido">Estado</label>
+                    <select id="estado-pedido" name="estado_pedido" class="form-select campo-filtro">
+                        <option value="">Todos</option>
+                        <option value="pendiente">Pendiente</option>
+                        <option value="preparacion">En preparación</option>
+                        <option value="entregado">Entregado</option>
+                        <option value="cancelado">Cancelado</option>
+                    </select>
+                </div>
+
+                <div class="grupo-campo">
+                    <label for="fecha-inicio">Desde</label>
+                    <input type="date" id="fecha-inicio" name="fecha_inicio" class="form-control campo-filtro">
+                </div>
+
+                <div class="grupo-campo">
+                    <label for="fecha-fin">Hasta</label>
+                    <input type="date" id="fecha-fin" name="fecha_fin" class="form-control campo-filtro">
+                </div>
+
+                <div class="contenedor-boton">
+                    <button type="submit" id="boton-buscar-pedidos" class="btn boton-filtro">
+                        Buscar
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Acciones -->
+        <section class="barra-acciones">
+            <button class="btn boton-accion-pedidos" id="boton-nuevo-pedido">
+                Nuevo pedido
+            </button>
+
+            <button class="btn boton-accion-pedidos" id="boton-actualizar-pedidos">
+                Actualizar lista
+            </button>
+
+            <button class="btn boton-accion-pedidos" id="boton-exportar-pedidos">
+                Exportar
+            </button>
+        </section>
+
+        <!-- Tabla -->
+        <section class="tabla-pedidos">
+            <table id="tabla-listado-pedidos">
+                <thead>
+                    <tr>
+                        <th># Pedido</th>
+                        <th>Cliente</th>
+                        <th>Teléfono</th>
+                        <th>Fecha</th>
+                        <th>Total</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <!--
+                        Estas filas son únicamente de ejemplo.
+                        JavaScript las reemplazará por los datos
+                        obtenidos desde la base de datos.
+                    -->
+                    <tr>
+                        <td>0001</td>
+                        <td>Juan Pérez</td>
+                        <td>8888-8888</td>
+                        <td>27/07/2026</td>
+                        <td>₡12 500</td>
+                        <td><span class="estado pendiente">Pendiente</span></td>
+                        <td>
+                            <button class="btn boton-tabla" data-pedido-id="1" data-accion="ver">Ver</button>
+                            <button class="btn boton-tabla" data-pedido-id="1" data-accion="editar">Editar</button>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>0002</td>
+                        <td>María Soto</td>
+                        <td>8787-4545</td>
+                        <td>27/07/2026</td>
+                        <td>₡8 200</td>
+                        <td><span class="estado preparacion">En preparación</span></td>
+                        <td>
+                            <button class="btn boton-tabla" data-pedido-id="2" data-accion="ver">Ver</button>
+                            <button class="btn boton-tabla" data-pedido-id="2" data-accion="editar">Editar</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Panel lateral / Modal (oculto inicialmente) -->
+        <!-- JavaScript decidirá si mostrarlo como modal o panel lateral -->
+        <aside id="panel-detalle-pedido" class="panel-detalle-pedido oculto"
+               role="dialog" aria-modal="true" aria-labelledby="titulo-detalle-pedido">
+
+            <div class="detalle-encabezado">
+                <h2 id="titulo-detalle-pedido">
+                    Pedido <span id="detalle-numero-pedido">#0000</span>
+                </h2>
+                <button class="boton-cerrar-detalle" id="boton-cerrar-detalle" aria-label="Cerrar detalle del pedido">
+                    ✕
+                </button>
+            </div>
+
+            <section class="detalle-cliente">
+                <h3>Información del cliente</h3>
+                <p><strong>Nombre:</strong> <span id="detalle-cliente-nombre"></span></p>
+                <p><strong>Teléfono:</strong> <span id="detalle-cliente-telefono"></span></p>
+                <p><strong>Dirección:</strong> <span id="detalle-cliente-direccion"></span></p>
+            </section>
+
+            <section class="detalle-productos">
+                <h3>Productos</h3>
+                <table id="tabla-detalle-productos">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Cantidad</th>
+                            <th>Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- JavaScript -->
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="detalle-estado">
+                <h3>Estado del pedido</h3>
+                <select id="detalle-estado-select" class="form-select" aria-label="Cambiar estado del pedido">
+                    <option value="pendiente">Pendiente</option>
+                    <option value="preparacion">En preparación</option>
+                    <option value="entregado">Entregado</option>
+                    <option value="cancelado">Cancelado</option>
+                </select>
+            </section>
+
+            <section class="detalle-total">
+                <h3>Total: <span id="detalle-total-monto">₡0</span></h3>
+            </section>
+
+            <div class="detalle-botones">
+                <button class="btn boton-detalle-accion" id="boton-guardar-cambios">Guardar cambios</button>
+                <button class="btn boton-detalle-accion" id="boton-imprimir-pedido">Imprimir</button>
+            </div>
+
+        </aside>
+
+    </main>
+
+    <!-- Footer compartido. -->
+    <div id="pie-pagina"></div>
+
+    <script src="../Recursos/plantillas.js" defer></script>
+</body>
+</html>

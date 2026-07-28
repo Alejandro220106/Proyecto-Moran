@@ -290,3 +290,129 @@ administración.
   diferencia de "ACTUALIZAR DATOS"). Se probó con Playwright: navegación
   catálogo → contacto sin errores de consola, layout de 4 columnas y
   apilado en móvil correctos.
+- **2026-07-26 (6)**: se revisó `Home-admin.html` +
+  `Recursos/Home-admin.css` (panel de administración, ya creado por un
+  compañero) con el mismo criterio de estilo que las demás pantallas:
+  comentario de documentación, ids en kebab-case (`modInventario` →
+  `modulo-inventario`, `btnNuevoPedido` → `boton-nuevo-pedido`,
+  `totalPedidos` → `total-pedidos`, etc.), variables `:root` y colores
+  ámbar alineados (`#d89a45`/`#bf8539` → `#d99a4e`/`#c4863a`). Se agregó
+  `.btn` de Bootstrap a los botones de "Accesos rápidos" (sí son botones
+  convencionales); las tarjetas de módulo quedaron como `<button>` sin
+  `.btn` porque son tarjetas de grid, no botones típicos, y Bootstrap las
+  encogería al ancho del contenido. **Sin conexión esta vez** (a
+  diferencia de Actualizar-Datos/Contacto): esta sesión solo pidió estilo,
+  no enlazarla; además CONTEXTO_PROYECTO.md ya anotaba que el panel de
+  administración probablemente necesite su propia capa de autenticación
+  antes de conectarlo al sitio, así que se dejó sin punto de entrada a
+  propósito. Se probó con Playwright (desktop y 375px): sin errores de
+  consola, el grid `auto-fit` ya existente se adapta solo sin necesidad de
+  media queries adicionales.
+- **2026-07-26 (7)**: se revisó `Inventario.html` + `Recursos/Inventario.css`
+  (módulo de inventario del panel admin, ya creado por un compañero) con el
+  mismo criterio que `Home-admin`: comentario de documentación, ids en
+  kebab-case (`btnActualizarProductos` → `boton-actualizar-productos`,
+  `tablaLotes` → `tabla-lotes`, etc.), variables `:root` y colores ámbar
+  alineados. Se renombró `.btn-tabla` → `.boton-tabla` (el resto del sitio
+  siempre usa "boton-" completo, nunca la abreviatura "btn-", que además
+  se presta a confundirse con la clase `.btn` de Bootstrap) y se agregó
+  `.btn` de Bootstrap sobre los botones "Actualizar"/"Ver" (sí son botones
+  convencionales, a diferencia de las tarjetas de módulo de Home-admin). Se
+  escoparon los selectores de tabla sueltos (`table`, `th`, `td`, `thead`,
+  `tbody tr:hover`) bajo `.tarjeta` para no depender de que sean los únicos
+  elementos `<table>` del sitio. De paso se restauró una transición de
+  hover (`transition: background-color 0.2s`) que se había perdido sin
+  querer en esta misma revisión y en la de `Home-admin.css`. Sin conexión
+  (mismo motivo que Home-admin: panel admin todavía no se conecta al
+  resto del sitio). Se probó con Playwright: sin errores de consola; en
+  375px las tablas anchas hacen scroll horizontal dentro de su tarjeta,
+  comportamiento ya diseñado (`overflow-x:auto` + `min-width:650px`), no
+  una regresión.
+- **2026-07-26 (8)**: se conectó la tarjeta "Inventario" de `Home-admin.html`
+  a `Inventario.html` (antes era un `<button>` sin acción, igual que el
+  resto de módulos que aún no tienen página). Como ya es un `<a>`, se
+  agregó `display:block` y `text-decoration:none` a `.tarjeta-modulo` en
+  `Home-admin.css` para que se vea igual sin importar si la tarjeta es
+  `<button>` o `<a>` — confirmado con Playwright que el clic navega y que
+  visualmente es idéntica a las demás. Las otras 6 tarjetas de módulo
+  siguen como `<button>` sin conexión porque sus páginas no existen
+  todavía.
+- **2026-07-27**: se revisó `GestionPedidos-admin.html` +
+  `Recursos/GestionPedidos.css` (módulo de gestión de pedidos del panel
+  admin, ya creado por un compañero) con el mismo criterio que
+  Inventario/Home-admin: el comentario superior estaba copiado de
+  `Contacto.html` (decía "Contacto (vista del cliente)..."), se corrigió;
+  ids en kebab-case, colores ámbar alineados, `.btn-tabla` → `.boton-tabla`,
+  `form-control`/`form-select`/`.btn` de Bootstrap sobre campos y botones.
+  **Conexión**: la tarjeta "Gestión de pedidos" de `Home-admin.html` pasa
+  de `<button>` a `<a href="GestionPedidos-admin.html">`, igual que se hizo
+  con Inventario.
+
+  **Mejoras pensando en el JS futuro** (confirmadas con el usuario antes
+  de aplicarlas): los botones "Ver"/"Editar" de cada fila usaban atributos
+  distintos para el mismo pedido (`data-pedido`/`data-editar`); ahora
+  ambos comparten `data-pedido-id` + un `data-accion="ver"/"editar"`, para
+  que un solo listener delegado en `<tbody>` alcance. El panel de detalle
+  (`#panel-detalle-pedido`, renombrado de `#detallePedido` para no
+  chocar conceptualmente con el `detalle-pedido.html` del cliente) ahora
+  lleva `role="dialog"` + `aria-modal="true"` + `aria-labelledby`, y el
+  botón de cerrar (✕) lleva `aria-label`, para que sea accesible en cuanto
+  el JS lo muestre/oculte. También se limpió el CSS del modal: la regla
+  `.detalle-pedido{flex-direction:column}` estaba duplicada en dos bloques
+  separados (se fusionó en uno) y se quitó un `::before` que no tenía
+  ningún efecto visual (sin fondo, sin z-index, inerte).
+
+  Se probó con Playwright: navegación Home-admin → Gestión de pedidos sin
+  errores de consola, y se simuló mostrar el panel de detalle (quitando
+  `.oculto` como hará el futuro JS) para confirmar que se ve consistente
+  y que los atributos ARIA quedan bien puestos.
+- **2026-07-27 (2)**: se unificaron los dos listados de productos en uno
+  solo. `productos-huevos.html` (que ya mostraba huevos y pollo juntos
+  desde el 2026-07-26) se renombró a **`productos.html`** —nombre neutro,
+  ya que ahora cubre ambas categorías— y se **eliminó**
+  `productos-pollo.html`, que había quedado redundante. Los dos botones
+  MOSTRAR de `catalogo.html` (categoría Pollo y categoría Huevos) ahora
+  enlazan al mismo `productos.html`. `productos-listado.css` no se
+  renombró (ya tenía nombre genérico) pero se actualizaron sus
+  comentarios.
+
+  También se agregaron **precio** y **disponibilidad** a cada tarjeta de
+  producto — las dos mejoras de UX de la sesión anterior que el usuario
+  confirmó como correctas (el listado no tenía ningún precio visible en
+  todo el sitio hasta ahora). Disponibilidad usa un chip de color
+  (`.disponibilidad.disponible` verde, `.pocas-unidades` ámbar,
+  `.agotado` gris), mismo criterio visual que los estados de
+  `GestionPedidos.css` en el panel admin. Un producto "Agotado" (ej.
+  Muslo) deshabilita su botón ORDENAR (`<button disabled>` en vez de
+  `<a href>`) para no dejar iniciar un pedido que no se puede cumplir —
+  mejora de UX que no depende de JavaScript. Precio y disponibilidad son
+  marcadores del diseño; en producción vendrán de la base de datos (ligado
+  al mismo dato que alimenta `Inventario.html` en el panel admin).
+
+  Se probó con Playwright: los dos botones MOSTRAR del catálogo navegan a
+  `productos.html`, el botón del producto agotado queda `disabled`, sin
+  errores de consola, y el layout se ve correcto en desktop y 375px.
+- **2026-07-27 (3)**: se agregaron a `productos.html` los ganchos para el
+  JavaScript que todavía no se agrega, solo donde hay un caso de uso real
+  (no en todo lo tocable): cada tarjeta y su botón ORDENAR llevan
+  `data-producto-id` (`huevos-30`, `pollo-muslo`, etc.), el precio lleva
+  `data-precio` en crudo (sin "₡" ni separador, para que un futuro
+  carrito pueda sumar sin parsear texto), y la disponibilidad lleva
+  `data-disponibilidad` con el mismo valor que su clase (la clase es
+  estilo, el data-* es un valor estable para JS). El enlace ORDENAR ahora
+  manda `?producto=<id>` en la URL hacia `detalle-pedido.html`, para que
+  esa pantalla (todavía no lo hace) pueda mostrar más adelante a qué
+  producto corresponde el pedido — hoy `detalle-pedido.html` no muestra
+  ningún contexto de qué se ordenó, uno de los huecos de UX detectados.
+
+  El botón "Agotado" se dejó como `<button disabled>` real (no `<a>` con
+  `aria-disabled`) a propósito: es la única forma de que quede
+  genuinamente sin poder darle clic sin necesitar JS todavía. Cuando el
+  inventario cambie, el futuro JS va a tener que reemplazar ese elemento
+  por un `<a>` (o viceversa) en vez de solo alternar un atributo — no se
+  buscó forzar un único tipo de elemento para no debilitar esa protección
+  mientras no hay JS. Documentado en el comentario del HTML.
+
+  Se probó con Playwright: los 8 `data-producto-id` están presentes,
+  `data-precio`/`data-disponibilidad` se leen bien, y el query param
+  llega correctamente a `detalle-pedido.html` al hacer clic en ORDENAR.

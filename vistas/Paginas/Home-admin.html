@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<!--
+  Panel de administración (vista de personal, no de cliente). Todavía sin
+  punto de entrada desde el header compartido a propósito: como anota
+  CONTEXTO_PROYECTO.md, el panel probablemente necesite su propia capa de
+  autenticación/PHP más adelante, así que por ahora solo se construye la
+  pantalla, sin conectarla al resto del sitio.
+
+  Usa header/footer compartidos (#encabezado / #pie-pagina + plantillas.js)
+  igual que el resto de vistas, aunque el layout interno (tarjetas de
+  módulos, resumen, accesos rápidos) es propio de esta pantalla.
+
+  La mayoría de módulos (Facturas, Empleados, Reportes, etc.) todavía no
+  existen como páginas, así que sus tarjetas siguen siendo <button> sin
+  acción en vez de <a href>: evita enlaces rotos hasta que cada módulo se
+  construya. "Inventario" y "Gestión de pedidos" ya son páginas reales
+  (Inventario.html, GestionPedidos-admin.html), así que sus tarjetas son
+  <a> en vez de <button>; la clase .tarjeta-modulo no distingue entre los
+  dos (mismo estilo visual para ambos casos). Los datos del resumen (0,
+  "Administrador", "1.0.0", "Hoy") son marcadores; en producción vendrán
+  de la base de datos. Los ids ya están listos para
+  engancharlos junto con el JavaScript de cada módulo.
+-->
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel administrativo | La Morán</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../Recursos/estilos.css">
+    <link rel="stylesheet" href="../Recursos/Home-admin.css">
+</head>
+<body>
+
+    <!-- Header compartido. -->
+    <div id="encabezado"></div>
+
+    <!-- Contenido sobre fondo oscuro. -->
+    <main class="pagina-admin">
+
+        <section class="encabezado-admin">
+            <h1>Panel de Administración</h1>
+            <p>Bienvenido al panel de administración de Avícola La Morán.</p>
+        </section>
+
+        <section class="seccion-admin">
+            <h2>Módulos del sistema</h2>
+
+            <div class="grid-modulos">
+                <a href="Inventario.html" class="tarjeta-modulo" id="modulo-inventario">
+                    <h3>📦 Inventario</h3>
+                    <p>Control de lotes, productos y existencias.</p>
+                    <span>Ir al módulo →</span>
+                </a>
+
+                <a href="GestionPedidos-admin.html" class="tarjeta-modulo" id="modulo-pedidos">
+                    <h3>🛒 Gestión de pedidos</h3>
+                    <p>Administración de pedidos realizados.</p>
+                    <span>Ir al módulo →</span>
+                </a>
+
+                <button class="tarjeta-modulo" id="modulo-buscar-pedidos">
+                    <h3>🔎 Buscar pedidos</h3>
+                    <p>Consulta y seguimiento de pedidos.</p>
+                    <span>Ir al módulo →</span>
+                </button>
+
+                <button class="tarjeta-modulo" id="modulo-facturas">
+                    <h3>🧾 Facturas</h3>
+                    <p>Gestión de facturación y comprobantes.</p>
+                    <span>Ir al módulo →</span>
+                </button>
+
+                <button class="tarjeta-modulo" id="modulo-empleados">
+                    <h3>👨‍💼 Empleados</h3>
+                    <p>Administración del personal.</p>
+                    <span>Ir al módulo →</span>
+                </button>
+
+                <button class="tarjeta-modulo" id="modulo-reportes">
+                    <h3>📊 Reportes</h3>
+                    <p>Estadísticas e informes del sistema.</p>
+                    <span>Ir al módulo →</span>
+                </button>
+
+                <button class="tarjeta-modulo" id="modulo-proveedores">
+                    <h3>🚚 Proveedores</h3>
+                    <p>Registro y control de proveedores.</p>
+                    <span>Ir al módulo →</span>
+                </button>
+            </div>
+        </section>
+
+        <section class="seccion-admin">
+            <h2>Resumen del sistema</h2>
+
+            <div class="grid-resumen">
+                <div class="tarjeta-resumen">
+                    <span id="total-pedidos">0</span>
+                    <p>Pedidos</p>
+                </div>
+
+                <div class="tarjeta-resumen">
+                    <span id="total-empleados">0</span>
+                    <p>Empleados</p>
+                </div>
+
+                <div class="tarjeta-resumen">
+                    <span id="total-proveedores">0</span>
+                    <p>Proveedores</p>
+                </div>
+
+                <div class="tarjeta-resumen">
+                    <span id="facturas-pendientes">0</span>
+                    <p>Facturas pendientes</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="seccion-admin">
+            <h2>Accesos rápidos</h2>
+
+            <div class="acciones-rapidas">
+                <button class="btn boton-accion-rapida" id="boton-nuevo-pedido">Nuevo pedido</button>
+                <button class="btn boton-accion-rapida" id="boton-nuevo-empleado">Registrar empleado</button>
+                <button class="btn boton-accion-rapida" id="boton-nueva-factura">Nueva factura</button>
+                <button class="btn boton-accion-rapida" id="boton-agregar-proveedor">Agregar proveedor</button>
+                <button class="btn boton-accion-rapida" id="boton-ver-reportes">Ver reportes</button>
+            </div>
+        </section>
+
+        <section class="seccion-admin">
+            <h2>Información del sistema</h2>
+
+            <div class="info-sistema">
+                <div>
+                    <strong>Usuario</strong>
+                    <p id="usuario-actual">Administrador</p>
+                </div>
+
+                <div>
+                    <strong>Versión</strong>
+                    <p id="version-sistema">1.0.0</p>
+                </div>
+
+                <div>
+                    <strong>Último acceso</strong>
+                    <p id="ultimo-acceso">Hoy</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer compartido. -->
+    <div id="pie-pagina"></div>
+
+    <script src="../Recursos/plantillas.js" defer></script>
+</body>
+</html>
