@@ -39,6 +39,22 @@
   color: #ffffff;
 }
 
+/* ---- Enlace para volver al panel (Home-admin) ---- */
+/* Conecta cada módulo de vuelta al tablero principal; el header compartido
+   no sirve para eso (sus enlaces van a las vistas de cliente). */
+.enlace-volver {
+  display: inline-block;
+  color: var(--ambar-boton);
+  text-decoration: none;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.enlace-volver:hover {
+  color: var(--ambar-boton-hover);
+  text-decoration: underline;
+}
+
 /* ---- Encabezado del módulo (título + descripción) ---- */
 .encabezado-modulo {
   text-align: center;

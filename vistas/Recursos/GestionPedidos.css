@@ -26,6 +26,21 @@
   color: #ffffff;
 }
 
+/* Enlace para volver al panel (Home-admin). Mismo estilo que el .enlace-volver
+   definido en admin.css; se repite aquí porque esta página no carga admin.css. */
+.enlace-volver {
+  display: inline-block;
+  color: var(--ambar-boton);
+  text-decoration: none;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.enlace-volver:hover {
+  color: var(--ambar-boton-hover);
+  text-decoration: underline;
+}
+
 /* ---- Encabezado ---- */
 .encabezado-pedidos {
   text-align: center;
