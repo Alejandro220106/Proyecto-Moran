@@ -484,3 +484,16 @@ administración.
      a todo botón `:disabled`, y sobre el fondo oscuro el texto
      "Próximamente" quedaba casi ilegible. Se fija `opacity:1` y el par
      #6b6b6b/#ffffff, que da ~5.3:1 (WCAG AA) sin perder el aspecto apagado.
+- **2026-07-28 (4)** (rama `Alejandro`): se creó **`Sobre-Nosotros.html`** +
+  `Recursos/Sobre-Nosotros.css` (familia visual de `Contacto.css`: fondo
+  oscuro, tarjeta, acento ámbar). Con eso se activaron los **3 enlaces que
+  seguían en `#`** (header, footer/INFORMACIÓN y footer/nav inferior): ya no
+  queda ningún enlace muerto en la navegación del sitio.
+
+  Contenido: solo información que consta en el propio proyecto — el eslogan
+  del footer, los productos que realmente se venden (huevos 30/15/6/4 y
+  pollo entero, con los cortes marcados como próximamente) y los datos de
+  contacto e Instagram del footer. **No se inventó historia del negocio**
+  (año de fundación, tamaño, premios). El párrafo de "Quiénes somos" es un
+  texto de arranque breve y está marcado en el HTML con un comentario para
+  que la familia Morán lo reemplace por su historia real.
