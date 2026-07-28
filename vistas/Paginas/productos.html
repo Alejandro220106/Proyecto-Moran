@@ -17,9 +17,21 @@
 
   Precio y disponibilidad son marcadores del diseño (ver
   CONTEXTO_PROYECTO.md, mejoras de UX sugeridas); en producción vendrán de
-  la base de datos, igual que las cantidades y las fotos. Un producto
-  "Agotado" deshabilita su botón ORDENAR en vez de dejarlo enlazar a un
-  pedido que no se puede cumplir.
+  la base de datos, igual que las cantidades. Un producto que no se puede
+  comprar deshabilita su botón en vez de dejarlo enlazar a un pedido que no
+  se puede cumplir.
+
+  Disponibilidad real del pollo: hoy el negocio SOLO vende pollo entero, así
+  que esa tarjeta va de primera y es la única con botón ORDENAR activo.
+  Pechuga, muslo y alas se muestran como "Próximamente": el cliente ve que
+  existirán, pero sin precio (`data-precio` vacío, se muestra "—") porque el
+  precio será una variable que gestione el administrador, y sin cantidad,
+  porque no hay stock que ofrecer. Su foto va atenuada (.imagen-atenuada).
+
+  Las fotos de producto son de stock libre y provisionales: se reemplazan
+  por las fotos reales del negocio manteniendo el mismo nombre de archivo
+  (producto-<data-producto-id>.jpg), sin tocar este HTML. El hero todavía
+  conserva su marcador, a la espera de una foto de portada.
 
   Ganchos para el JavaScript que todavía no se agrega (solo donde hay un
   caso de uso real, no en todo lo que se pueda tocar):
@@ -84,7 +96,9 @@
 
                     <!-- Cada tarjeta se repetirá desde la base de datos a futuro. -->
                     <article class="tarjeta-pedido" data-producto-id="huevos-30">
-                        <div class="imagen-producto"><span class="marcador-foto">Foto</span></div>
+                        <div class="imagen-producto">
+                            <img src="../Recursos/Imagenes/producto-huevos-30.jpg" alt="Bandeja de 30 huevos cafés">
+                        </div>
                         <div class="info-producto">
                             <h3 class="nombre-producto">Huevos</h3>
                             <p class="detalle-producto">Cantidad: 30</p>
@@ -98,7 +112,9 @@
                     </article>
 
                     <article class="tarjeta-pedido" data-producto-id="huevos-15">
-                        <div class="imagen-producto"><span class="marcador-foto">Foto</span></div>
+                        <div class="imagen-producto">
+                            <img src="../Recursos/Imagenes/producto-huevos-15.jpg" alt="Cartón de 15 huevos cafés">
+                        </div>
                         <div class="info-producto">
                             <h3 class="nombre-producto">Huevos</h3>
                             <p class="detalle-producto">Cantidad: 15</p>
@@ -112,7 +128,9 @@
                     </article>
 
                     <article class="tarjeta-pedido" data-producto-id="huevos-6">
-                        <div class="imagen-producto"><span class="marcador-foto">Foto</span></div>
+                        <div class="imagen-producto">
+                            <img src="../Recursos/Imagenes/producto-huevos-6.jpg" alt="Cartón de 6 huevos cafés">
+                        </div>
                         <div class="info-producto">
                             <h3 class="nombre-producto">Huevos</h3>
                             <p class="detalle-producto">Cantidad: 6</p>
@@ -126,7 +144,9 @@
                     </article>
 
                     <article class="tarjeta-pedido" data-producto-id="huevos-4">
-                        <div class="imagen-producto"><span class="marcador-foto">Foto</span></div>
+                        <div class="imagen-producto">
+                            <img src="../Recursos/Imagenes/producto-huevos-4.jpg" alt="Cartón de 4 huevos cafés">
+                        </div>
                         <div class="info-producto">
                             <h3 class="nombre-producto">Huevos</h3>
                             <p class="detalle-producto">Cantidad: 4</p>
@@ -147,56 +167,68 @@
                 <h2 class="subtitulo-columna">Pollo</h2>
                 <div class="lista-productos">
 
-                    <article class="tarjeta-pedido" data-producto-id="pollo-pechuga">
-                        <div class="imagen-producto"><span class="marcador-foto">Foto</span></div>
-                        <div class="info-producto">
-                            <h3 class="nombre-producto">Pechuga</h3>
-                            <p class="detalle-producto">Cantidad: 30</p>
-                            <div class="fila-precio-disponibilidad">
-                                <span class="precio-producto" data-precio="3200">₡3 200</span>
-                                <span class="disponibilidad disponible" data-disponibilidad="disponible">Disponible</span>
-                            </div>
-                        </div>
-                        <a href="detalle-pedido.html?producto=pollo-pechuga" class="btn boton-ordenar" data-producto-id="pollo-pechuga">ORDENAR</a>
-                    </article>
-
-                    <article class="tarjeta-pedido" data-producto-id="pollo-muslo">
-                        <div class="imagen-producto"><span class="marcador-foto">Foto</span></div>
-                        <div class="info-producto">
-                            <h3 class="nombre-producto">Muslo</h3>
-                            <p class="detalle-producto">Cantidad: 30</p>
-                            <div class="fila-precio-disponibilidad">
-                                <span class="precio-producto" data-precio="2800">₡2 800</span>
-                                <span class="disponibilidad agotado" data-disponibilidad="agotado">Agotado</span>
-                            </div>
-                        </div>
-                        <button type="button" class="btn boton-ordenar boton-agotado" data-producto-id="pollo-muslo" disabled>No disponible</button>
-                    </article>
-
-                    <article class="tarjeta-pedido" data-producto-id="pollo-alas">
-                        <div class="imagen-producto"><span class="marcador-foto">Foto</span></div>
-                        <div class="info-producto">
-                            <h3 class="nombre-producto">Alas</h3>
-                            <p class="detalle-producto">Cantidad: 30</p>
-                            <div class="fila-precio-disponibilidad">
-                                <span class="precio-producto" data-precio="2200">₡2 200</span>
-                                <span class="disponibilidad disponible" data-disponibilidad="disponible">Disponible</span>
-                            </div>
-                        </div>
-                        <a href="detalle-pedido.html?producto=pollo-alas" class="btn boton-ordenar" data-producto-id="pollo-alas">ORDENAR</a>
-                    </article>
-
+                    <!-- Único corte que el negocio vende hoy, por eso va de primero. -->
                     <article class="tarjeta-pedido" data-producto-id="pollo-entero">
-                        <div class="imagen-producto"><span class="marcador-foto">Foto</span></div>
+                        <div class="imagen-producto">
+                            <img src="../Recursos/Imagenes/producto-pollo-entero.jpg" alt="Pollo entero crudo">
+                        </div>
                         <div class="info-producto">
                             <h3 class="nombre-producto">Entero</h3>
                             <p class="detalle-producto">Cantidad: —</p>
                             <div class="fila-precio-disponibilidad">
                                 <span class="precio-producto" data-precio="5500">₡5 500</span>
-                                <span class="disponibilidad pocas-unidades" data-disponibilidad="pocas-unidades">Pocas unidades</span>
+                                <span class="disponibilidad disponible" data-disponibilidad="disponible">Disponible</span>
                             </div>
                         </div>
                         <a href="detalle-pedido.html?producto=pollo-entero" class="btn boton-ordenar" data-producto-id="pollo-entero">ORDENAR</a>
+                    </article>
+
+                    <!--
+                        Cortes que todavía no se venden: se muestran para que el
+                        cliente sepa que vendrán, pero sin precio (lo definirá el
+                        administrador) y con el botón deshabilitado de verdad.
+                        Tampoco se anuncia cantidad, porque no hay stock que ofrecer.
+                    -->
+                    <article class="tarjeta-pedido" data-producto-id="pollo-pechuga">
+                        <div class="imagen-producto">
+                            <img src="../Recursos/Imagenes/producto-pollo-pechuga.jpg" alt="Pechuga de pollo cruda" class="imagen-atenuada">
+                        </div>
+                        <div class="info-producto">
+                            <h3 class="nombre-producto">Pechuga</h3>
+                            <div class="fila-precio-disponibilidad">
+                                <span class="precio-producto sin-precio" data-precio="">—</span>
+                                <span class="disponibilidad proximamente" data-disponibilidad="proximamente">Próximamente</span>
+                            </div>
+                        </div>
+                        <button type="button" class="btn boton-ordenar boton-proximamente" data-producto-id="pollo-pechuga" disabled>Próximamente</button>
+                    </article>
+
+                    <article class="tarjeta-pedido" data-producto-id="pollo-muslo">
+                        <div class="imagen-producto">
+                            <img src="../Recursos/Imagenes/producto-pollo-muslo.jpg" alt="Muslos de pollo crudos" class="imagen-atenuada">
+                        </div>
+                        <div class="info-producto">
+                            <h3 class="nombre-producto">Muslo</h3>
+                            <div class="fila-precio-disponibilidad">
+                                <span class="precio-producto sin-precio" data-precio="">—</span>
+                                <span class="disponibilidad proximamente" data-disponibilidad="proximamente">Próximamente</span>
+                            </div>
+                        </div>
+                        <button type="button" class="btn boton-ordenar boton-proximamente" data-producto-id="pollo-muslo" disabled>Próximamente</button>
+                    </article>
+
+                    <article class="tarjeta-pedido" data-producto-id="pollo-alas">
+                        <div class="imagen-producto">
+                            <img src="../Recursos/Imagenes/producto-pollo-alas.jpg" alt="Alas de pollo crudas" class="imagen-atenuada">
+                        </div>
+                        <div class="info-producto">
+                            <h3 class="nombre-producto">Alas</h3>
+                            <div class="fila-precio-disponibilidad">
+                                <span class="precio-producto sin-precio" data-precio="">—</span>
+                                <span class="disponibilidad proximamente" data-disponibilidad="proximamente">Próximamente</span>
+                            </div>
+                        </div>
+                        <button type="button" class="btn boton-ordenar boton-proximamente" data-producto-id="pollo-alas" disabled>Próximamente</button>
                     </article>
 
                 </div>

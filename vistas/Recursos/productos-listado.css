@@ -124,18 +124,35 @@
   padding: 14px 18px;
 }
 
-/* Marcador de la foto de cada presentación (mismo criterio: recuadro claro
-   con borde punteado, como en el catálogo). */
+/* Marco de la foto de cada presentación. Ya no es un marcador punteado:
+   ahora contiene la foto real del producto (el hero sí conserva su
+   marcador, por eso .marcador-foto sigue definida más abajo). */
 .imagen-producto {
   flex: none;
   width: 92px;
   height: 92px;
   background-color: #ffffff;
-  border: 2px dashed #b9c08f;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 8px;
+  overflow: hidden; /* recorta la foto a las esquinas redondeadas */
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* La foto llena el cuadro sin deformarse (recorta lo que sobra). */
+.imagen-producto img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Foto de un producto que todavía no se vende: se atenúa para reforzar
+   visualmente que es "Próximamente" y no algo que se pueda ordenar. */
+.imagen-atenuada {
+  filter: grayscale(55%);
+  opacity: 0.65;
 }
 
 .marcador-foto {
@@ -175,6 +192,13 @@
   color: var(--ambar-boton);
 }
 
+/* Precio todavía sin definir (lo fijará el administrador): se muestra "—"
+   en tono apagado para que no compita con los precios reales. */
+.precio-producto.sin-precio {
+  color: #a99e93;
+  font-weight: 600;
+}
+
 /* Etiqueta de disponibilidad: mismo criterio de "chip" de color que usan
    los estados de GestionPedidos.css en el panel admin, adaptado a esta
    pantalla. */
@@ -203,6 +227,14 @@
   color: #f0f0f0;
 }
 
+/* "Próximamente": producto que aún no se vende (distinto de "agotado", que
+   es algo que sí se vende pero se acabó). Azul para diferenciarlo del
+   verde/ámbar/gris de los otros tres estados. */
+.disponibilidad.proximamente {
+  background-color: #3f6f92;
+  color: #ffffff;
+}
+
 /* Botón ORDENAR (ámbar de la marca) sobre la base .btn de Bootstrap. */
 .boton-ordenar {
   flex: none;
@@ -219,10 +251,13 @@
   color: #ffffff;
 }
 
-/* Producto agotado: el botón queda deshabilitado en vez de enlazar a un
-   pedido que no se puede cumplir (mejora de UX sin necesitar JS todavía). */
+/* Producto que no se puede ordenar (agotado, o que aún no se vende): el
+   botón queda deshabilitado en vez de enlazar a un pedido que no se puede
+   cumplir (mejora de UX sin necesitar JS todavía). */
 .boton-agotado,
-.boton-agotado:hover {
+.boton-agotado:hover,
+.boton-proximamente,
+.boton-proximamente:hover {
   background-color: #555555;
   color: #bbbbbb;
   cursor: not-allowed;

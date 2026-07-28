@@ -194,8 +194,13 @@ body{
     gap: 15px;
 }
 
+/* El enlace lleva ícono SVG + texto, así que se alinean en fila.
+   (Pisa el display:block que hereda de .footer-seccion a). */
 .redes-iconos a {
     font-size: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
 }
 
 /* Suscripción */

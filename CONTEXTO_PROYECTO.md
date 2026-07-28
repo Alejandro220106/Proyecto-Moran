@@ -444,3 +444,29 @@ administración.
   SESIÓN → `login.html` (CONTACTO y ACTUALIZAR DATOS ya los había conectado
   el compañero). Quedan en `#` a propósito: "SOBRE NOSOTROS" (no existe la
   página) y los 4 íconos de redes (sin URLs reales todavía).
+- **2026-07-28 (2)** (rama `Alejandro`): tres cambios en la vista de cliente.
+  1. **Disponibilidad real del pollo**: hoy el negocio solo vende **pollo
+     entero**, así que esa tarjeta va de primera y es la única con ORDENAR
+     activo. Pechuga, muslo y alas pasan a **"Próximamente"** (chip azul
+     `.disponibilidad.proximamente`, botón `disabled` con
+     `.boton-proximamente`, foto atenuada con `.imagen-atenuada`).
+  2. **Precio como variable del administrador**: los productos
+     "Próximamente" no muestran monto inventado — se ven con `—` y
+     `data-precio=""` vacío, listo para que el admin lo defina. Tampoco
+     anuncian cantidad (no hay stock que ofrecer). Los huevos y el pollo
+     entero conservan sus precios marcador.
+  3. **Redes sociales**: la única red real del negocio es
+     **instagram.com/lamoran837/**. Se quitaron del footer LinkedIn,
+     Facebook y YouTube (anunciaban redes inexistentes con enlaces muertos)
+     y queda solo Instagram, con ícono SVG inline (mismo criterio que
+     `login.html`), `target="_blank"` y `rel="noopener noreferrer"`.
+
+  Además, las 8 tarjetas de producto ya tienen **foto real** en vez del
+  marcador punteado: `Imagenes/producto-<data-producto-id>.jpg` (84 KB en
+  total, cuadradas 240×240). Son de **stock libre (Unsplash/Pexels) y
+  provisionales**: se reemplazan por las fotos reales del negocio
+  manteniendo el mismo nombre de archivo, sin tocar el HTML. El hero
+  ("Foto de portada") sigue con su marcador. Salvedad: no existen fotos de
+  **alas crudas** con licencia libre (todo lo indexado es pollo frito), así
+  que `producto-pollo-alas.jpg` es la aproximación menos fiel y conviene
+  cambiarla por una foto propia.

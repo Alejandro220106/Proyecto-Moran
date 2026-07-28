@@ -50,11 +50,25 @@
         <div class="footer-seccion footer-redes">
             <h3>SÍGANOS</h3>
 
+            <!--
+                Instagram es la ÚNICA red social real del negocio; antes se
+                anunciaban también LinkedIn, Facebook y YouTube con enlaces
+                muertos ("#") y se quitaron por eso. El ícono va como SVG en
+                línea (mismo criterio que login.html: sin librería de íconos
+                externa). Al ser un enlace externo se abre en otra pestaña,
+                con rel="noopener" por seguridad.
+            -->
             <div class="redes-iconos">
-                <a href="#">Instagram</a>
-                <a href="#">LinkedIn</a>
-                <a href="#">Facebook</a>
-                <a href="#">YouTube</a>
+                <a href="https://www.instagram.com/lamoran837/"
+                   target="_blank" rel="noopener noreferrer"
+                   aria-label="Instagram de La Morán (se abre en otra pestaña)">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                        <rect x="4" y="4" width="16" height="16" rx="4.5"/>
+                        <circle cx="12" cy="12" r="4"/>
+                        <circle cx="16.6" cy="7.4" r="0.9" fill="currentColor" stroke="none"/>
+                    </svg>
+                    Instagram
+                </a>
             </div>
         </div>
 
