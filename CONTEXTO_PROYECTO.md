@@ -470,3 +470,17 @@ administración.
   **alas crudas** con licencia libre (todo lo indexado es pollo frito), así
   que `producto-pollo-alas.jpg` es la aproximación menos fiel y conviene
   cambiarla por una foto propia.
+- **2026-07-28 (3)** (rama `Alejandro`): tres arreglos visuales.
+  1. **Logo cortado**: medía 160px con `top:-35px`, así que terminaba 53px
+     por debajo del header (157px = 85 de paja + 72 de barra blanca) y esa
+     parte quedaba tapada por el contenido. Ahora es 130px con `top:-63px`
+     (va de 22px a 152px, cabe completo) y `.header` lleva
+     `position:relative` + `z-index:5`.
+  2. **Portada del hero**: se reemplazó el marcador punteado por
+     `portada-productos.jpg` (1600×460, 64 KB). Se eliminó la regla
+     `.marcador-foto` de `productos-listado.css`, que quedó sin uso
+     (`catalogo.html` tiene la suya propia en `catalogo.css`).
+  3. **Contraste de botones inertes**: Bootstrap le baja la opacidad a 0.65
+     a todo botón `:disabled`, y sobre el fondo oscuro el texto
+     "Próximamente" quedaba casi ilegible. Se fija `opacity:1` y el par
+     #6b6b6b/#ffffff, que da ~5.3:1 (WCAG AA) sin perder el aspecto apagado.

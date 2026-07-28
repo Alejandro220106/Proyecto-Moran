@@ -28,10 +28,10 @@
   precio será una variable que gestione el administrador, y sin cantidad,
   porque no hay stock que ofrecer. Su foto va atenuada (.imagen-atenuada).
 
-  Las fotos de producto son de stock libre y provisionales: se reemplazan
-  por las fotos reales del negocio manteniendo el mismo nombre de archivo
-  (producto-<data-producto-id>.jpg), sin tocar este HTML. El hero todavía
-  conserva su marcador, a la espera de una foto de portada.
+  Las fotos (portada y productos) son de stock libre y provisionales: se
+  reemplazan por las fotos reales del negocio manteniendo el mismo nombre de
+  archivo -portada-productos.jpg y producto-<data-producto-id>.jpg-, sin
+  tocar este HTML.
 
   Ganchos para el JavaScript que todavía no se agrega (solo donde hay un
   caso de uso real, no en todo lo que se pueda tocar):
@@ -78,7 +78,7 @@
         <!-- Hero: foto de portada + banda verde con el lema de calidad. -->
         <section class="hero-productos">
             <div class="imagen-hero">
-                <span class="marcador-foto">Foto de portada</span>
+                <img src="../Recursos/Imagenes/portada-productos.jpg" alt="Canasta con huevos cafés frescos">
             </div>
             <div class="banda-calidad">PRODUCTOS FRESCOS DE ALTA CALIDAD</div>
         </section>
