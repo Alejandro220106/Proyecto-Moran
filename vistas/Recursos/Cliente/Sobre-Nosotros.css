@@ -1,0 +1,210 @@
+/*
+  Estilos de "Sobre nosotros" (vistas/Paginas/Cliente/Sobre-Nosotros.html).
+
+  Convención del proyecto: clases de Bootstrap en inglés, clases propias en
+  español. Ver la skill moran-frontend y CONTEXTO_PROYECTO.md.
+
+  Misma familia visual que Contacto.css / registro.css: fondo oscuro,
+  tarjeta contenedora y acento ámbar de la marca. La diferencia es que esta
+  pantalla es de lectura (texto + tarjetas), no un formulario.
+*/
+
+:root {
+  --fondo-sobre: #121212;
+  --panel-sobre: #1b1b1b;
+  --tarjeta-sobre: #232323;
+  --borde-sobre: rgba(255, 255, 255, 0.08);
+  --texto-suave: #d8d2cc;
+  --ambar-boton: #d99a4e;
+  --ambar-boton-hover: #c4863a;
+}
+
+/* Lienzo de la página, entre header y footer compartidos. */
+.pagina-sobre {
+  background-color: var(--fondo-sobre);
+  min-height: 75vh;
+  display: flex;
+  justify-content: center;
+  padding: 70px 20px;
+}
+
+/* Tarjeta contenedora del contenido. */
+.contenedor-sobre {
+  width: 100%;
+  max-width: 1000px;
+  background-color: var(--panel-sobre);
+  border: 1px solid var(--borde-sobre);
+  border-radius: 14px;
+  padding: 45px;
+}
+
+.titulo-sobre {
+  color: #ffffff;
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+
+/* Eslogan de la marca: serif e itálica, igual que en el login. */
+.eslogan-sobre {
+  font-family: Georgia, "Times New Roman", serif;
+  font-style: italic;
+  color: var(--ambar-boton);
+  text-align: center;
+  font-size: 1.15rem;
+  margin-bottom: 32px;
+}
+
+/* Texto corrido: ancho limitado para que la lectura no se haga larga. */
+.texto-sobre {
+  color: var(--texto-suave);
+  line-height: 1.7;
+  max-width: 68ch;
+  margin: 0 auto 40px;
+  text-align: center;
+}
+
+.texto-sobre strong {
+  color: #ffffff;
+}
+
+.subtitulo-sobre {
+  color: #ffffff;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+/* ---- Tarjetas de "qué ofrecemos" ---- */
+.rejilla-sobre {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin-bottom: 45px;
+}
+
+.tarjeta-sobre {
+  background-color: var(--tarjeta-sobre);
+  border: 1px solid var(--borde-sobre);
+  border-radius: 12px;
+  overflow: hidden; /* recorta la foto a las esquinas redondeadas */
+}
+
+.tarjeta-sobre img {
+  width: 100%;
+  height: 170px;
+  object-fit: cover;
+  display: block;
+}
+
+.cuerpo-tarjeta {
+  padding: 18px 20px 22px;
+}
+
+.cuerpo-tarjeta h3 {
+  color: var(--ambar-boton);
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.cuerpo-tarjeta p {
+  color: var(--texto-suave);
+  font-size: 0.92rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ---- Datos de contacto ---- */
+.datos-sobre {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto 45px;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.datos-sobre li {
+  color: var(--texto-suave);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--borde-sobre);
+}
+
+/* Etiqueta del dato (Ubicación, Correo...), en ámbar y ancho fijo para que
+   los valores queden alineados en columna. */
+.etiqueta-dato {
+  color: var(--ambar-boton);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  min-width: 90px;
+}
+
+.datos-sobre a {
+  color: var(--texto-suave);
+  text-decoration: none;
+}
+
+.datos-sobre a:hover {
+  color: var(--ambar-boton);
+  text-decoration: underline;
+}
+
+/* ---- Botones de cierre ---- */
+.acciones-sobre {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+/* Botón ámbar de la marca, sobre la base .btn de Bootstrap. */
+.boton-sobre {
+  background-color: var(--ambar-boton);
+  color: #ffffff;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 12px 30px;
+  border: none;
+}
+
+.boton-sobre:hover {
+  background-color: var(--ambar-boton-hover);
+  color: #ffffff;
+}
+
+/* Variante secundaria: solo contorno, para que no compitan entre sí. */
+.boton-sobre-secundario {
+  background-color: transparent;
+  border: 1px solid var(--ambar-boton);
+  color: var(--ambar-boton);
+}
+
+.boton-sobre-secundario:hover {
+  background-color: var(--ambar-boton);
+  color: #ffffff;
+}
+
+@media (max-width: 700px) {
+  .contenedor-sobre {
+    padding: 30px 20px;
+  }
+
+  .rejilla-sobre {
+    grid-template-columns: 1fr;
+  }
+
+  .boton-sobre {
+    width: 100%;
+  }
+}

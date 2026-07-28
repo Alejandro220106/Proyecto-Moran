@@ -1,0 +1,182 @@
+/*
+  Estilos de recuperar contraseña (vistas/Paginas/Cliente/Contraseña-login.html).
+
+  Convención del proyecto: clases de Bootstrap en inglés, clases propias en
+  español. Ver la skill moran-frontend y CONTEXTO_PROYECTO.md.
+
+  Misma familia visual que registro.css (tarjeta oscura, campos con borde
+  sin relleno, botón ámbar de la marca) porque son pantallas hermanas del
+  mismo flujo de cuenta -acceso, registro y recuperación-.
+*/
+
+:root {
+  --fondo-recuperacion: #121212;
+  --panel-recuperacion: #1b1b1b;
+  --borde-campo: #4a4a4a;
+  --texto-secundario: #b7b7b7;
+  --ambar-boton: #d99a4e;
+  --ambar-boton-hover: #c4863a;
+}
+
+/* Lienzo de la página, entre header y footer compartidos. */
+.pagina-recuperacion {
+  background-color: var(--fondo-recuperacion);
+  min-height: 75vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 70px 20px;
+}
+
+/* Tarjeta contenedora: panel de envío (angosto) + panel de código (ancho). */
+.contenedor-recuperacion {
+  width: 100%;
+  max-width: 1050px;
+  background-color: var(--panel-recuperacion);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr 1.6fr;
+}
+
+.panel {
+  padding: 40px;
+}
+
+.panel-envio {
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.panel h2 {
+  color: #ffffff;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  margin-bottom: 28px;
+  text-align: center;
+}
+
+.grupo-campo {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.grupo-campo label {
+  color: #ffffff;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+/* Campos con borde claro y sin relleno, igual que registro.css. */
+.campo-recuperacion {
+  background-color: transparent;
+  border: 1px solid var(--borde-campo);
+  color: #ffffff;
+}
+
+.campo-recuperacion::placeholder {
+  color: #7d7d7d;
+}
+
+.campo-recuperacion:focus {
+  background-color: rgba(255, 255, 255, 0.04);
+  border-color: var(--ambar-boton);
+  color: #ffffff;
+  box-shadow: none;
+}
+
+/* Botón ámbar de la marca (mismo tono que login/detalle-pedido/registro),
+   sobre la base .btn de Bootstrap; el ancho completo lo da w-100 en el HTML. */
+.boton-recuperacion {
+  background-color: var(--ambar-boton);
+  color: #ffffff;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 12px 0;
+  border: none;
+  margin-top: 6px;
+}
+
+.boton-recuperacion:hover {
+  background-color: var(--ambar-boton-hover);
+  color: #ffffff;
+}
+
+/* Casillas del código de un solo dígito. */
+.codigo-contenedor {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.codigo {
+  width: 60px;
+  height: 70px;
+  background-color: transparent;
+  border: 1px solid var(--borde-campo);
+  border-radius: 6px;
+  color: #ffffff;
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  outline: none;
+}
+
+.codigo:focus {
+  background-color: rgba(255, 255, 255, 0.04);
+  border-color: var(--ambar-boton);
+}
+
+/* Enlace de regreso al login, debajo de la tarjeta. */
+.enlace-volver-login {
+  color: var(--texto-secundario);
+  font-size: 0.85rem;
+  text-decoration: underline;
+}
+
+.enlace-volver-login:hover {
+  color: #ffffff;
+}
+
+/* En pantallas medianas los paneles se apilan: primero enviar código,
+   luego digitar código + nueva contraseña. */
+@media (max-width: 900px) {
+  .contenedor-recuperacion {
+    grid-template-columns: 1fr;
+  }
+
+  .panel-envio {
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .codigo-contenedor {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+}
+
+/* En pantallas angostas se reduce el padding y el tamaño de las casillas
+   del código para que las 8 quepan sin desbordar. */
+@media (max-width: 600px) {
+  .panel {
+    padding: 30px 20px;
+  }
+
+  .codigo {
+    width: 45px;
+    height: 55px;
+    font-size: 1.4rem;
+  }
+
+  .panel h2 {
+    font-size: 1.25rem;
+  }
+}

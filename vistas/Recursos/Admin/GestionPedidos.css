@@ -1,0 +1,374 @@
+/*
+  Estilos de gestión de pedidos (vistas/Paginas/Admin/GestionPedidos-admin.html).
+
+  Convención del proyecto: clases de Bootstrap en inglés, clases propias en
+  español. Ver la skill moran-frontend y CONTEXTO_PROYECTO.md.
+
+  Misma familia visual que Home-admin.css/Inventario.css (fondo oscuro,
+  tarjetas, ámbar de la marca), con su propio layout de resumen + filtros +
+  tabla + panel de detalle.
+
+  Los colores vienen de tokens-admin.css (enlazado antes que esta hoja); acá
+  solo se consumen con var().
+*/
+
+
+.pagina-pedidos {
+  background-color: var(--fondo-admin);
+  min-height: 100vh;
+  padding: 45px 25px;
+  color: #ffffff;
+}
+
+/* Enlace para volver al panel (Home-admin). Mismo estilo que el .enlace-volver
+   definido en admin.css; se repite aquí porque esta página no carga admin.css. */
+.enlace-volver {
+  display: inline-block;
+  color: var(--ambar-boton);
+  text-decoration: none;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.enlace-volver:hover {
+  color: var(--ambar-boton-hover);
+  text-decoration: underline;
+}
+
+/* ---- Encabezado ---- */
+.encabezado-pedidos {
+  text-align: center;
+  margin-bottom: 35px;
+}
+
+.encabezado-pedidos h1 {
+  font-size: 2.4rem;
+  margin-bottom: 10px;
+}
+
+.encabezado-pedidos p {
+  color: #bdbdbd;
+}
+
+/* ---- Resumen ---- */
+.resumen-pedidos {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-bottom: 35px;
+}
+
+.tarjeta-resumen {
+  background-color: var(--panel-admin);
+  border: 1px solid var(--borde-admin);
+  border-radius: var(--radio-panel);
+  padding: 22px;
+  text-align: center;
+}
+
+/* Era un <h3> y saltaba de h1 a h3 sin h2 de por medio, que rompe la jerarquía
+   para un lector de pantalla. Son cifras destacadas, no títulos de sección, así
+   que van en <span> — igual que las tarjetas de resumen de Home-admin. */
+.tarjeta-resumen .cifra-resumen {
+  display: block;
+  color: var(--ambar-boton);
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.tarjeta-resumen span {
+  color: #d0d0d0;
+}
+
+/* ---- Filtros ---- */
+.panel-filtros {
+  background-color: var(--panel-admin);
+  border: 1px solid var(--borde-admin);
+  border-radius: var(--radio-panel);
+  padding: 25px;
+  margin-bottom: 30px;
+}
+
+.formulario-filtros {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr auto;
+  gap: 20px;
+  align-items: end;
+}
+
+.grupo-campo {
+  display: flex;
+  flex-direction: column;
+}
+
+.grupo-campo label {
+  margin-bottom: 8px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+}
+
+.campo-filtro {
+  background-color: var(--campo-fondo);
+  color: #ffffff;
+  border: 1px solid var(--campo-borde);
+}
+
+/* Bootstrap pinta el placeholder con un gris pensado para fondo claro
+   (rgba(33,37,41,.75)); sobre el campo oscuro quedaba en 1.06:1, invisible.
+   Mismo valor que .campo-admin en admin.css: 5.10:1 sobre el fondo del campo. */
+.campo-filtro::placeholder {
+  color: #9a9a9a;
+}
+
+.campo-filtro:focus {
+  border-color: var(--ambar-boton);
+  background-color: var(--campo-fondo);
+  color: #ffffff;
+  box-shadow: none;
+}
+
+/* Botón ámbar de la marca, sobre la base .btn de Bootstrap (mismo tono que
+   login/detalle-pedido/registro/Home-admin/Inventario). */
+.boton-filtro {
+  background-color: var(--ambar-boton);
+  color: var(--ambar-texto);
+  border: none;
+  border-radius: var(--radio-control);
+  padding: 12px 28px;
+  font-weight: 700;
+}
+
+.boton-filtro:hover {
+  background-color: var(--ambar-boton-hover);
+  color: var(--ambar-texto);
+}
+
+/* ---- Acciones ---- */
+.barra-acciones {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 25px;
+  flex-wrap: wrap;
+}
+
+.boton-accion-pedidos {
+  background-color: var(--ambar-boton);
+  color: var(--ambar-texto);
+  border: none;
+  border-radius: var(--radio-control);
+  padding: 12px 22px;
+  font-weight: 700;
+}
+
+.boton-accion-pedidos:hover {
+  background-color: var(--ambar-boton-hover);
+  color: var(--ambar-texto);
+}
+
+/* ---- Tabla ---- */
+.tabla-pedidos {
+  background-color: var(--panel-admin);
+  border: 1px solid var(--borde-admin);
+  border-radius: var(--radio-panel);
+  padding: 20px;
+  overflow-x: auto;
+}
+
+.tabla-pedidos table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tabla-pedidos thead {
+  background-color: #2d2d2d;
+}
+
+.tabla-pedidos th {
+  padding: 14px;
+  text-align: left;
+}
+
+.tabla-pedidos td {
+  padding: 14px;
+  border-top: 1px solid #3f3f3f;
+}
+
+.tabla-pedidos tbody tr:hover {
+  background-color: #292929;
+}
+
+/* ---- Estados (badges) ---- */
+.estado {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: var(--radio-control);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.pendiente {
+  background-color: #ffcc00;
+  color: #111111;
+}
+
+/* Azul oscurecido respecto al #3d8bfd original: con blanco encima ese tono
+   daba 3.33:1 y el chip va en negrita chica, que exige 4.5:1. Este da 6.04:1. */
+.preparacion {
+  background-color: #1a5fc4;
+  color: #ffffff;
+}
+
+.entregado {
+  background-color: #198754;
+  color: #ffffff;
+}
+
+.cancelado {
+  background-color: #dc3545;
+  color: #ffffff;
+}
+
+/* ---- Botones de tabla ---- */
+.boton-tabla {
+  background-color: var(--ambar-boton);
+  color: var(--ambar-texto);
+  border: none;
+  border-radius: var(--radio-control);
+  padding: 8px 15px;
+  margin-right: 5px;
+}
+
+.boton-tabla:hover {
+  background-color: var(--ambar-boton-hover);
+  color: var(--ambar-texto);
+}
+
+/* ---- Panel de detalle (modal) ---- */
+.panel-detalle-pedido {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+  z-index: 999;
+}
+
+.oculto {
+  display: none;
+}
+
+.detalle-encabezado,
+.detalle-cliente,
+.detalle-productos,
+.detalle-estado,
+.detalle-total,
+.detalle-botones {
+  width: 100%;
+  max-width: 850px;
+  background-color: var(--panel-admin);
+  border-left: 4px solid var(--ambar-boton);
+  padding: 20px;
+  margin-bottom: 12px;
+}
+
+.detalle-encabezado {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.boton-cerrar-detalle {
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+.detalle-productos table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.detalle-productos th,
+.detalle-productos td {
+  padding: 10px;
+  border-bottom: 1px solid #444444;
+}
+
+.detalle-estado .form-select {
+  margin-top: 10px;
+}
+
+.detalle-botones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+}
+
+.boton-detalle-accion {
+  background-color: var(--ambar-boton);
+  color: var(--ambar-texto);
+  border: none;
+  border-radius: var(--radio-control);
+  padding: 12px 22px;
+}
+
+.boton-detalle-accion:hover {
+  background-color: var(--ambar-boton-hover);
+  color: var(--ambar-texto);
+}
+
+/* ---- Sin movimiento ---- */
+/* Bootstrap le aplica su propia transición a .btn, .form-control y .form-select
+   (~0.15s en color, borde y sombra). Como el panel se quiere estático, no basta
+   con no declarar transiciones propias: hay que anular las del framework.
+   Va acotado a .pagina-pedidos para no afectar las vistas de cliente, que sí
+   conservan sus efectos. */
+.pagina-pedidos .btn,
+.pagina-pedidos .form-control,
+.pagina-pedidos .form-select {
+  transition: none;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 1100px) {
+  .resumen-pedidos {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .formulario-filtros {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  .pagina-pedidos {
+    padding: 20px;
+  }
+
+  .resumen-pedidos {
+    grid-template-columns: 1fr;
+  }
+
+  .formulario-filtros {
+    grid-template-columns: 1fr;
+  }
+
+  .detalle-botones {
+    flex-direction: column;
+  }
+
+  .barra-acciones {
+    flex-direction: column;
+  }
+
+  .barra-acciones .boton-accion-pedidos {
+    width: 100%;
+  }
+}

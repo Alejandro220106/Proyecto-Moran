@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<!--
+  Facturas, módulo del panel de administración (vista de personal, no de
+  cliente). Se llega desde la tarjeta "Facturas" de Home-admin.html.
+
+  Usa header/footer compartidos (#encabezado / #pie-pagina + plantillas.js)
+  y el sistema de diseño admin compartido (../../Recursos/Admin/admin.css).
+
+  Las filas de las tablas son de ejemplo (marcadores); JavaScript las
+  llenará desde la base de datos. El total no se calcula todavía (el botón
+  "Calcular" queda listo para el JS). Los formularios no tienen "action".
+  Solo frontend por ahora.
+-->
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facturas | La Morán</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../Recursos/estilos.css">
+    <!-- Tokens de color del panel, compartidos por las 8 pantallas admin. -->
+    <link rel="stylesheet" href="../../Recursos/Admin/tokens-admin.css">
+    <link rel="stylesheet" href="../../Recursos/Admin/admin.css">
+</head>
+<body>
+
+    <!-- Header compartido. -->
+    <div id="encabezado"></div>
+
+    <main class="pagina-admin">
+
+        <!-- Vuelve al tablero principal del panel. -->
+        <a href="Home-admin.html" class="enlace-volver">← Volver al panel</a>
+
+        <section class="encabezado-modulo">
+            <h1>Facturas</h1>
+            <p>Consulta, búsqueda y emisión de facturas de Avícola La Morán.</p>
+        </section>
+
+        <!-- Listado de facturas -->
+        <section class="panel-admin">
+            <div class="titulo-panel">
+                <h2>Ver facturas</h2>
+                <button class="btn boton-ambar" id="boton-actualizar-facturas">Actualizar</button>
+            </div>
+
+            <div class="tabla-scroll">
+                <table class="tabla-admin" id="tabla-facturas">
+                    <thead>
+                        <tr>
+                            <th>Folio</th>
+                            <th>Fecha</th>
+                            <th>Cliente</th>
+                            <th>Total</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Fila de ejemplo; JavaScript la reemplazará con datos reales. -->
+                        <tr>
+                            <td>0000</td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>₡0</td>
+                            <td><span class="estado pagada">Pagada</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Búsqueda de facturas -->
+        <section class="panel-admin">
+            <div class="titulo-panel">
+                <h2>Búsqueda de facturas</h2>
+            </div>
+
+            <form id="formulario-busqueda-facturas">
+                <div class="rejilla-campos">
+                    <div class="grupo-campo">
+                        <label for="buscar-folio">N.º de folio</label>
+                        <input type="text" id="buscar-folio" name="buscar_folio" class="form-control campo-admin">
+                    </div>
+                    <div class="grupo-campo">
+                        <label for="buscar-cliente-factura">Cliente</label>
+                        <input type="search" id="buscar-cliente-factura" name="buscar_cliente" class="form-control campo-admin">
+                    </div>
+                </div>
+                <div class="fila-botones">
+                    <button type="submit" class="btn boton-ambar" id="boton-buscar-factura">Buscar</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Crear nueva factura -->
+        <section class="panel-admin">
+            <div class="titulo-panel">
+                <h2>Crear nueva factura</h2>
+            </div>
+
+            <form id="formulario-nueva-factura">
+                <div class="rejilla-campos">
+                    <div class="grupo-campo">
+                        <label for="factura-cliente">Cliente</label>
+                        <input type="text" id="factura-cliente" name="factura_cliente" class="form-control campo-admin">
+                    </div>
+                    <div class="grupo-campo">
+                        <label for="factura-folio">N.º de folio</label>
+                        <input type="text" id="factura-folio" name="factura_folio" class="form-control campo-admin">
+                    </div>
+                    <div class="grupo-campo">
+                        <label for="factura-fecha">Fecha de emisión</label>
+                        <input type="date" id="factura-fecha" name="factura_fecha" class="form-control campo-admin">
+                    </div>
+                    <div class="grupo-campo">
+                        <label for="factura-forma-pago">Forma de pago</label>
+                        <select id="factura-forma-pago" name="factura_forma_pago" class="form-select campo-admin">
+                            <option value="efectivo">Efectivo</option>
+                            <option value="tarjeta">Tarjeta</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Líneas de producto de la factura -->
+                <div class="tabla-scroll mt-4">
+                    <table class="tabla-admin" id="tabla-lineas-factura">
+                        <thead>
+                            <tr>
+                                <th>Producto</th>
+                                <th>Cantidad</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Fila de ejemplo; JavaScript agregará/quitará líneas. -->
+                            <tr>
+                                <td><input type="text" class="form-control campo-admin" aria-label="Producto"></td>
+                                <td><input type="text" class="form-control campo-admin" inputmode="numeric" aria-label="Cantidad"></td>
+                                <td><input type="text" class="form-control campo-admin" placeholder="₡0" aria-label="Total de la línea"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="fila-botones">
+                    <button type="button" class="btn boton-ambar" id="boton-agregar-linea">Agregar línea</button>
+                </div>
+
+                <!-- Insumos asociados -->
+                <div class="tabla-scroll mt-4">
+                    <table class="tabla-admin" id="tabla-insumos-factura">
+                        <thead>
+                            <tr>
+                                <th>Insumo asociado</th>
+                                <th>Cantidad</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>—</td><td>0</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Totales -->
+                <div class="rejilla-campos mt-4">
+                    <div class="grupo-campo">
+                        <label for="factura-subtotal">Subtotal</label>
+                        <input type="text" id="factura-subtotal" name="factura_subtotal" class="form-control campo-admin" placeholder="₡0" readonly>
+                    </div>
+                    <div class="grupo-campo">
+                        <label for="factura-total">Total</label>
+                        <input type="text" id="factura-total" name="factura_total" class="form-control campo-admin" placeholder="₡0" readonly>
+                    </div>
+                </div>
+
+                <div class="fila-botones">
+                    <button type="button" class="btn boton-ambar" id="boton-calcular-factura">Calcular</button>
+                    <button type="submit" class="btn boton-exito" id="boton-guardar-factura">Guardar</button>
+                </div>
+            </form>
+        </section>
+
+    </main>
+
+    <!-- Footer compartido. -->
+    <div id="pie-pagina"></div>
+
+    <script src="../../Recursos/plantillas.js" defer></script>
+</body>
+</html>

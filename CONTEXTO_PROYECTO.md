@@ -37,10 +37,11 @@ distribución de huevo y pollo que se presenta bajo la marca **"Eggs Unlimited"*
    `btn`, `w-100`, etc.). Cualquier clase que nosotros definamos va **en
    español**, siguiendo el estilo que ya usaba `estilos.css` (`.header`,
    `.menu-navegacion`, `.footer-principal`...). Ejemplo canónico: las clases
-   de `vistas/Recursos/login.css` (`.tarjeta-login`, `.panel-marca`,
+   de `vistas/Recursos/Cliente/login.css` (`.tarjeta-login`, `.panel-marca`,
    `.boton-ingresar`, etc.).
 2. **Un CSS por página**: cada vista nueva trae su propio archivo de estilos
-   en `vistas/Recursos/` (p. ej. `login.html` → `login.css`). Excepción:
+   en `vistas/Recursos/<ámbito>/` — `Admin/` o `Cliente/` según dónde viva la
+   página (p. ej. `Cliente/login.html` → `Cliente/login.css`). Excepción:
    cuando dos páginas tienen el mismo diseño comparten una hoja (p. ej. los
    listados de pollo y huevos usan `productos-listado.css`).
 3. **Documentación completa**: todo el HTML y CSS de este proyecto debe
@@ -52,16 +53,34 @@ distribución de huevo y pollo que se presenta bajo la marca **"Eggs Unlimited"*
 
 ```
 vistas/
-  index.html          <- redirección de entrada a Paginas/index.html
-  Paginas/            <- TODAS las páginas HTML del sitio
+  index.html          <- redirección de entrada a Paginas/Cliente/index.html
+  Paginas/
+    Admin/            <- las 8 pantallas del panel de administración
+    Cliente/          <- las 11 pantallas del sitio público
   Componentes/        <- encabezado.html, pie-pagina.html (plantillas compartidas)
-  Recursos/           <- CSS, plantillas.js, e Imagenes/
+  Recursos/
+    Admin/            <- CSS del panel (admin, tokens-admin, Home-admin,
+                         Inventario, GestionPedidos)
+    Cliente/          <- CSS del sitio público (uno por página)
+    Imagenes/         <- compartidas por ambos ámbitos
+    estilos.css       <- header/footer compartidos: lo usan los dos ámbitos
+    plantillas.js     <- idem
 ```
 
-Regla de rutas: como todas las páginas viven en `Paginas/` (un nivel), se
-referencian los recursos con `../` — `../Recursos/...` y (en `plantillas.js`
-y en el logo de los componentes) `../Componentes/...`. Si algún día se
-anidan páginas a otra profundidad, hay que ajustar ese `../`.
+Regla de rutas: **toda página vive a dos niveles** (`Paginas/<ámbito>/`), así
+que referencia los recursos con `../../` — `../../Recursos/Admin/...`,
+`../../Recursos/Cliente/...`, `../../Recursos/estilos.css`. Esa profundidad
+uniforme es lo que hace que funcionen las plantillas compartidas: si alguna
+página se anidara a otra profundidad, `plantillas.js` y los enlaces del
+header/footer se romperían sólo en esa página.
+
+Consecuencia menos obvia de separar los ámbitos: **el header y el footer
+compartidos enlazan a páginas de cliente desde ambos ámbitos**, así que sus
+enlaces van con `../Cliente/...` (no con el nombre de archivo pelado). Desde
+`Paginas/Cliente/` eso resuelve a la carpeta misma y desde `Paginas/Admin/`
+cruza al otro ámbito; una sola forma sirve para los dos. Lo mismo con el logo,
+que va con `../../Recursos/Imagenes/...` porque se resuelve contra la página
+que inyecta el fragmento, no contra `Componentes/`.
 
 ## Header y footer compartidos
 
@@ -76,14 +95,14 @@ el header/footer entre páginas. En su lugar:
   `<div id="pie-pagina"></div>`.
 - Toda página nueva de la vista normal de usuario cliente (no standalone
   como el login) debe incluir esos dos `<div>` en el lugar correspondiente
-  y `<script src="../Recursos/plantillas.js" defer></script>` antes de
+  y `<script src="../../Recursos/plantillas.js" defer></script>` antes de
   `</body>`.
 - **Requisito importante**: `fetch()` no funciona abriendo el HTML directo
   con doble clic (`file://`) — los navegadores lo bloquean por CORS. Hay
   que servir `vistas/` con un servidor local, por ejemplo:
   `php -S localhost:8000 -t vistas` o `python3 -m http.server` parado
-  dentro de `vistas/`. La raíz (`/`) redirige a `Paginas/index.html`.
-- `vistas/Paginas/index.html` es el ejemplo de referencia de una página que
+  dentro de `vistas/`. La raíz (`/`) redirige a `Paginas/Cliente/index.html`.
+- `vistas/Paginas/Cliente/index.html` es el ejemplo de referencia de una página que
   usa este mecanismo (antes era `index.php`).
 
 Las tres antiguas `Head.php`, `Header.php` y `Footer.php` fueron borradas.
@@ -592,3 +611,36 @@ administración.
   comparación contra el diseño original. Los `--radio-*`, el `border-left`
   ámbar de los títulos de sección y los íconos SVG de los módulos son los
   puntos donde más conviene contrastar contra el Figma.
+- **2026-07-28 (7)** (rama `Alejandro`): **separación de ámbitos admin/cliente**.
+  Las páginas y el CSS quedaron divididos en `Paginas/Admin/` +
+  `Paginas/Cliente/` y `Recursos/Admin/` + `Recursos/Cliente/`. `estilos.css`,
+  `plantillas.js` e `Imagenes/` siguen compartidos en la raíz de `Recursos/`,
+  porque los usan los dos ámbitos. 35 archivos movidos con `git mv` (el
+  historial se conserva como renombres, no como borrar+crear).
+
+  Lo que hizo falta corregir, y por qué:
+
+  1. **Profundidad**: las páginas pasaron de un nivel a dos, así que todo
+     `../Recursos/...` pasó a `../../Recursos/<ámbito>/...` en las 19 páginas.
+  2. **`plantillas.js`**: hace `fetch()` con rutas relativas a **la página que
+     lo carga**, no a sí mismo. Aunque el archivo no se movió, sus dos rutas
+     de fragmento tuvieron que pasar a `../../Componentes/...`.
+  3. **Enlaces del header/footer compartidos**: es el punto que menos se ve
+     venir. Los fragmentos se inyectan en páginas de **ambos** ámbitos, así
+     que sus 6 enlaces (que apuntan todos a páginas de cliente) no podían
+     seguir siendo nombres de archivo pelados: desde `Paginas/Admin/` habrían
+     buscado `Paginas/Admin/login.html`. Ahora van con `../Cliente/...`, que
+     resuelve igual desde los dos ámbitos. El logo de los fragmentos tuvo el
+     mismo problema y pasó a `../../Recursos/Imagenes/...`.
+  4. **Fondos**: las 5 hojas de cliente con `url("Imagenes/...")` bajaron un
+     nivel respecto a `Recursos/Imagenes/`, así que pasaron a `url("../Imagenes/...")`.
+  5. **Cruce entre ámbitos**: el único que existe es el enlace del login al
+     panel, que ahora va con `../Admin/Home-admin.html`.
+  6. La redirección de `vistas/index.html` apunta a `Paginas/Cliente/index.html`,
+     y los comentarios de cabecera de las 11 hojas que citaban la ruta de su
+     página se actualizaron.
+
+  La regla nueva a mantener: **todas las páginas viven a la misma
+  profundidad** (`Paginas/<ámbito>/`). Las plantillas compartidas dependen de
+  eso; una página anidada a otra profundidad rompería el header/footer sólo en
+  esa página.

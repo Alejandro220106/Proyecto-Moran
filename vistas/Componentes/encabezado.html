@@ -1,7 +1,7 @@
 <!--
   Plantilla compartida del header, para todas las páginas de la vista normal
   de usuario cliente (no se usa en login.html, que es una pantalla standalone
-  sin nav). Se carga vía fetch() desde "../Recursos/plantillas.js" -esto es
+  sin nav). Se carga vía fetch() desde "../../Recursos/plantillas.js" -esto es
   HTML plano, editable directamente, sin lógica embebida-.
 
   Nota: este mismo fragmento antes vivía en "Header.php". Se movió aquí
@@ -18,21 +18,22 @@
 
         <!-- Logo de la Moran -->
         <div class="logo-contenedor">
-            <img src="../Recursos/Imagenes/logo_la_moran_limpio_transparente.png" alt="Logo La Morán" class="logo">
+            <img src="../../Recursos/Imagenes/logo_la_moran_limpio_transparente.png" alt="Logo La Morán" class="logo">
         </div>
 
         <!-- Menú de navegación -->
-        <!-- Enlaces relativos a Paginas/ (todas las vistas que usan este
+        <!-- Enlaces con ../Cliente/ porque este encabezado se inyecta tanto
+             en Paginas/Cliente/ como en Paginas/Admin/ (todas las vistas que usan este
              header viven ahí, así que apuntan a páginas hermanas).
              "CARRITO DE COMPRAS" apunta a pago.html, que hoy muestra el
              resumen del pedido (lo más cercano a un carrito). -->
         <nav class="menu-navegacion">
-            <a href="productos.html">NUESTROS<br>PRODUCTOS</a>
-            <a href="Sobre-Nosotros.html">SOBRE<br>NOSOTROS</a>
-            <a href="Contacto.html">CONTACTO</a>
-            <a href="pago.html">CARRITO DE <br>COMPRAS</a>
-            <a href="Actualizar-Datos.html">ACTUALIZAR<br>DATOS</a>
-            <a href="login.html">CERRAR<br>SESIÓN</a>
+            <a href="../Cliente/productos.html">NUESTROS<br>PRODUCTOS</a>
+            <a href="../Cliente/Sobre-Nosotros.html">SOBRE<br>NOSOTROS</a>
+            <a href="../Cliente/Contacto.html">CONTACTO</a>
+            <a href="../Cliente/pago.html">CARRITO DE <br>COMPRAS</a>
+            <a href="../Cliente/Actualizar-Datos.html">ACTUALIZAR<br>DATOS</a>
+            <a href="../Cliente/login.html">CERRAR<br>SESIÓN</a>
         </nav>
     </div>
 </header>
