@@ -61,7 +61,7 @@
 .tarjeta-resumen {
   background-color: var(--panel-admin);
   border: 1px solid var(--borde-admin);
-  border-radius: 10px;
+  border-radius: var(--radio-panel);
   padding: 22px;
   text-align: center;
 }
@@ -85,7 +85,7 @@
 .panel-filtros {
   background-color: var(--panel-admin);
   border: 1px solid var(--borde-admin);
-  border-radius: 12px;
+  border-radius: var(--radio-panel);
   padding: 25px;
   margin-bottom: 30px;
 }
@@ -135,10 +135,9 @@
   background-color: var(--ambar-boton);
   color: var(--ambar-texto);
   border: none;
-  border-radius: 6px;
+  border-radius: var(--radio-control);
   padding: 12px 28px;
   font-weight: 700;
-  transition: background-color 0.2s;
 }
 
 .boton-filtro:hover {
@@ -158,10 +157,9 @@
   background-color: var(--ambar-boton);
   color: var(--ambar-texto);
   border: none;
-  border-radius: 6px;
+  border-radius: var(--radio-control);
   padding: 12px 22px;
   font-weight: 700;
-  transition: background-color 0.2s;
 }
 
 .boton-accion-pedidos:hover {
@@ -173,7 +171,7 @@
 .tabla-pedidos {
   background-color: var(--panel-admin);
   border: 1px solid var(--borde-admin);
-  border-radius: 12px;
+  border-radius: var(--radio-panel);
   padding: 20px;
   overflow-x: auto;
 }
@@ -205,7 +203,7 @@
 .estado {
   display: inline-block;
   padding: 6px 12px;
-  border-radius: 20px;
+  border-radius: var(--radio-control);
   font-size: 0.85rem;
   font-weight: 700;
 }
@@ -237,10 +235,9 @@
   background-color: var(--ambar-boton);
   color: var(--ambar-texto);
   border: none;
-  border-radius: 5px;
+  border-radius: var(--radio-control);
   padding: 8px 15px;
   margin-right: 5px;
-  transition: background-color 0.2s;
 }
 
 .boton-tabla:hover {
@@ -318,14 +315,25 @@
   background-color: var(--ambar-boton);
   color: var(--ambar-texto);
   border: none;
-  border-radius: 6px;
+  border-radius: var(--radio-control);
   padding: 12px 22px;
-  transition: background-color 0.2s;
 }
 
 .boton-detalle-accion:hover {
   background-color: var(--ambar-boton-hover);
   color: var(--ambar-texto);
+}
+
+/* ---- Sin movimiento ---- */
+/* Bootstrap le aplica su propia transición a .btn, .form-control y .form-select
+   (~0.15s en color, borde y sombra). Como el panel se quiere estático, no basta
+   con no declarar transiciones propias: hay que anular las del framework.
+   Va acotado a .pagina-pedidos para no afectar las vistas de cliente, que sí
+   conservan sus efectos. */
+.pagina-pedidos .btn,
+.pagina-pedidos .form-control,
+.pagina-pedidos .form-select {
+  transition: none;
 }
 
 /* ---- Responsive ---- */

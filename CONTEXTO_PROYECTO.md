@@ -563,3 +563,32 @@ administración.
   que en este entorno no se puede hacer. Tampoco se tocó que el panel cargue
   el header del cliente (logo, carrito, "Sobre nosotros"), ni el solape entre
   "Buscar pedidos" y "Gestión de pedidos": son decisiones de producto.
+- **2026-07-28 (6)** (rama `Alejandro`): **pase de aplanado del panel admin** —
+  menos animación, más estático.
+
+  Se quitaron las **9 transiciones** declaradas en las cuatro hojas del panel y
+  la **elevación de las tarjetas de módulo** (`transform: translateY(-5px)` +
+  `box-shadow`): en un panel de trabajo, que el contenido se mueva cada vez que
+  el cursor pasa por encima distrae más de lo que ayuda. El hover ahora solo
+  marca el borde en ámbar, instantáneo.
+
+  Detalle que no es obvio: **quitar las transiciones propias no alcanzaba**.
+  Bootstrap le aplica las suyas a `.btn`, `.form-control` y `.form-select`
+  (~0.15s en color, borde y sombra), y el panel usa las tres (46 `.btn`, 39
+  `.form-control`, 9 `.form-select`). Hay un `transition: none` acotado a
+  `.pagina-admin` / `.pagina-inventario` / `.pagina-pedidos`, para no tocar las
+  vistas de cliente, que sí conservan sus efectos.
+
+  **Radios.** Convivían cinco valores sueltos (20px de pastilla en los chips,
+  12px, 10px, 6px y 5px), heredados de ir construyendo pantalla por pantalla.
+  Se reducen a dos variables en `tokens-admin.css`: `--radio-panel: 4px` y
+  `--radio-control: 3px`. Están como variables a propósito: la "redondez" de
+  todo el panel se ajusta desde ahí en una línea.
+
+  **Pendiente y explícito**: la parte de "fiel al Figma" de este pedido **no se
+  pudo verificar** — las capturas del apartado de administración no están
+  disponibles en el entorno de trabajo. Lo aplicado son criterios de
+  minimalismo generales (sin movimiento, radios planos y unificados), no una
+  comparación contra el diseño original. Los `--radio-*`, el `border-left`
+  ámbar de los títulos de sección y los íconos SVG de los módulos son los
+  puntos donde más conviene contrastar contra el Figma.

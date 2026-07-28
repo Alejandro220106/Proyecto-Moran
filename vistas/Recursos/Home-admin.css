@@ -52,26 +52,27 @@
   gap: 25px;
 }
 
-/* .tarjeta-modulo se usa tanto en <button> (módulos sin página todavía)
-   como en <a> (ej. Inventario, que ya es una página real): el reset de
-   decoración/display cubre el caso del enlace sin afectar el botón. */
+/* Las siete tarjetas de módulo son <a> (todos los módulos ya existen como
+   página real); el reset de decoración/display es para eso. */
 .tarjeta-modulo {
   display: block;
   background-color: var(--panel-admin);
   border: 1px solid var(--borde-admin);
-  border-radius: 12px;
+  border-radius: var(--radio-panel);
   padding: 25px;
   text-align: left;
   text-decoration: none;
   cursor: pointer;
   color: #ffffff;
-  transition: 0.3s;
 }
 
+/* El hover solo cambia el borde a ámbar. Antes la tarjeta se levantaba
+   (translateY -5px) y proyectaba una sombra: es el tipo de efecto que en un
+   panel de trabajo distrae más de lo que ayuda, porque el contenido se mueve
+   cada vez que el cursor pasa por encima de una tarjeta. Marcar el borde
+   alcanza para indicar qué está apuntado. */
 .tarjeta-modulo:hover {
-  transform: translateY(-5px);
   border-color: var(--ambar-boton);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
 }
 
 /* Flex para que el ícono quede centrado con la línea del título en vez de
@@ -117,7 +118,7 @@
 
 .tarjeta-resumen {
   background-color: var(--panel-admin);
-  border-radius: 10px;
+  border-radius: var(--radio-panel);
   padding: 25px;
   text-align: center;
 }
@@ -147,10 +148,9 @@
   background-color: var(--ambar-boton);
   color: var(--ambar-texto);
   border: none;
-  border-radius: 6px;
+  border-radius: var(--radio-control);
   padding: 12px 22px;
   font-weight: 700;
-  transition: background-color 0.2s;
 }
 
 .boton-accion-rapida:hover {
@@ -161,7 +161,7 @@
 /* ---- Información del sistema ---- */
 .info-sistema {
   background-color: var(--panel-admin);
-  border-radius: 12px;
+  border-radius: var(--radio-panel);
   padding: 25px;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -175,6 +175,18 @@
 .info-sistema p {
   margin-top: 5px;
   color: #dddddd;
+}
+
+/* ---- Sin movimiento ---- */
+/* Bootstrap le aplica su propia transición a .btn, .form-control y .form-select
+   (~0.15s en color, borde y sombra). Como el panel se quiere estático, no basta
+   con no declarar transiciones propias: hay que anular las del framework.
+   Va acotado a .pagina-admin para no afectar las vistas de cliente, que sí
+   conservan sus efectos. */
+.pagina-admin .btn,
+.pagina-admin .form-control,
+.pagina-admin .form-select {
+  transition: none;
 }
 
 @media (max-width: 768px) {

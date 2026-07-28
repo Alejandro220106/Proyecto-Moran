@@ -33,4 +33,13 @@
   --rojo-peligro: #dc3545;    /* acción destructiva (eliminar) */
   --rojo-peligro-hover: #b02a37;
   --texto-suave: #bdbdbd;     /* textos secundarios sobre el oscuro */
+
+  /* Radios de esquina. Antes convivían cinco valores sueltos por el panel
+     (20px, 12px, 10px, 6px, 5px), heredados de ir construyendo pantalla por
+     pantalla. Se reducen a dos, más planos, para un panel administrativo:
+     es una herramienta de trabajo, no una vitrina de producto.
+     Están como variables justamente para poder ajustar la "redondez" de todo
+     el panel desde acá si al contrastarlo con el Figma queda distinto. */
+  --radio-panel: 4px;         /* tarjetas, paneles, contenedores */
+  --radio-control: 3px;       /* botones, chips de estado */
 }
