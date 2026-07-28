@@ -433,3 +433,14 @@ administración.
   `admin.css` (se podrían migrar a él), y usan nombres distintos para el
   mismo encabezado (`.encabezado-admin/-pagina/-pedidos`, unificado como
   `.encabezado-modulo` en lo nuevo).
+- **2026-07-27 (5)** (rama `Alejandro`): se conectó la navegación del panel
+  admin en ambos sentidos — se agregó un enlace "← Volver al panel" a las 7
+  páginas de módulo (el header compartido apunta a las vistas de cliente, no
+  al panel). `.enlace-volver` vive en `admin.css` y se repite en
+  `Inventario.css`/`GestionPedidos.css` (esas 2 no cargan `admin.css`).
+- **2026-07-28** (rama `Alejandro`): se conectaron los enlaces del
+  header/footer compartidos (antes en `href="#"`): NUESTROS PRODUCTOS y
+  Servicios → `productos.html`, CARRITO DE COMPRAS → `pago.html`, CERRAR
+  SESIÓN → `login.html` (CONTACTO y ACTUALIZAR DATOS ya los había conectado
+  el compañero). Quedan en `#` a propósito: "SOBRE NOSOTROS" (no existe la
+  página) y los 4 íconos de redes (sin URLs reales todavía).
