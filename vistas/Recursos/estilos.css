@@ -8,10 +8,15 @@ body{
     font-family: Arial, Helvetica, sans-serif;
 }
 
-/* Header completo */
+/* Header completo.
+   position + z-index para que el logo, que sube por encima de la franja de
+   paja, se dibuje siempre por encima del contenido de la página y no quede
+   tapado por lo que venga debajo. */
 .header {
     width: 100%;
     background-color: white;
+    position: relative;
+    z-index: 5;
 }
 
 /* Franja de imagen superior (textura de paja/heno del header).
@@ -42,13 +47,18 @@ body{
     align-items: center;
 }
 
-/* Logo */
+/* Logo.
+   Sube por encima de la barra blanca hasta montarse sobre la franja de paja,
+   pero cabe COMPLETO dentro del header: el header mide 157px (85 de paja + 72
+   de barra blanca) y el logo va de 22px a 152px, medido desde arriba del
+   header. Antes medía 160px con top:-35px, así que terminaba en 210px y esos
+   53px sobrantes quedaban escondidos debajo del contenido de la página. */
 .logo {
-    width: 160px;
-    height: 160px;
+    width: 130px;
+    height: 130px;
     object-fit: contain;
     position: absolute;
-    top: -35px;
+    top: -63px; /* -63 respecto a la barra blanca, que empieza en 85px */
 }
 
 /* Menú */
