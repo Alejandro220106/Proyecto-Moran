@@ -10,16 +10,14 @@
   igual que el resto de vistas, aunque el layout interno (tarjetas de
   módulos, resumen, accesos rápidos) es propio de esta pantalla.
 
-  La mayoría de módulos (Facturas, Empleados, Reportes, etc.) todavía no
-  existen como páginas, así que sus tarjetas siguen siendo <button> sin
-  acción en vez de <a href>: evita enlaces rotos hasta que cada módulo se
-  construya. "Inventario" y "Gestión de pedidos" ya son páginas reales
-  (Inventario.html, GestionPedidos-admin.html), así que sus tarjetas son
-  <a> en vez de <button>; la clase .tarjeta-modulo no distingue entre los
-  dos (mismo estilo visual para ambos casos). Los datos del resumen (0,
-  "Administrador", "1.0.0", "Hoy") son marcadores; en producción vendrán
-  de la base de datos. Los ids ya están listos para
-  engancharlos junto con el JavaScript de cada módulo.
+  Los siete módulos ya existen como páginas reales, así que todas las
+  tarjetas son <a href> a su módulo (Inventario, GestionPedidos-admin,
+  BuscarPedidos-admin, Facturas-admin, Empleados-admin, Reportes-admin,
+  Proveedores-admin). Los botones de "Accesos rápidos" sí siguen siendo
+  <button> porque disparan acciones (no navegación) que resolverá el JS.
+  Los datos del resumen (0, "Administrador", "1.0.0", "Hoy") son
+  marcadores; en producción vendrán de la base de datos. Los ids ya están
+  listos para engancharlos junto con el JavaScript de cada módulo.
 -->
 <html lang="es">
 <head>
@@ -60,35 +58,35 @@
                     <span>Ir al módulo →</span>
                 </a>
 
-                <button class="tarjeta-modulo" id="modulo-buscar-pedidos">
+                <a href="BuscarPedidos-admin.html" class="tarjeta-modulo" id="modulo-buscar-pedidos">
                     <h3>🔎 Buscar pedidos</h3>
                     <p>Consulta y seguimiento de pedidos.</p>
                     <span>Ir al módulo →</span>
-                </button>
+                </a>
 
-                <button class="tarjeta-modulo" id="modulo-facturas">
+                <a href="Facturas-admin.html" class="tarjeta-modulo" id="modulo-facturas">
                     <h3>🧾 Facturas</h3>
                     <p>Gestión de facturación y comprobantes.</p>
                     <span>Ir al módulo →</span>
-                </button>
+                </a>
 
-                <button class="tarjeta-modulo" id="modulo-empleados">
+                <a href="Empleados-admin.html" class="tarjeta-modulo" id="modulo-empleados">
                     <h3>👨‍💼 Empleados</h3>
                     <p>Administración del personal.</p>
                     <span>Ir al módulo →</span>
-                </button>
+                </a>
 
-                <button class="tarjeta-modulo" id="modulo-reportes">
+                <a href="Reportes-admin.html" class="tarjeta-modulo" id="modulo-reportes">
                     <h3>📊 Reportes</h3>
                     <p>Estadísticas e informes del sistema.</p>
                     <span>Ir al módulo →</span>
-                </button>
+                </a>
 
-                <button class="tarjeta-modulo" id="modulo-proveedores">
+                <a href="Proveedores-admin.html" class="tarjeta-modulo" id="modulo-proveedores">
                     <h3>🚚 Proveedores</h3>
                     <p>Registro y control de proveedores.</p>
                     <span>Ir al módulo →</span>
-                </button>
+                </a>
             </div>
         </section>
 

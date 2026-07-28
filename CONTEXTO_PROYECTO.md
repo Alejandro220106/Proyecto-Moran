@@ -416,3 +416,20 @@ administración.
   Se probó con Playwright: los 8 `data-producto-id` están presentes,
   `data-precio`/`data-disponibilidad` se leen bien, y el query param
   llega correctamente a `detalle-pedido.html` al hacer clic en ORDENAR.
+- **2026-07-27 (4)** (rama `Alejandro`): se construyeron los **5 módulos
+  admin que faltaban**: `BuscarPedidos-admin.html`, `Facturas-admin.html`,
+  `Empleados-admin.html`, `Reportes-admin.html`, `Proveedores-admin.html`.
+  Para no repetir en cada uno los mismos tokens/tablas/botones que ya tenían
+  Home-admin/Inventario/GestionPedidos, se creó un **sistema de diseño admin
+  compartido en `Recursos/admin.css`** (fondo `#161616`, panel `#202020`,
+  ámbar `#d99a4e`, chips `.estado`, `.tabla-admin`, `.panel-admin`,
+  `.boton-ambar/.exito/.peligro`, `.campo-admin`, etc.); las 5 páginas nuevas
+  lo usan. Las tarjetas de módulo de `Home-admin.html` (Buscar pedidos,
+  Facturas, Empleados, Reportes, Proveedores) pasaron de `<button>` a `<a>`
+  y ya enlazan a sus páginas: el panel queda navegable de punta a punta.
+  Todo son marcadores (filas de ejemplo, sin `action`), solo frontend.
+  Incoherencias detectadas y no tocadas para no pisar el trabajo del
+  compañero: las 3 páginas admin previas repiten estilos que ahora viven en
+  `admin.css` (se podrían migrar a él), y usan nombres distintos para el
+  mismo encabezado (`.encabezado-admin/-pagina/-pedidos`, unificado como
+  `.encabezado-modulo` en lo nuevo).

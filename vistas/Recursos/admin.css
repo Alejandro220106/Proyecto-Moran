@@ -1,0 +1,330 @@
+/*
+  Sistema de diseño COMPARTIDO del panel de administración.
+
+  Lo usan las páginas admin nuevas (BuscarPedidos-admin, Facturas-admin,
+  Empleados-admin, Reportes-admin, Proveedores-admin) para no repetir en
+  cada una los mismos tokens, tablas, chips de estado y botones. Toma los
+  mismos valores que ya usaban Home-admin.css / Inventario.css /
+  GestionPedidos.css (fondo oscuro #161616, panel #202020, ámbar #d99a4e),
+  así que todo el panel se ve como una sola familia.
+
+  Convención del proyecto: clases de Bootstrap en inglés, clases propias en
+  español. Ver la skill moran-frontend y CONTEXTO_PROYECTO.md.
+
+  (Las 3 páginas admin anteriores conservan su propio CSS; este archivo
+  unifica el estilo de aquí en adelante. A futuro se podrían migrar también
+  ellas a este archivo.)
+*/
+
+:root {
+  --fondo-admin: #161616;     /* fondo oscuro de la página */
+  --panel-admin: #202020;     /* fondo de tarjetas/paneles */
+  --borde-admin: #333333;
+  --campo-fondo: #2a2a2a;     /* inputs/select oscuros */
+  --campo-borde: #444444;
+  --ambar-boton: #d99a4e;     /* acento de la marca */
+  --ambar-boton-hover: #c4863a;
+  --verde-guardar: #198754;   /* acción de guardar/confirmar */
+  --verde-guardar-hover: #146c43;
+  --rojo-peligro: #dc3545;    /* acción destructiva (eliminar) */
+  --rojo-peligro-hover: #b02a37;
+  --texto-suave: #bdbdbd;     /* textos secundarios sobre el oscuro */
+}
+
+/* ---- Lienzo de la página ---- */
+.pagina-admin {
+  background-color: var(--fondo-admin);
+  min-height: 100vh;
+  padding: 45px 25px;
+  color: #ffffff;
+}
+
+/* ---- Encabezado del módulo (título + descripción) ---- */
+.encabezado-modulo {
+  text-align: center;
+  margin-bottom: 35px;
+}
+
+.encabezado-modulo h1 {
+  font-size: 2.2rem;
+  margin-bottom: 10px;
+}
+
+.encabezado-modulo p {
+  color: var(--texto-suave);
+  margin: 0;
+}
+
+/* ---- Panel / tarjeta contenedora ---- */
+.panel-admin {
+  background-color: var(--panel-admin);
+  border: 1px solid var(--borde-admin);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 26px;
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Encabezado interno de un panel: título (y a veces un botón a la derecha). */
+.titulo-panel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.titulo-panel h2 {
+  font-size: 1.3rem;
+  margin: 0;
+}
+
+/* ---- Tarjetas de resumen (indicadores numéricos) ---- */
+.resumen-admin {
+  max-width: 1100px;
+  margin: 0 auto 26px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.tarjeta-indicador {
+  background-color: var(--panel-admin);
+  border: 1px solid var(--borde-admin);
+  border-radius: 10px;
+  padding: 22px;
+  text-align: center;
+}
+
+.tarjeta-indicador span {
+  display: block;
+  color: var(--ambar-boton);
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.tarjeta-indicador p {
+  color: var(--texto-suave);
+  margin: 0;
+}
+
+/* ---- Campos de formulario ---- */
+/* Rejilla reutilizable para distribuir campos en columnas responsivas. */
+.rejilla-campos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+}
+
+.grupo-campo {
+  display: flex;
+  flex-direction: column;
+}
+
+.grupo-campo label {
+  margin-bottom: 6px;
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+/* Inputs/selects/textareas oscuros, sobre la base de Bootstrap. */
+.campo-admin {
+  background-color: var(--campo-fondo);
+  color: #ffffff;
+  border: 1px solid var(--campo-borde);
+}
+
+.campo-admin::placeholder {
+  color: #8a8a8a;
+}
+
+.campo-admin:focus {
+  background-color: var(--campo-fondo);
+  color: #ffffff;
+  border-color: var(--ambar-boton);
+  box-shadow: none;
+}
+
+/* ---- Tablas ---- */
+/* Envolver una tabla en .tabla-scroll para que desborde en horizontal sin
+   romper el ancho de la página en pantallas angostas. */
+.tabla-scroll {
+  overflow-x: auto;
+}
+
+.tabla-admin {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tabla-admin thead {
+  background-color: #2d2d2d;
+}
+
+.tabla-admin th {
+  padding: 13px 14px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.tabla-admin td {
+  padding: 13px 14px;
+  border-top: 1px solid #3f3f3f;
+}
+
+.tabla-admin tbody tr:hover {
+  background-color: #292929;
+}
+
+/* Celdas editables (inputs dentro de la tabla) más compactas. */
+.tabla-admin .campo-admin {
+  padding: 6px 8px;
+}
+
+/* ---- Chips de estado ---- */
+.estado {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.estado.activo,
+.estado.pagada,
+.estado.entregado {
+  background-color: #198754;
+  color: #ffffff;
+}
+
+.estado.pendiente {
+  background-color: #ffcc00;
+  color: #111111;
+}
+
+.estado.preparacion {
+  background-color: #3d8bfd;
+  color: #ffffff;
+}
+
+.estado.inactivo,
+.estado.cancelado {
+  background-color: #dc3545;
+  color: #ffffff;
+}
+
+/* ---- Botones ---- */
+/* Base común para los botones del panel (sobre .btn de Bootstrap). */
+.boton-ambar,
+.boton-exito,
+.boton-peligro,
+.boton-tabla {
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  font-weight: 700;
+  transition: background-color 0.2s;
+}
+
+.boton-ambar,
+.boton-exito,
+.boton-peligro {
+  padding: 11px 24px;
+}
+
+/* Botón chico para acciones dentro de una tabla. */
+.boton-tabla {
+  padding: 7px 14px;
+  margin-right: 5px;
+  font-weight: 600;
+}
+
+.boton-ambar,
+.boton-tabla {
+  background-color: var(--ambar-boton);
+}
+
+.boton-ambar:hover,
+.boton-tabla:hover {
+  background-color: var(--ambar-boton-hover);
+  color: #ffffff;
+}
+
+/* Verde para guardar/confirmar (como en el diseño de facturas/proveedores). */
+.boton-exito {
+  background-color: var(--verde-guardar);
+}
+
+.boton-exito:hover {
+  background-color: var(--verde-guardar-hover);
+  color: #ffffff;
+}
+
+/* Rojo para acciones destructivas (eliminar pedido, etc.). */
+.boton-peligro {
+  background-color: var(--rojo-peligro);
+  width: 100%;
+}
+
+.boton-peligro:hover {
+  background-color: var(--rojo-peligro-hover);
+  color: #ffffff;
+}
+
+/* Fila de botones al pie de un formulario/panel. */
+.fila-botones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+/* ---- Bloque de datos de solo lectura (ficha/resumen) ---- */
+.ficha-datos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.ficha-datos .dato strong {
+  display: block;
+  color: var(--ambar-boton);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-bottom: 4px;
+}
+
+.ficha-datos .dato p {
+  margin: 0;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 1000px) {
+  .resumen-admin {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .pagina-admin {
+    padding: 22px 14px;
+  }
+
+  .resumen-admin {
+    grid-template-columns: 1fr;
+  }
+
+  .fila-botones .boton-ambar,
+  .fila-botones .boton-exito {
+    width: 100%;
+  }
+}
