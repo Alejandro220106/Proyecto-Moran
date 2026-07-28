@@ -7,20 +7,14 @@
   Misma familia visual que Home-admin.css/Inventario.css (fondo oscuro,
   tarjetas, ámbar de la marca), con su propio layout de resumen + filtros +
   tabla + panel de detalle.
+
+  Los colores vienen de tokens-admin.css (enlazado antes que esta hoja); acá
+  solo se consumen con var().
 */
 
-:root {
-  --fondo-pedidos: #161616;
-  --panel-pedidos: #202020;
-  --borde-pedidos: #333333;
-  --campo-fondo: #2a2a2a;
-  --campo-borde: #444444;
-  --ambar-boton: #d99a4e;
-  --ambar-boton-hover: #c4863a;
-}
 
 .pagina-pedidos {
-  background-color: var(--fondo-pedidos);
+  background-color: var(--fondo-admin);
   min-height: 100vh;
   padding: 45px 25px;
   color: #ffffff;
@@ -65,16 +59,21 @@
 }
 
 .tarjeta-resumen {
-  background-color: var(--panel-pedidos);
-  border: 1px solid var(--borde-pedidos);
+  background-color: var(--panel-admin);
+  border: 1px solid var(--borde-admin);
   border-radius: 10px;
   padding: 22px;
   text-align: center;
 }
 
-.tarjeta-resumen h3 {
+/* Era un <h3> y saltaba de h1 a h3 sin h2 de por medio, que rompe la jerarquía
+   para un lector de pantalla. Son cifras destacadas, no títulos de sección, así
+   que van en <span> — igual que las tarjetas de resumen de Home-admin. */
+.tarjeta-resumen .cifra-resumen {
+  display: block;
   color: var(--ambar-boton);
   font-size: 2rem;
+  font-weight: 700;
   margin-bottom: 8px;
 }
 
@@ -84,8 +83,8 @@
 
 /* ---- Filtros ---- */
 .panel-filtros {
-  background-color: var(--panel-pedidos);
-  border: 1px solid var(--borde-pedidos);
+  background-color: var(--panel-admin);
+  border: 1px solid var(--borde-admin);
   border-radius: 12px;
   padding: 25px;
   margin-bottom: 30px;
@@ -116,6 +115,13 @@
   border: 1px solid var(--campo-borde);
 }
 
+/* Bootstrap pinta el placeholder con un gris pensado para fondo claro
+   (rgba(33,37,41,.75)); sobre el campo oscuro quedaba en 1.06:1, invisible.
+   Mismo valor que .campo-admin en admin.css: 5.10:1 sobre el fondo del campo. */
+.campo-filtro::placeholder {
+  color: #9a9a9a;
+}
+
 .campo-filtro:focus {
   border-color: var(--ambar-boton);
   background-color: var(--campo-fondo);
@@ -127,7 +133,7 @@
    login/detalle-pedido/registro/Home-admin/Inventario). */
 .boton-filtro {
   background-color: var(--ambar-boton);
-  color: #ffffff;
+  color: var(--ambar-texto);
   border: none;
   border-radius: 6px;
   padding: 12px 28px;
@@ -137,7 +143,7 @@
 
 .boton-filtro:hover {
   background-color: var(--ambar-boton-hover);
-  color: #ffffff;
+  color: var(--ambar-texto);
 }
 
 /* ---- Acciones ---- */
@@ -150,7 +156,7 @@
 
 .boton-accion-pedidos {
   background-color: var(--ambar-boton);
-  color: #ffffff;
+  color: var(--ambar-texto);
   border: none;
   border-radius: 6px;
   padding: 12px 22px;
@@ -160,13 +166,13 @@
 
 .boton-accion-pedidos:hover {
   background-color: var(--ambar-boton-hover);
-  color: #ffffff;
+  color: var(--ambar-texto);
 }
 
 /* ---- Tabla ---- */
 .tabla-pedidos {
-  background-color: var(--panel-pedidos);
-  border: 1px solid var(--borde-pedidos);
+  background-color: var(--panel-admin);
+  border: 1px solid var(--borde-admin);
   border-radius: 12px;
   padding: 20px;
   overflow-x: auto;
@@ -209,8 +215,10 @@
   color: #111111;
 }
 
+/* Azul oscurecido respecto al #3d8bfd original: con blanco encima ese tono
+   daba 3.33:1 y el chip va en negrita chica, que exige 4.5:1. Este da 6.04:1. */
 .preparacion {
-  background-color: #3d8bfd;
+  background-color: #1a5fc4;
   color: #ffffff;
 }
 
@@ -227,7 +235,7 @@
 /* ---- Botones de tabla ---- */
 .boton-tabla {
   background-color: var(--ambar-boton);
-  color: #ffffff;
+  color: var(--ambar-texto);
   border: none;
   border-radius: 5px;
   padding: 8px 15px;
@@ -237,7 +245,7 @@
 
 .boton-tabla:hover {
   background-color: var(--ambar-boton-hover);
-  color: #ffffff;
+  color: var(--ambar-texto);
 }
 
 /* ---- Panel de detalle (modal) ---- */
@@ -265,7 +273,7 @@
 .detalle-botones {
   width: 100%;
   max-width: 850px;
-  background-color: var(--panel-pedidos);
+  background-color: var(--panel-admin);
   border-left: 4px solid var(--ambar-boton);
   padding: 20px;
   margin-bottom: 12px;
@@ -308,7 +316,7 @@
 
 .boton-detalle-accion {
   background-color: var(--ambar-boton);
-  color: #ffffff;
+  color: var(--ambar-texto);
   border: none;
   border-radius: 6px;
   padding: 12px 22px;
@@ -317,7 +325,7 @@
 
 .boton-detalle-accion:hover {
   background-color: var(--ambar-boton-hover);
-  color: #ffffff;
+  color: var(--ambar-texto);
 }
 
 /* ---- Responsive ---- */

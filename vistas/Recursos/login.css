@@ -118,6 +118,27 @@
   color: var(--color-acento-oxblood);
 }
 
+/* Entrada al panel administrativo. Se separa con una línea superior porque
+   no es una acción de cliente como las de arriba, sino de personal. */
+.enlace-panel-admin {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid #d5d0c8;
+}
+
+.enlace-panel-admin a {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #5c2020;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.enlace-panel-admin a:hover {
+  text-decoration: underline;
+}
+
 /* Fila de accesos con redes sociales. */
 .iconos-redes-login {
   display: flex;

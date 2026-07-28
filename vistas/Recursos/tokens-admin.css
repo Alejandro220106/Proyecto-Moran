@@ -1,0 +1,36 @@
+/*
+  Tokens de color del panel de administración.
+
+  Existe porque los mismos valores estaban declarados cuatro veces (admin.css,
+  Home-admin.css, Inventario.css y GestionPedidos.css), cada hoja con su propio
+  :root y, en dos casos, con nombres distintos para el mismo color
+  (--fondo-admin / --fondo-inventario / --fondo-pedidos eran los tres #161616).
+  Cuatro copias del mismo valor es una copia que alguien va a cambiar sin
+  cambiar las otras tres, y ahí aparece el bug visual.
+
+  Al no tener ninguna regla de clase — solo variables — esta hoja se puede
+  cargar en cualquier página del panel sin riesgo de pisarle estilos a la hoja
+  propia de esa página. Va enlazada ANTES que la hoja de cada pantalla.
+
+  Los nombres son los de admin.css, que es la hoja compartida del panel.
+*/
+
+:root {
+  --fondo-admin: #161616;     /* fondo oscuro de la página */
+  --panel-admin: #202020;     /* fondo de tarjetas/paneles */
+  --borde-admin: #333333;
+  --campo-fondo: #2a2a2a;     /* inputs/select oscuros */
+  --campo-borde: #444444;
+  --ambar-boton: #d99a4e;     /* acento de la marca */
+  --ambar-boton-hover: #c4863a;
+  /* Texto sobre el ámbar. Va oscuro, no blanco: el ámbar de marca es un tono
+     claro, y blanco sobre él da 2.42:1 de contraste (WCAG AA pide 4.5:1).
+     Con #111111 sube a 7.81:1 (6.13:1 en hover) sin tocar el color de marca.
+     Es el mismo criterio que ya usa el chip .estado.pendiente. */
+  --ambar-texto: #111111;
+  --verde-guardar: #198754;   /* acción de guardar/confirmar */
+  --verde-guardar-hover: #146c43;
+  --rojo-peligro: #dc3545;    /* acción destructiva (eliminar) */
+  --rojo-peligro-hover: #b02a37;
+  --texto-suave: #bdbdbd;     /* textos secundarios sobre el oscuro */
+}

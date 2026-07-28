@@ -75,9 +75,13 @@
         <div class="footer-suscripcion">
             <h3>ÚNETE A NOSOTROS</h3>
 
+            <!-- El placeholder no sirve como etiqueta: desaparece al escribir y
+                 varios lectores de pantalla no lo anuncian. Como el diseño no
+                 lleva label visible, va un aria-label con el mismo texto. -->
             <form>
                 <input
                     type="email"
+                    aria-label="Correo electrónico para suscribirse"
                     placeholder="INGRESE SU EMAIL"
                 >
             </form>

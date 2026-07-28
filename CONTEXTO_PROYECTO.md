@@ -497,3 +497,69 @@ administración.
   (año de fundación, tamaño, premios). El párrafo de "Quiénes somos" es un
   texto de arranque breve y está marcado en el HTML con un comentario para
   que la familia Morán lo reemplace por su historia real.
+- **2026-07-28 (5)** (rama `Alejandro`): pasada de correcciones sobre **las 8
+  pantallas del panel de administración**, a partir de una auditoría con los
+  cuatro agentes de revisión (`revisor-accesibilidad`, `revisor-css`,
+  `revisor-convenciones`, `revisor-datos-falsos`) más hallazgos de producto.
+
+  **Legibilidad (lo más grave).** Todos los botones ámbar del panel tenían
+  texto blanco sobre `#d99a4e`: **2.42:1**, muy por debajo del 4.5:1 de WCAG
+  AA, y afectaba prácticamente cada acción de las 8 pantallas. Se cambió el
+  texto a `#111111` (**7.81:1**, 6.13:1 en hover) conservando el ámbar de
+  marca — el mismo criterio que ya usaba el chip `.estado.pendiente`. El verde
+  y el rojo se dejaron en blanco porque sí cumplen (4.53:1). Además: el chip
+  "En preparación" pasó de `#3d8bfd` a `#1a5fc4` (3.33:1 → 6.04:1); el
+  buscador de Gestión de pedidos no redefinía `::placeholder` y heredaba el de
+  Bootstrap, pensado para fondo claro, quedando en **1.06:1** (invisible); y
+  los placeholders de los campos admin pasaron de `#8a8a8a` a `#9a9a9a`
+  (4.16:1 → 5.10:1).
+
+  **Navegación.** El panel **no se alcanzaba desde ninguna página**: había que
+  escribir la URL. Se agregó un enlace "Panel administrativo" en el login,
+  explícitamente **provisional** — cuando exista la capa de autenticación debe
+  ser el rol quien decida el destino, y ese enlace se quita. Los 5 botones de
+  "Accesos rápidos" del tablero eran `<button>` inertes de cuando los módulos
+  no existían; ahora son `<a>` al formulario real de cada módulo vía
+  fragmento (`#formulario-empleado`, `#formulario-nueva-factura`,
+  `#formulario-proveedor`).
+
+  **`tokens-admin.css` (nuevo).** Los mismos colores estaban declarados cuatro
+  veces (`admin.css`, `Home-admin.css`, `Inventario.css`, `GestionPedidos.css`),
+  y en dos casos con nombres distintos para el mismo valor
+  (`--fondo-admin`/`--fondo-inventario`/`--fondo-pedidos` eran los tres
+  `#161616`). Ahora los tokens viven en una sola hoja que cargan las 8
+  pantallas antes de su CSS propio; como no tiene ninguna regla de clase, no
+  puede pisarle estilos a nadie. Los valores eran idénticos, así que el cambio
+  es un no-op visual.
+
+  **Otros.** Los íconos de los módulos pasaron de emoji a **SVG inline** (el
+  emoji lo dibuja la fuente del sistema: cambia de forma entre plataformas y
+  no hereda el color de marca). Se borró de `admin.css` el código muerto
+  `.resumen-admin`/`.tarjeta-indicador`, que se escribió y nunca se conectó.
+  Las cifras de resumen de Gestión de pedidos eran `<h3>` bajo un `<h1>`, un
+  salto de jerarquía; ahora son `<span class="cifra-resumen">`, como ya hacía
+  Home-admin. Las tablas de Inventario tenían el `overflow-x:auto` sólo dentro
+  del media query de 650px: con datos reales desbordarían mucho antes, así que
+  pasó a ser incondicional.
+
+  **Fuera del panel** (el footer es compartido, así que aplica a todo el
+  sitio): el input de suscripción no tenía etiqueta y llevaba `outline:none`
+  sin reemplazo — quien navega con teclado no veía el foco. Se le puso
+  `aria-label`, un indicador de foco propio (el subrayado ámbar se engrosa y
+  aclara) y se aclaró su placeholder (4.27:1 → 6.16:1).
+
+  **Datos de ejemplo.** Las filas de Gestión de pedidos decían "Juan Pérez",
+  "8888-8888" y "₡12 500". Estaban marcadas como provisionales en un
+  comentario HTML, pero el comentario protege al desarrollador, no a quien
+  mira la pantalla: en una demo pasaban por pedidos reales. Ahora dicen
+  "Cliente de ejemplo 1/2", `0000-0000`, `00/00/0000` y `₡0` — coherente
+  además con que el precio es una variable que gestiona el administrador.
+
+  **Pendiente, a propósito.** No se migraron `Home-admin`, `Inventario` y
+  `GestionPedidos` al sistema de clases de `admin.css`. Hoy conviven seis
+  nombres para el botón ámbar y cuatro para el encabezado de módulo, pero
+  `admin.css` usa paddings, bordes y tamaños distintos, así que la migración
+  **cambia el aspecto real de esas tres pantallas** y necesita revisión visual,
+  que en este entorno no se puede hacer. Tampoco se tocó que el panel cargue
+  el header del cliente (logo, carrito, "Sobre nosotros"), ni el solape entre
+  "Buscar pedidos" y "Gestión de pedidos": son decisiones de producto.

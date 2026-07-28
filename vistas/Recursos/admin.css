@@ -3,10 +3,11 @@
 
   Lo usan las páginas admin nuevas (BuscarPedidos-admin, Facturas-admin,
   Empleados-admin, Reportes-admin, Proveedores-admin) para no repetir en
-  cada una los mismos tokens, tablas, chips de estado y botones. Toma los
-  mismos valores que ya usaban Home-admin.css / Inventario.css /
-  GestionPedidos.css (fondo oscuro #161616, panel #202020, ámbar #d99a4e),
-  así que todo el panel se ve como una sola familia.
+  cada una las mismas tablas, chips de estado y botones.
+
+  Los colores NO se declaran acá: viven en tokens-admin.css, que cargan las 8
+  pantallas del panel (incluidas Home-admin / Inventario / GestionPedidos, que
+  tienen su propia hoja). Esta hoja solo los consume vía var().
 
   Convención del proyecto: clases de Bootstrap en inglés, clases propias en
   español. Ver la skill moran-frontend y CONTEXTO_PROYECTO.md.
@@ -16,20 +17,6 @@
   ellas a este archivo.)
 */
 
-:root {
-  --fondo-admin: #161616;     /* fondo oscuro de la página */
-  --panel-admin: #202020;     /* fondo de tarjetas/paneles */
-  --borde-admin: #333333;
-  --campo-fondo: #2a2a2a;     /* inputs/select oscuros */
-  --campo-borde: #444444;
-  --ambar-boton: #d99a4e;     /* acento de la marca */
-  --ambar-boton-hover: #c4863a;
-  --verde-guardar: #198754;   /* acción de guardar/confirmar */
-  --verde-guardar-hover: #146c43;
-  --rojo-peligro: #dc3545;    /* acción destructiva (eliminar) */
-  --rojo-peligro-hover: #b02a37;
-  --texto-suave: #bdbdbd;     /* textos secundarios sobre el oscuro */
-}
 
 /* ---- Lienzo de la página ---- */
 .pagina-admin {
@@ -98,36 +85,6 @@
   margin: 0;
 }
 
-/* ---- Tarjetas de resumen (indicadores numéricos) ---- */
-.resumen-admin {
-  max-width: 1100px;
-  margin: 0 auto 26px;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-}
-
-.tarjeta-indicador {
-  background-color: var(--panel-admin);
-  border: 1px solid var(--borde-admin);
-  border-radius: 10px;
-  padding: 22px;
-  text-align: center;
-}
-
-.tarjeta-indicador span {
-  display: block;
-  color: var(--ambar-boton);
-  font-size: 2rem;
-  font-weight: 700;
-  margin-bottom: 6px;
-}
-
-.tarjeta-indicador p {
-  color: var(--texto-suave);
-  margin: 0;
-}
-
 /* ---- Campos de formulario ---- */
 /* Rejilla reutilizable para distribuir campos en columnas responsivas. */
 .rejilla-campos {
@@ -156,8 +113,10 @@
   border: 1px solid var(--campo-borde);
 }
 
+/* #9a9a9a y no un gris más oscuro: sobre el fondo #2a2a2a del campo da 5.10:1
+   (el #8a8a8a que había antes se quedaba en 4.16:1, debajo del 4.5:1 de AA). */
 .campo-admin::placeholder {
-  color: #8a8a8a;
+  color: #9a9a9a;
 }
 
 .campo-admin:focus {
@@ -226,8 +185,10 @@
   color: #111111;
 }
 
+/* Azul oscurecido respecto al #3d8bfd original: con blanco encima ese tono
+   daba 3.33:1 y el chip va en negrita chica, que exige 4.5:1. Este da 6.04:1. */
 .estado.preparacion {
-  background-color: #3d8bfd;
+  background-color: #1a5fc4;
   color: #ffffff;
 }
 
@@ -263,15 +224,19 @@
   font-weight: 600;
 }
 
+/* El texto oscuro pisa al #ffffff de la base de arriba (misma especificidad,
+   gana por ir después). Solo aplica al ámbar: sobre el verde y el rojo el
+   blanco sí cumple (4.53:1), así que esos conservan la base. */
 .boton-ambar,
 .boton-tabla {
   background-color: var(--ambar-boton);
+  color: var(--ambar-texto);
 }
 
 .boton-ambar:hover,
 .boton-tabla:hover {
   background-color: var(--ambar-boton-hover);
-  color: #ffffff;
+  color: var(--ambar-texto);
 }
 
 /* Verde para guardar/confirmar (como en el diseño de facturas/proveedores). */
@@ -324,19 +289,9 @@
 }
 
 /* ---- Responsive ---- */
-@media (max-width: 1000px) {
-  .resumen-admin {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
 @media (max-width: 600px) {
   .pagina-admin {
     padding: 22px 14px;
-  }
-
-  .resumen-admin {
-    grid-template-columns: 1fr;
   }
 
   .fila-botones .boton-ambar,

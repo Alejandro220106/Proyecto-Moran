@@ -7,15 +7,11 @@
   Fondo oscuro y ámbar de la marca, igual que registro.css/Actualizar-Datos.css,
   pero con su propio layout (tarjetas de módulos, resumen, accesos rápidos)
   porque esta pantalla no es un formulario.
+
+  Los colores vienen de tokens-admin.css (enlazado antes que esta hoja); acá
+  solo se consumen con var().
 */
 
-:root {
-  --fondo-admin: #161616;
-  --panel-admin: #202020;
-  --borde-admin: #333333;
-  --ambar-boton: #d99a4e;
-  --ambar-boton-hover: #c4863a;
-}
 
 .pagina-admin {
   background-color: var(--fondo-admin);
@@ -78,8 +74,27 @@
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
 }
 
+/* Flex para que el ícono quede centrado con la línea del título en vez de
+   apoyado en la base del texto (el SVG es un inline-block y sin esto se
+   alinea por baseline). */
 .tarjeta-modulo h3 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   margin-bottom: 15px;
+}
+
+/* Los SVG de módulo se dibujan solo con trazo y heredan currentColor, así
+   que toman el ámbar del hover de la tarjeta sin reglas extra. */
+.icono-modulo {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .tarjeta-modulo p {
@@ -125,10 +140,12 @@
 }
 
 /* Botón ámbar de la marca, sobre la base .btn de Bootstrap (mismo tono que
-   login/detalle-pedido/registro/Actualizar-Datos). */
+   login/detalle-pedido/registro/Actualizar-Datos). Son <a> con pinta de
+   botón, de ahí el text-decoration:none. */
 .boton-accion-rapida {
+  text-decoration: none;
   background-color: var(--ambar-boton);
-  color: #ffffff;
+  color: var(--ambar-texto);
   border: none;
   border-radius: 6px;
   padding: 12px 22px;
@@ -138,7 +155,7 @@
 
 .boton-accion-rapida:hover {
   background-color: var(--ambar-boton-hover);
-  color: #ffffff;
+  color: var(--ambar-texto);
 }
 
 /* ---- Información del sistema ---- */

@@ -231,11 +231,22 @@ body{
     border-bottom: 1px solid #d99a4e;
     color: white;
     padding: 6px;
+    /* Se quita el contorno del navegador porque desentona con el subrayado
+       ámbar, pero hay que reemplazarlo (ver :focus): sin nada, quien navega
+       con teclado no ve dónde está parado. */
     outline: none;
 }
 
+/* Indicador de foco propio: el subrayado ámbar se engrosa y se aclara. */
+.footer-suscripcion input:focus {
+    border-bottom: 2px solid #f0c07a;
+    padding-bottom: 5px;
+}
+
 .footer-suscripcion input::placeholder {
-    color: #60b5d5;
+    /* Se aclaró el #60b5d5 original: sobre el azul del footer daba 4.27:1 y el
+       texto es de 10px, donde WCAG AA pide 4.5:1. Este da 6.16:1. */
+    color: #9fd4ea;
     font-size: 10px;
     letter-spacing: 1px;
 }
