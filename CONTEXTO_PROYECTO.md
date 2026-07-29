@@ -644,3 +644,45 @@ administración.
   profundidad** (`Paginas/<ámbito>/`). Las plantillas compartidas dependen de
   eso; una página anidada a otra profundidad rompería el header/footer sólo en
   esa página.
+- **2026-07-29** (rama `Alejandro`): se llevó el rediseño "etiqueta de finca"
+  (variación **A1** de 4, aprobada por el usuario sobre una maqueta
+  exploratoria que vivió fuera del repo, en un artifact aparte) al catálogo
+  real: `vistas/Paginas/Cliente/productos.html` y
+  `vistas/Recursos/Cliente/productos-listado.css`. Las tarjetas de producto
+  pasan de "panel translúcido sobre la madera" a imitar una etiqueta de kraft
+  colgada del producto: ojal perforado, rotación alterna leve, sello circular
+  de tinta para el precio y cinta de esquina para la disponibilidad. Del hero
+  de portada solo la foto quedó fuera del rediseño; la banda de texto
+  ("Productos frescos de alta calidad") sí recibió la paleta y tipografía
+  kraft, aunque vive anidada dentro de esa misma sección.
+
+  Se hizo con un flujo de implementar + auditar en paralelo (accesibilidad,
+  convenciones, CSS, enlaces, datos falsos) antes de darlo por bueno, y
+  aparecieron dos fallas de contraste reales que la maqueta original no tenía
+  por qué prever, porque ahí yo controlaba el fondo — acá el fondo real de la
+  sección es una foto (`fondo-cafe.jpg`), no un color plano:
+  1. El sello de categoría ("Huevos"/"Pollo") usaba un fondo traslúcido
+     (`rgba(246,236,217,.35)`) pensado para verse bien sobre un color de
+     fondo controlado; contra los tonos reales y muy oscuros de la foto medía
+     apenas 1.5–1.8:1. Pasó a `--kraft-hueso` sólido: 9.63:1.
+  2. El sello de precio vacío ("—" de pechuga/muslo/alas) apilaba dos
+     opacidades sobre el mismo elemento (`opacity:.6` del sello +
+     `opacity:.85` de la tarjeta completa), multiplicándose a ~0.51 efectivo
+     y cayendo a ~3.2:1 contra la foto real — el mismo tipo de problema que
+     ya había dado el `opacity:.65` de Bootstrap en botones `:disabled` en
+     este proyecto, esta vez autoinfligido. Se quitó la opacidad del sello
+     (el borde punteado ya distingue el estado); con solo la atenuación de la
+     tarjeta completa, el contraste real sube a ~7.8:1.
+
+  --kraft-ocre (cinta "Pocas unidades") quedó en `#875c1a`, no en el `#a9762c`
+  de la maqueta original (ese tono fallaba WCAG AA con texto claro encima:
+  3.37:1 contra el 5.01:1 del valor corregido) — verificado antes de aplicar
+  y confirmado después por la auditoría.
+
+  Se preservó tal cual todo lo real: los 8 `data-producto-id`, los 4 `href`
+  de ORDENAR hacia `detalle-pedido.html?producto=...`, los `alt` descriptivos,
+  `data-precio` (vacío en los 3 "próximamente") y `data-disponibilidad`. Los
+  productos "próximamente" no llevan ningún `<a>`/`<button>`: no hay nada que
+  pedir todavía, así que no se renderiza un control con apariencia de
+  interactivo que en realidad no lleve a ningún lado (antes de este rediseño
+  se resolvía con un `<button disabled>`).

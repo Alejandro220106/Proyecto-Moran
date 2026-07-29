@@ -7,26 +7,40 @@
   pero como las dos listas ya se mostraban juntas en la misma pantalla, se
   unificaron en este único archivo con nombre neutro).
 
-  Estructura: un hero con foto + la banda verde "PRODUCTOS FRESCOS DE ALTA
-  CALIDAD", y debajo las dos listas de presentaciones lado a lado, cada
-  una con precio, disponibilidad y botón ORDENAR. Todo sobre el fondo de
-  madera café.
+  Rediseño "etiqueta de finca" (aprobado por el usuario sobre una maqueta
+  exploratoria externa al repo, variación A1 de 4): la banda de anuncio, el
+  título de la llamada a la acción y las tarjetas de producto de las dos
+  columnas ahora imitan una etiqueta colgante de kraft (como las que se
+  atan a un producto de finca), con un "ojal" perforado arriba, ligera
+  rotación alternada, un sello circular de precio y una cinta de esquina
+  para la disponibilidad. Del hero de portada solo la FOTO (`.imagen-hero`)
+  queda fuera de este rediseño; la banda de texto (`.banda-calidad`) sí
+  recibió la paleta y tipografía kraft, aunque viva anidada dentro de
+  `.hero-productos`. El header/footer compartidos tampoco son parte de
+  este rediseño.
+
+  Estructura: un hero con foto + la banda "PRODUCTOS FRESCOS DE ALTA
+  CALIDAD", el título de la llamada a la acción, y debajo las dos listas
+  de presentaciones lado a lado, cada una con precio, disponibilidad y
+  botón ORDENAR. Todo sobre el fondo de madera café.
 
   Página del sitio (no standalone): usa header/footer compartidos
   (#encabezado / #pie-pagina + plantillas.js). Servir con servidor local.
 
   Precio y disponibilidad son marcadores del diseño (ver
   CONTEXTO_PROYECTO.md, mejoras de UX sugeridas); en producción vendrán de
-  la base de datos, igual que las cantidades. Un producto que no se puede
-  comprar deshabilita su botón en vez de dejarlo enlazar a un pedido que no
-  se puede cumplir.
+  la base de datos, igual que las cantidades.
 
   Disponibilidad real del pollo: hoy el negocio SOLO vende pollo entero, así
   que esa tarjeta va de primera y es la única con botón ORDENAR activo.
   Pechuga, muslo y alas se muestran como "Próximamente": el cliente ve que
-  existirán, pero sin precio (`data-precio` vacío, se muestra "—") porque el
-  precio será una variable que gestione el administrador, y sin cantidad,
-  porque no hay stock que ofrecer. Su foto va atenuada (.imagen-atenuada).
+  existirán, pero sin precio (`data-precio` vacío, el sello circular muestra
+  "—") porque el precio será una variable que gestione el administrador, y
+  sin cantidad, porque no hay stock que ofrecer. Su foto sigue atenuada con
+  `.imagen-atenuada` (sin sumarle un segundo filtro a nivel de tarjeta: el
+  atenuado del conjunto lo da únicamente la opacidad de
+  `.etiqueta-producto.proximamente`, para no acumular dos desaturaciones
+  distintas sobre la misma foto).
 
   Las fotos (portada y productos) son de stock libre y provisionales: se
   reemplazan por las fotos reales del negocio manteniendo el mismo nombre de
@@ -35,27 +49,30 @@
 
   Ganchos para el JavaScript que todavía no se agrega (solo donde hay un
   caso de uso real, no en todo lo que se pueda tocar):
-  - Cada `<article class="tarjeta-pedido">` lleva `data-producto-id`
-    (mismo id en su botón ORDENAR) para que un futuro fetch de inventario
-    pueda ubicar la tarjeta exacta y actualizarla, igual que
-    `data-pedido-id`/`data-accion` en GestionPedidos-admin.html.
-  - `.precio-producto` lleva `data-precio` con el monto en crudo (sin
-    "₡" ni separador de miles) para que un futuro carrito pueda sumar
-    sin tener que parsear el texto formateado.
-  - `.disponibilidad` lleva `data-disponibilidad` con el mismo valor que
-    su clase (disponible/pocas-unidades/agotado): la clase es para el
-    estilo, el data-* es un valor estable que JS puede leer aunque el
-    nombre de la clase cambie de diseño más adelante.
+  - Cada `<article class="etiqueta-producto">` sigue llevando
+    `data-producto-id` (mismo id en su botón ORDENAR cuando existe) para
+    que un futuro fetch de inventario pueda ubicar la tarjeta exacta y
+    actualizarla, igual que `data-pedido-id`/`data-accion` en
+    GestionPedidos-admin.html.
+  - `.sello-precio` lleva `data-precio` con el monto en crudo (sin "₡" ni
+    separador de miles, vacío si todavía no hay precio real) para que un
+    futuro carrito pueda sumar sin tener que parsear el texto formateado.
+  - `.cinta-disponibilidad` lleva `data-disponibilidad` con el mismo valor
+    que su clase de estado (disponible/pocas-unidades/agotado): la clase es
+    para el estilo, el data-* es un valor estable que JS puede leer aunque
+    el nombre de la clase cambie de diseño más adelante. Los productos
+    "Próximamente" no tienen cinta (todavía no hay nada que anunciar), pero
+    conservan ese mismo valor como `data-disponibilidad` en su aviso
+    `.aviso-sin-sello`, para no perder el gancho.
   - El enlace ORDENAR ya manda `?producto=<id>` en la URL hacia
     detalle-pedido.html, para que esa pantalla (todavía no lo hace) pueda
-    leer el parámetro y mostrar a qué producto corresponde el pedido —
-    hoy detalle-pedido.html no muestra ningún contexto de qué se ordenó.
-  - El botón de "Agotado" es un `<button disabled>` real (no un <a> con
-    aria-disabled): así queda genuinamente sin poder darle clic incluso
-    sin JS. Cuando el inventario cambie, el futuro JS tendría que
-    reemplazar ese elemento por un <a> (o viceversa) porque HTML no
-    permite deshabilitar un enlace de verdad; no se buscó forzar un único
-    tipo de elemento para no debilitar esa protección mientras no hay JS.
+    leer el parámetro y mostrar a qué producto corresponde el pedido — hoy
+    detalle-pedido.html no muestra ningún contexto de qué se ordenó.
+  - Los productos "Próximamente" no tienen ningún `<a>`/`<button>`: no hay
+    nada que pedir todavía, así que no debe existir un control con pinta de
+    interactivo que en realidad no lleve a ningún lado. Antes esto se
+    resolvía con un `<button disabled>`; con el nuevo diseño el control
+    directamente no se renderiza (ver `.aviso-sin-sello`).
 -->
 <html lang="es">
 <head>
@@ -75,7 +92,10 @@
     <!-- Contenido sobre fondo de madera café. -->
     <main class="pagina-productos">
 
-        <!-- Hero: foto de portada + banda verde con el lema de calidad. -->
+        <!-- Hero: foto de portada + banda con el lema de calidad. Del
+             rediseño "etiqueta de finca" solo queda afuera la foto
+             (.imagen-hero); la banda sí recibe la paleta y tipografía
+             kraft (ver .banda-calidad en productos-listado.css). -->
         <section class="hero-productos">
             <div class="imagen-hero">
                 <img src="../../Recursos/Imagenes/portada-productos.jpg" alt="Canasta con huevos cafés frescos">
@@ -83,157 +103,172 @@
             <div class="banda-calidad">PRODUCTOS FRESCOS DE ALTA CALIDAD</div>
         </section>
 
-        <!-- Llamado a la acción. -->
-        <h1 class="titulo-pedidos">HAZ TUS PEDIDOS / ENCARGOS AQUÍ</h1>
+        <!--
+          A partir de acá empieza el rediseño "etiqueta de finca": título +
+          las dos columnas de tarjetas. Se envuelve en `.seccion-etiquetas`
+          solo para poder aplicarle la tipografía serif cálida a todo lo de
+          adentro sin tener que agregarle ninguna regla nueva a
+          `.hero-productos` (que queda fuera de este rediseño). La banda de
+          anuncio de arriba también entra en el rediseño pero, al estar
+          anidada dentro de `.hero-productos`, recibe esa misma tipografía
+          por su cuenta en el CSS en vez de heredarla de este contenedor.
+        -->
+        <div class="seccion-etiquetas">
 
-        <!-- Contenedor de las dos listas: huevos a la izquierda, pollo a la derecha. -->
-        <div class="contenedor-dos-listas">
+            <!-- Llamado a la acción. -->
+            <h1 class="titulo-pedidos">HAZ TUS PEDIDOS / ENCARGOS AQUÍ</h1>
 
-            <!-- Columna izquierda: presentaciones de huevo. -->
-            <div class="columna-lista">
-                <h2 class="subtitulo-columna">Huevos</h2>
-                <div class="lista-productos">
+            <!-- Contenedor de las dos listas: huevos a la izquierda, pollo a la derecha. -->
+            <div class="contenedor-dos-listas">
 
-                    <!-- Cada tarjeta se repetirá desde la base de datos a futuro. -->
-                    <article class="tarjeta-pedido" data-producto-id="huevos-30">
-                        <div class="imagen-producto">
-                            <img src="../../Recursos/Imagenes/producto-huevos-30.jpg" alt="Bandeja de 30 huevos cafés">
-                        </div>
-                        <div class="info-producto">
-                            <h3 class="nombre-producto">Huevos</h3>
-                            <p class="detalle-producto">Cantidad: 30</p>
-                            <p class="detalle-producto">Color: cafés</p>
-                            <div class="fila-precio-disponibilidad">
-                                <span class="precio-producto" data-precio="3500">₡3 500</span>
-                                <span class="disponibilidad disponible" data-disponibilidad="disponible">Disponible</span>
+                <!-- Columna izquierda: presentaciones de huevo. -->
+                <div class="columna-lista">
+                    <h2 class="encabezado-categoria">
+                        <span class="sello-categoria">Huevos</span>
+                    </h2>
+                    <div class="lista-productos">
+
+                        <!-- Cada etiqueta se repetirá desde la base de datos a futuro. -->
+                        <article class="etiqueta-producto" data-producto-id="huevos-30">
+                            <div class="foto-etiqueta">
+                                <img src="../../Recursos/Imagenes/producto-huevos-30.jpg" alt="Bandeja de 30 huevos cafés">
                             </div>
-                        </div>
-                        <a href="detalle-pedido.html?producto=huevos-30" class="btn boton-ordenar" data-producto-id="huevos-30">ORDENAR</a>
-                    </article>
-
-                    <article class="tarjeta-pedido" data-producto-id="huevos-15">
-                        <div class="imagen-producto">
-                            <img src="../../Recursos/Imagenes/producto-huevos-15.jpg" alt="Cartón de 15 huevos cafés">
-                        </div>
-                        <div class="info-producto">
-                            <h3 class="nombre-producto">Huevos</h3>
-                            <p class="detalle-producto">Cantidad: 15</p>
-                            <p class="detalle-producto">Color: cafés</p>
-                            <div class="fila-precio-disponibilidad">
-                                <span class="precio-producto" data-precio="1800">₡1 800</span>
-                                <span class="disponibilidad disponible" data-disponibilidad="disponible">Disponible</span>
+                            <div class="cuerpo-etiqueta">
+                                <h3 class="nombre-etiqueta">Huevos</h3>
+                                <p class="detalle-etiqueta">Cantidad: 30</p>
+                                <p class="detalle-etiqueta">Color: cafés</p>
+                                <div class="pie-etiqueta">
+                                    <a href="detalle-pedido.html?producto=huevos-30" class="btn boton-ordenar boton-etiqueta" data-producto-id="huevos-30">ORDENAR</a>
+                                    <span class="sello-precio" data-precio="3500">₡3 500</span>
+                                </div>
                             </div>
-                        </div>
-                        <a href="detalle-pedido.html?producto=huevos-15" class="btn boton-ordenar" data-producto-id="huevos-15">ORDENAR</a>
-                    </article>
+                            <span class="cinta-disponibilidad disponible" data-disponibilidad="disponible">Disponible</span>
+                        </article>
 
-                    <article class="tarjeta-pedido" data-producto-id="huevos-6">
-                        <div class="imagen-producto">
-                            <img src="../../Recursos/Imagenes/producto-huevos-6.jpg" alt="Cartón de 6 huevos cafés">
-                        </div>
-                        <div class="info-producto">
-                            <h3 class="nombre-producto">Huevos</h3>
-                            <p class="detalle-producto">Cantidad: 6</p>
-                            <p class="detalle-producto">Color: cafés</p>
-                            <div class="fila-precio-disponibilidad">
-                                <span class="precio-producto" data-precio="900">₡900</span>
-                                <span class="disponibilidad pocas-unidades" data-disponibilidad="pocas-unidades">Pocas unidades</span>
+                        <article class="etiqueta-producto" data-producto-id="huevos-15">
+                            <div class="foto-etiqueta">
+                                <img src="../../Recursos/Imagenes/producto-huevos-15.jpg" alt="Cartón de 15 huevos cafés">
                             </div>
-                        </div>
-                        <a href="detalle-pedido.html?producto=huevos-6" class="btn boton-ordenar" data-producto-id="huevos-6">ORDENAR</a>
-                    </article>
-
-                    <article class="tarjeta-pedido" data-producto-id="huevos-4">
-                        <div class="imagen-producto">
-                            <img src="../../Recursos/Imagenes/producto-huevos-4.jpg" alt="Cartón de 4 huevos cafés">
-                        </div>
-                        <div class="info-producto">
-                            <h3 class="nombre-producto">Huevos</h3>
-                            <p class="detalle-producto">Cantidad: 4</p>
-                            <p class="detalle-producto">Color: cafés</p>
-                            <div class="fila-precio-disponibilidad">
-                                <span class="precio-producto" data-precio="650">₡650</span>
-                                <span class="disponibilidad disponible" data-disponibilidad="disponible">Disponible</span>
+                            <div class="cuerpo-etiqueta">
+                                <h3 class="nombre-etiqueta">Huevos</h3>
+                                <p class="detalle-etiqueta">Cantidad: 15</p>
+                                <p class="detalle-etiqueta">Color: cafés</p>
+                                <div class="pie-etiqueta">
+                                    <a href="detalle-pedido.html?producto=huevos-15" class="btn boton-ordenar boton-etiqueta" data-producto-id="huevos-15">ORDENAR</a>
+                                    <span class="sello-precio" data-precio="1800">₡1 800</span>
+                                </div>
                             </div>
-                        </div>
-                        <a href="detalle-pedido.html?producto=huevos-4" class="btn boton-ordenar" data-producto-id="huevos-4">ORDENAR</a>
-                    </article>
+                            <span class="cinta-disponibilidad disponible" data-disponibilidad="disponible">Disponible</span>
+                        </article>
 
+                        <article class="etiqueta-producto" data-producto-id="huevos-6">
+                            <div class="foto-etiqueta">
+                                <img src="../../Recursos/Imagenes/producto-huevos-6.jpg" alt="Cartón de 6 huevos cafés">
+                            </div>
+                            <div class="cuerpo-etiqueta">
+                                <h3 class="nombre-etiqueta">Huevos</h3>
+                                <p class="detalle-etiqueta">Cantidad: 6</p>
+                                <p class="detalle-etiqueta">Color: cafés</p>
+                                <div class="pie-etiqueta">
+                                    <a href="detalle-pedido.html?producto=huevos-6" class="btn boton-ordenar boton-etiqueta" data-producto-id="huevos-6">ORDENAR</a>
+                                    <span class="sello-precio" data-precio="900">₡900</span>
+                                </div>
+                            </div>
+                            <span class="cinta-disponibilidad pocas-unidades" data-disponibilidad="pocas-unidades">Pocas unidades</span>
+                        </article>
+
+                        <article class="etiqueta-producto" data-producto-id="huevos-4">
+                            <div class="foto-etiqueta">
+                                <img src="../../Recursos/Imagenes/producto-huevos-4.jpg" alt="Cartón de 4 huevos cafés">
+                            </div>
+                            <div class="cuerpo-etiqueta">
+                                <h3 class="nombre-etiqueta">Huevos</h3>
+                                <p class="detalle-etiqueta">Cantidad: 4</p>
+                                <p class="detalle-etiqueta">Color: cafés</p>
+                                <div class="pie-etiqueta">
+                                    <a href="detalle-pedido.html?producto=huevos-4" class="btn boton-ordenar boton-etiqueta" data-producto-id="huevos-4">ORDENAR</a>
+                                    <span class="sello-precio" data-precio="650">₡650</span>
+                                </div>
+                            </div>
+                            <span class="cinta-disponibilidad disponible" data-disponibilidad="disponible">Disponible</span>
+                        </article>
+
+                    </div>
                 </div>
-            </div>
 
-            <!-- Columna derecha: cortes de pollo. -->
-            <div class="columna-lista">
-                <h2 class="subtitulo-columna">Pollo</h2>
-                <div class="lista-productos">
+                <!-- Columna derecha: cortes de pollo. -->
+                <div class="columna-lista">
+                    <h2 class="encabezado-categoria">
+                        <span class="sello-categoria">Pollo</span>
+                    </h2>
+                    <div class="lista-productos">
 
-                    <!-- Único corte que el negocio vende hoy, por eso va de primero. -->
-                    <article class="tarjeta-pedido" data-producto-id="pollo-entero">
-                        <div class="imagen-producto">
-                            <img src="../../Recursos/Imagenes/producto-pollo-entero.jpg" alt="Pollo entero crudo">
-                        </div>
-                        <div class="info-producto">
-                            <h3 class="nombre-producto">Entero</h3>
-                            <p class="detalle-producto">Cantidad: —</p>
-                            <div class="fila-precio-disponibilidad">
-                                <span class="precio-producto" data-precio="5500">₡5 500</span>
-                                <span class="disponibilidad disponible" data-disponibilidad="disponible">Disponible</span>
+                        <!-- Único corte que el negocio vende hoy, por eso va de primero. -->
+                        <article class="etiqueta-producto" data-producto-id="pollo-entero">
+                            <div class="foto-etiqueta">
+                                <img src="../../Recursos/Imagenes/producto-pollo-entero.jpg" alt="Pollo entero crudo">
                             </div>
-                        </div>
-                        <a href="detalle-pedido.html?producto=pollo-entero" class="btn boton-ordenar" data-producto-id="pollo-entero">ORDENAR</a>
-                    </article>
-
-                    <!--
-                        Cortes que todavía no se venden: se muestran para que el
-                        cliente sepa que vendrán, pero sin precio (lo definirá el
-                        administrador) y con el botón deshabilitado de verdad.
-                        Tampoco se anuncia cantidad, porque no hay stock que ofrecer.
-                    -->
-                    <article class="tarjeta-pedido" data-producto-id="pollo-pechuga">
-                        <div class="imagen-producto">
-                            <img src="../../Recursos/Imagenes/producto-pollo-pechuga.jpg" alt="Pechuga de pollo cruda" class="imagen-atenuada">
-                        </div>
-                        <div class="info-producto">
-                            <h3 class="nombre-producto">Pechuga</h3>
-                            <div class="fila-precio-disponibilidad">
-                                <span class="precio-producto sin-precio" data-precio="">—</span>
-                                <span class="disponibilidad proximamente" data-disponibilidad="proximamente">Próximamente</span>
+                            <div class="cuerpo-etiqueta">
+                                <h3 class="nombre-etiqueta">Entero</h3>
+                                <p class="detalle-etiqueta">Cantidad: —</p>
+                                <div class="pie-etiqueta">
+                                    <a href="detalle-pedido.html?producto=pollo-entero" class="btn boton-ordenar boton-etiqueta" data-producto-id="pollo-entero">ORDENAR</a>
+                                    <span class="sello-precio" data-precio="5500">₡5 500</span>
+                                </div>
                             </div>
-                        </div>
-                        <button type="button" class="btn boton-ordenar boton-proximamente" data-producto-id="pollo-pechuga" disabled>Próximamente</button>
-                    </article>
+                            <span class="cinta-disponibilidad disponible" data-disponibilidad="disponible">Disponible</span>
+                        </article>
 
-                    <article class="tarjeta-pedido" data-producto-id="pollo-muslo">
-                        <div class="imagen-producto">
-                            <img src="../../Recursos/Imagenes/producto-pollo-muslo.jpg" alt="Muslos de pollo crudos" class="imagen-atenuada">
-                        </div>
-                        <div class="info-producto">
-                            <h3 class="nombre-producto">Muslo</h3>
-                            <div class="fila-precio-disponibilidad">
-                                <span class="precio-producto sin-precio" data-precio="">—</span>
-                                <span class="disponibilidad proximamente" data-disponibilidad="proximamente">Próximamente</span>
+                        <!--
+                            Cortes que todavía no se venden: se muestran para que el
+                            cliente sepa que vendrán, pero sin precio real (lo
+                            definirá el administrador; sello vacío con "—"), sin
+                            cinta de disponibilidad (no hay nada que anunciar
+                            todavía) y sin botón de pedido (no hay nada que pedir).
+                        -->
+                        <article class="etiqueta-producto proximamente" data-producto-id="pollo-pechuga">
+                            <div class="foto-etiqueta">
+                                <img src="../../Recursos/Imagenes/producto-pollo-pechuga.jpg" alt="Pechuga de pollo cruda" class="imagen-atenuada">
                             </div>
-                        </div>
-                        <button type="button" class="btn boton-ordenar boton-proximamente" data-producto-id="pollo-muslo" disabled>Próximamente</button>
-                    </article>
-
-                    <article class="tarjeta-pedido" data-producto-id="pollo-alas">
-                        <div class="imagen-producto">
-                            <img src="../../Recursos/Imagenes/producto-pollo-alas.jpg" alt="Alas de pollo crudas" class="imagen-atenuada">
-                        </div>
-                        <div class="info-producto">
-                            <h3 class="nombre-producto">Alas</h3>
-                            <div class="fila-precio-disponibilidad">
-                                <span class="precio-producto sin-precio" data-precio="">—</span>
-                                <span class="disponibilidad proximamente" data-disponibilidad="proximamente">Próximamente</span>
+                            <div class="cuerpo-etiqueta">
+                                <h3 class="nombre-etiqueta">Pechuga</h3>
+                                <div class="pie-etiqueta">
+                                    <span class="sello-precio sello-vacio" data-precio="">—</span>
+                                    <span class="aviso-sin-sello" data-disponibilidad="proximamente">Próximamente · sin sello aún</span>
+                                </div>
                             </div>
-                        </div>
-                        <button type="button" class="btn boton-ordenar boton-proximamente" data-producto-id="pollo-alas" disabled>Próximamente</button>
-                    </article>
+                        </article>
 
+                        <article class="etiqueta-producto proximamente" data-producto-id="pollo-muslo">
+                            <div class="foto-etiqueta">
+                                <img src="../../Recursos/Imagenes/producto-pollo-muslo.jpg" alt="Muslos de pollo crudos" class="imagen-atenuada">
+                            </div>
+                            <div class="cuerpo-etiqueta">
+                                <h3 class="nombre-etiqueta">Muslo</h3>
+                                <div class="pie-etiqueta">
+                                    <span class="sello-precio sello-vacio" data-precio="">—</span>
+                                    <span class="aviso-sin-sello" data-disponibilidad="proximamente">Próximamente · sin sello aún</span>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="etiqueta-producto proximamente" data-producto-id="pollo-alas">
+                            <div class="foto-etiqueta">
+                                <img src="../../Recursos/Imagenes/producto-pollo-alas.jpg" alt="Alas de pollo crudas" class="imagen-atenuada">
+                            </div>
+                            <div class="cuerpo-etiqueta">
+                                <h3 class="nombre-etiqueta">Alas</h3>
+                                <div class="pie-etiqueta">
+                                    <span class="sello-precio sello-vacio" data-precio="">—</span>
+                                    <span class="aviso-sin-sello" data-disponibilidad="proximamente">Próximamente · sin sello aún</span>
+                                </div>
+                            </div>
+                        </article>
+
+                    </div>
                 </div>
-            </div>
 
+            </div>
         </div>
     </main>
 
