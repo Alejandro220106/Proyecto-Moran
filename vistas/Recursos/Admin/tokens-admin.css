@@ -20,7 +20,12 @@
   --panel-admin: #202020;     /* fondo de tarjetas/paneles */
   --borde-admin: #333333;
   --campo-fondo: #2a2a2a;     /* inputs/select oscuros */
-  --campo-borde: #444444;
+  /* #757575 y no el #444444 que había: el borde es lo único que delimita el
+     campo (su relleno #2a2a2a contra el panel #202020 es 1.04:1, o sea
+     invisible), y #444444 daba 1.67:1 contra el panel, debajo del 3:1 que pide
+     WCAG para un elemento gráfico que identifica un control. Este da 3.54:1. */
+  --campo-borde: #757575;
+  --campo-lectura: #232323;   /* fondo de un campo readonly */
   --ambar-boton: #d99a4e;     /* acento de la marca */
   --ambar-boton-hover: #c4863a;
   /* Texto sobre el ámbar. Va oscuro, no blanco: el ámbar de marca es un tono
@@ -33,6 +38,9 @@
   --rojo-peligro: #dc3545;    /* acción destructiva (eliminar) */
   --rojo-peligro-hover: #b02a37;
   --texto-suave: #bdbdbd;     /* textos secundarios sobre el oscuro */
+  --nota-fondo: #2a2418;      /* aviso de "datos de ejemplo" */
+  --nota-texto: #e8dcc8;
+  --linea-fondo: #1a1a1a;     /* fila repetible dentro de un panel */
 
   /* Radios de esquina. Antes convivían cinco valores sueltos por el panel
      (20px, 12px, 10px, 6px, 5px), heredados de ir construyendo pantalla por

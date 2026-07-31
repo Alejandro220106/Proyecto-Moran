@@ -59,13 +59,23 @@ vistas/
     Cliente/          <- las 11 pantallas del sitio público
   Componentes/        <- encabezado.html, pie-pagina.html (plantillas compartidas)
   Recursos/
-    Admin/            <- CSS del panel (admin, tokens-admin, Home-admin,
-                         Inventario, GestionPedidos)
+    Admin/            <- CSS y JS del panel (admin, tokens-admin, Home-admin,
+                         Inventario, GestionPedidos, VentasManuales +
+                         recoleccion-diaria.js, ventas-manuales.js)
     Cliente/          <- CSS del sitio público (uno por página)
     Imagenes/         <- compartidas por ambos ámbitos
     estilos.css       <- header/footer compartidos: lo usan los dos ámbitos
     plantillas.js     <- idem
 ```
+
+Las 8 pantallas de `Paginas/Admin/` son: Home-admin (tablero) más los 7
+módulos — Inventario, GestionPedidos, BuscarPedidos, Facturas, Proveedores,
+RecoleccionDiaria y VentasManuales. Empleados y Reportes existieron hasta el
+2026-08-01 y se eliminaron (ver el registro de esa fecha).
+
+El JS específico de una pantalla vive junto a su CSS, en la carpeta del
+ámbito. Solo se agrega cuando la pantalla no se puede resolver sin él;
+`plantillas.js` sigue siendo el único JS compartido por todo el sitio.
 
 Regla de rutas: **toda página vive a dos niveles** (`Paginas/<ámbito>/`), así
 que referencia los recursos con `../../` — `../../Recursos/Admin/...`,
@@ -686,3 +696,186 @@ administración.
   pedir todavía, así que no se renderiza un control con apariencia de
   interactivo que en realidad no lleve a ningún lado (antes de este rediseño
   se resolvía con un `<button disabled>`).
+- **2026-08-01** (rama `Alejandro`): reestructuración del panel a partir del
+  rediseño de la base de datos. **La documentación de esquema y
+  requerimientos se mantiene fuera del repo a pedido del equipo**, así que
+  acá solo queda lo que se decidió y por qué, no su contenido.
+
+  **1. Se eliminó el módulo de empleados.** El módulo se descartó por
+  completo y se está quitando también de la base de datos, así que salió del
+  frontend: se borró `Empleados-admin.html` con su tarjeta de módulo, su
+  contador del resumen y su acceso rápido en `Home-admin.html`.
+
+  Se eliminó **también `Reportes-admin.html`**, que no estaba en el pedido
+  original. En el tablero se llamaba "Reportes", pero por dentro era el
+  historial de puestos de esos mismos empleados: seleccionar colaborador,
+  ficha con puesto y departamento, tabla de movimientos de puesto. Sin
+  empleados no le quedaba ningún dato que mostrar, y dejarla habría sido
+  justamente el enlace muerto que se quería evitar. Confirmado con el usuario
+  antes de borrarla. Si más adelante hacen falta reportes, el requerimiento
+  real habla de **reportes de ventas**, que se calculan agregando sobre las
+  ventas registradas — no hace falta una pantalla de historial de personal.
+
+  **2. Dos pantallas nuevas**, ambas en el ámbito admin porque son registro
+  interno, no vistas de cliente:
+
+  - **`RecoleccionDiaria-admin.html`**. Cubre un hueco real: hasta ahora los
+    huevos y los pollos existían en el sitio como **aves** (los lotes de
+    Inventario) o como **producto terminado** listo para vender (el catálogo),
+    pero no había dónde registrar el paso de una cosa a la otra. Campos:
+    fecha, día, lote de origen, producto (huevos/pollos) y cantidad.
+
+    Dos decisiones que conviene no revertir sin pensarlo:
+    **el lote no estaba en el pedido original** y se agregó porque el
+    registro no se puede guardar sin él — la recolección sale siempre de un
+    lote concreto, y en el caso de los pollos hay que descontarlos de ese
+    lote además de sumarlos al inventario. Y **el día no se digita**: se
+    deriva de la fecha en `recoleccion-diaria.js`, para que no pueda quedar
+    contradiciendo a la fecha.
+
+  - **`VentasManuales-admin.html`** + `VentasManuales.css` +
+    `ventas-manuales.js`. Registro interno de las ventas que pasan por fuera
+    del sitio (WhatsApp, ruta, mostrador), que hoy no dejan ningún rastro.
+    Campos: fecha y hora, nombre de cliente opcional, líneas de producto con
+    cantidad, y monto.
+
+    **Está diseñada para el celular**, y ese es el motivo de casi todo lo que
+    tiene distinto: se usa parado en la ruta, con una mano, apenas se entrega
+    el pedido. Campos de 48px de alto mínimo (el objetivo táctil que
+    recomiendan Apple y Google), letra de 16px —no es estético: Safari en iOS
+    hace zoom automático en cualquier campo con letra menor y deja la página
+    descuadrada—, una sola columna por defecto y el layout ancho recién a
+    partir de 700px. Es al revés que las otras hojas del panel, que arrancan
+    anchas y se apilan al final.
+
+    El **monto se digita, no se calcula**: el precio lo administra el
+    administrador y vive en la base de datos, así que hasta que exista esa
+    capa el sitio no tiene de dónde sacarlo sin inventarlo. El JS deja
+    anotado cómo pasar a calcularlo cuando el dato exista. El **nombre del
+    cliente es opcional** a propósito: obligarlo haría que se registren
+    clientes falsos para poder guardar ventas de mostrador.
+
+  **3. Detalle de las fechas en JavaScript.** Los dos scripts arman las
+  fechas a mano en vez de usar `new Date('AAAA-MM-DD')` o `toISOString()`.
+  No es preferencia de estilo: `new Date('2026-08-01')` se interpreta como
+  medianoche **UTC**, y en Costa Rica (UTC-6) eso cae el día anterior, así
+  que el día de la semana sale corrido. Verificado: el método directo
+  reporta "Viernes" donde corresponde "Sábado". Lo mismo con
+  `toISOString()`, que devolvería el día equivocado durante las últimas 6
+  horas de cada día — justo cuando se registra la recolección de la tarde.
+
+  **4. Datos de ejemplo visibles.** Las tablas de ambas pantallas llevan un
+  aviso `.nota-ejemplo` **visible en pantalla**, no solo un comentario HTML.
+  Es la misma lección de la sesión del 2026-07-28: un comentario protege a
+  quien lee el código, no a quien mira la pantalla en una demo.
+
+  **5. Auditoría con los cuatro agentes revisores**, y lo que encontró.
+
+  **El hallazgo más grave no era de las pantallas nuevas sino de todo el
+  panel: los botones no tenían indicador de foco de teclado, y encima se
+  volvían invisibles al enfocarse.** Bootstrap declara
+  `.btn:focus-visible { background-color: var(--bs-btn-hover-bg); … outline: 0 }`
+  pero define esas variables **solo dentro de las variantes** `.btn-primary`,
+  `.btn-danger`, etc. En este panel ningún botón usa una variante: todos son
+  `.btn` más una clase propia. Con las variables sin definir, cada declaración
+  queda inválida en tiempo de cómputo y cae a `unset` —no al valor de la regla
+  que perdió en la cascada—, así que el botón terminaba con fondo
+  transparente, borde transparente, `outline: 0` y `box-shadow: none`. Y gana
+  Bootstrap, porque `.btn:focus-visible` es (0,2,0) contra el (0,1,0) de
+  `.boton-ambar`. Con `:hover` no pasa: ahí sí hay reglas propias que empatan
+  en especificidad y ganan por ir después. Verificado descargando el CSS real
+  de Bootstrap 5.3.3 y confirmando que ninguna página admin usa una sola clase
+  `btn-*`. Corregido en `admin.css` con un anillo ámbar y la reposición del
+  fondo por familia de botón.
+
+  **Aviso: `Home-admin.css`, `Inventario.css` y `GestionPedidos.css` tienen el
+  mismo problema y NO se corrigieron.** Esas tres páginas no cargan
+  `admin.css`, así que necesitan su propia copia del bloque `:focus-visible`.
+  Quedó fuera del alcance de esta sesión.
+
+  Otras correcciones aplicadas, todas verificadas calculando el contraste real
+  con la fórmula de luminancia de WCAG, no a ojo:
+  - **La flecha del `<select>` era invisible**: `.campo-admin` cambiaba el
+    fondo del control pero no su `background-image`, así que seguía el chevron
+    de Bootstrap dibujado en `#343a40`, que sobre el `#2a2a2a` del campo da
+    **1.25:1**. Reemplazado por uno claro: 7.64:1.
+  - **`--campo-borde` pasó de `#444444` a `#757575`** (1.67:1 → **3.54:1**).
+    El borde es lo único que delimita el campo: su relleno contra el panel es
+    1.04:1, o sea invisible. Es un token, así que arregla las 8 pantallas.
+  - **`color-scheme: dark`** en `.pagina-admin`: sin eso el navegador dibuja
+    en paleta clara lo que pinta él —el ícono del calendario de
+    `<input type="date">` y su panel emergente—, y quedaba claro sobre oscuro.
+  - **El campo readonly perdía su estilo justo al enfocarse**: `.campo-admin:focus`
+    tiene la misma especificidad y va después, así que le devolvía el fondo y
+    el blanco, dejándolo idéntico a uno editable. Se repite el selector con
+    `:focus` y se le agrega borde punteado, porque el salto de fondo es de
+    1.09:1 y por sí solo no se percibe.
+  - **Al quitar una línea de producto el foco se caía al `<body>`**: el botón
+    que se acaba de tocar desaparece con la línea. Ahora pasa al botón de la
+    línea de arriba, o al de agregar.
+  - **Las tablas con scroll no eran alcanzables con teclado**: un `<div>` que
+    scrollea y no es enfocable no se puede desplazar sin mouse en Firefox ni
+    Safari. Llevan `tabindex="0"` + `role="region"` + `aria-label`.
+  - Dos clases (`.campo-producto`, `.campo-cantidad`) estaban aplicadas en el
+    HTML **sin existir en ninguna hoja** del ámbito admin; `.campo-cantidad`
+    además colisionaba de nombre con una del ámbito cliente que significa otra
+    cosa. Se quitaron: el grid ya coloca por posición. **De ahí salió la regla
+    de acotar toda la hoja de página bajo la clase de su `<main>`.**
+
+  **6. Convenciones nuevas que quedan establecidas** (no estaban escritas):
+  - **El JS de una pantalla vive junto a su CSS**, en la carpeta del ámbito, y
+    **usa la misma grafía que su CSS hermano**: `VentasManuales.css` va con
+    `VentasManuales.js`, no con `ventas-manuales.js`. `plantillas.js` no sirve
+    de precedente porque es una sola palabra. Se agrega solo cuando la
+    pantalla no se puede resolver sin él.
+  - **Los `name` de los campos usan el nombre de la columna de la base de
+    datos** (`fecha`, `cantidad`, `id_lote`, `tipo_producto`, `fecha_venta`,
+    `comprador_nombre`), no el patrón `entidad_campo` de las tres páginas
+    admin anteriores. Esas se escribieron antes de que existiera el esquema;
+    ahora que existe, que el formulario y la tabla se llamen igual ahorra una
+    capa de traducción en el PHP que viene.
+  - **La hoja propia de una página acota sus reglas** bajo la clase de su
+    `<main>` (`.pagina-venta-manual`), para que un nombre repetido no pueda
+    alcanzar a otra pantalla.
+
+  **7. Pendientes detectados y no tocados** (son decisiones de producto o de
+  esquema, no de frontend):
+  - Los estados de pedido del frontend (`pendiente / preparacion /
+    entregado / cancelado`, en 9 lugares de 2 páginas) **no coinciden** con
+    los que define la base de datos, donde "en preparación" no existe. Hay
+    que decidir cuál de los dos manda antes de conectar.
+  - `Facturas-admin.html` no tiene tabla detrás: folio, estado y totales no
+    tienen dónde guardarse. La factura se deriva de las ventas, no se
+    almacena.
+  - No existe ninguna pantalla para **dar de alta un lote**, siendo un
+    requerimiento de prioridad alta, y la tabla de lotes de Inventario no
+    muestra varios campos que el esquema sí define.
+  - Los puntos de entrega de `detalle-pedido.html` (hasta 7, cada uno con su
+    cantidad) no calzan con lo que la base de datos puede guardar (dos
+    campos de texto, sin cantidad).
+  - La tabla "Componentes" de Inventario no existe en el esquema.
+  - No hay forma de distinguir un administrador de un cliente en los datos
+    de usuario, así que el enlace "Panel administrativo" del login sigue
+    siendo provisional y todavía no hay a qué conectarlo.
+  - **`productos.html` muestra precios concretos al cliente** (₡3 500,
+    ₡1 800, ₡900, ₡650, ₡5 500). Están anotados como marcador en un
+    comentario, pero es una pantalla de cliente y el comentario no lo ve
+    nadie. Contradice la regla de que el precio es una variable del
+    administrador y nunca un monto fijo. Lo mismo con "Disponible" y "Pocas
+    unidades", que son existencias inventadas sin marcar.
+  - `Home-admin.css`, `Inventario.css` y `GestionPedidos.css` necesitan el
+    bloque `:focus-visible` del punto 5.
+  - `catalogo.html` quedó **huérfana**: ninguna página del sitio la enlaza.
+  - Los 4 íconos de login social de `login.html` siguen en `href="#"`.
+
+  **8. El módulo de inventario no se tocó**, a la espera del detalle de los
+  cambios que pidió Franklin. La estructura actual quedó relevada: 4 tablas
+  de solo lectura (productos terminados, lotes, insumos, componentes), sin un
+  solo formulario ni input, o sea sin ninguna forma de dar de alta, editar ni
+  mover existencias.
+
+  **9. Nota de entorno**: en esta máquina no hay Playwright ni ningún
+  navegador headless, a diferencia de las sesiones anteriores. Todo se
+  verificó sirviendo `vistas/` con `python -m http.server` y comprobando
+  códigos HTTP, balance de etiquetas, sintaxis de JS y ratios de contraste
+  por cálculo — pero **no hubo revisión visual en navegador**.

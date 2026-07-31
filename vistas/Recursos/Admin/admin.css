@@ -2,8 +2,8 @@
   Sistema de diseño COMPARTIDO del panel de administración.
 
   Lo usan las páginas admin nuevas (BuscarPedidos-admin, Facturas-admin,
-  Proveedores-admin) para no repetir en cada una las mismas tablas, chips de
-  estado y botones.
+  Proveedores-admin, RecoleccionDiaria-admin, VentasManuales-admin) para no
+  repetir en cada una las mismas tablas, chips de estado y botones.
 
   Los colores NO se declaran acá: viven en tokens-admin.css, que cargan las 8
   pantallas del panel (incluidas Home-admin / Inventario / GestionPedidos, que
@@ -23,6 +23,60 @@
   background-color: var(--fondo-admin);
   min-height: 100vh;
   padding: 45px 25px;
+  color: #ffffff;
+  /* Le avisa al navegador que acá manda la paleta oscura, para que dibuje en
+     oscuro los controles que pinta él y no nosotros: el ícono del calendario de
+     <input type="date">, el panel emergente de fecha y las barras de scroll.
+     Sin esto salen en paleta clara sobre los campos #2a2a2a. */
+  color-scheme: dark;
+}
+
+/* ---- Foco de teclado en los botones ---- */
+/*
+  Esto NO es un ajuste estético: sin estas reglas los botones del panel se
+  vuelven invisibles justo cuando hay que verlos.
+
+  Bootstrap declara
+    .btn:focus-visible { background-color: var(--bs-btn-hover-bg);
+                         border-color: var(--bs-btn-hover-border-color);
+                         color: var(--bs-btn-hover-color);
+                         outline: 0; box-shadow: var(--bs-btn-focus-box-shadow) }
+  pero define esas variables SOLO dentro de las variantes .btn-primary,
+  .btn-danger, etc. En este panel ningún botón usa una variante: todos son .btn
+  más una clase propia (.boton-ambar, .boton-exito…). Con las variables sin
+  definir, cada declaración queda inválida en tiempo de cómputo y cae a
+  "unset" — no al valor de la regla que perdió en la cascada. Resultado: fondo
+  transparente, borde transparente, outline 0 y box-shadow none.
+
+  Y gana Bootstrap, porque .btn:focus-visible tiene especificidad (0,2,0)
+  contra el (0,1,0) de .boton-ambar. Con hover no pasa: ahí sí tenemos reglas
+  :hover propias, que empatan en especificidad y ganan por ir después.
+
+  Así que hay que reponer las tres cosas a mano: el anillo, y el fondo y color
+  de cada familia de botón.
+*/
+.pagina-admin .btn:focus-visible {
+  /* Ámbar de marca: 6.74:1 contra el panel y 7.20:1 contra el fondo de una
+     línea repetible. El offset lo despega del botón para que se lea como
+     anillo y no como borde. */
+  outline: 2px solid var(--ambar-boton);
+  outline-offset: 2px;
+  box-shadow: none;
+}
+
+.pagina-admin .boton-ambar:focus-visible,
+.pagina-admin .boton-tabla:focus-visible {
+  background-color: var(--ambar-boton);
+  color: var(--ambar-texto);
+}
+
+.pagina-admin .boton-exito:focus-visible {
+  background-color: var(--verde-guardar);
+  color: #ffffff;
+}
+
+.pagina-admin .boton-peligro:focus-visible {
+  background-color: var(--rojo-peligro);
   color: #ffffff;
 }
 
@@ -106,6 +160,18 @@
   text-transform: uppercase;
 }
 
+/* Texto de ayuda debajo de un campo. Va enganchado con aria-describedby, no
+   suelto: así el lector de pantalla lo lee junto con la etiqueta en vez de
+   dejarlo como un texto huérfano que aparece después del campo.
+   --texto-suave da 8.67:1 sobre el fondo del panel, de sobra para AA aunque
+   sea letra chica. */
+.ayuda-campo {
+  margin-top: 6px;
+  color: var(--texto-suave);
+  font-size: 0.8rem;
+  line-height: 1.35;
+}
+
 /* Inputs/selects/textareas oscuros, sobre la base de Bootstrap. */
 .campo-admin {
   background-color: var(--campo-fondo);
@@ -117,6 +183,37 @@
    (el #8a8a8a que había antes se quedaba en 4.16:1, debajo del 4.5:1 de AA). */
 .campo-admin::placeholder {
   color: #9a9a9a;
+}
+
+/* La flecha del <select>. .campo-admin cambia el fondo del control pero no su
+   background-image, así que seguía vigente el chevron de Bootstrap, dibujado en
+   #343a40: sobre el #2a2a2a del campo da 1.25:1, o sea invisible, cuando es
+   justamente lo que identifica al control como desplegable (WCAG pide 3:1).
+   Este gris da 7.64:1. */
+.pagina-admin .form-select.campo-admin {
+  --bs-form-select-bg-img: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23bdbdbd' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+}
+
+/* Un campo de solo lectura tiene que verse distinto de uno editable, o la
+   persona intenta escribir en él y no entiende por qué no pasa nada. Bootstrap
+   no los diferencia sobre fondo oscuro. Aplica también a los totales
+   calculados de Facturas, que ya eran readonly.
+
+   Se repite el selector con :focus porque si no, la regla .campo-admin:focus de
+   abajo —misma especificidad, declarada después— le devuelve el fondo y el
+   blanco al enfocarlo, y el campo termina viéndose idéntico a uno editable justo
+   cuando la persona está parada en él. El campo es enfocable a propósito (es
+   readonly y no disabled, para que se pueda leer con teclado).
+
+   El borde punteado hace el trabajo pesado: el salto de fondo #232323 contra
+   #2a2a2a es de 1.09:1, imperceptible. Sin él, la única señal sería el color del
+   texto. */
+.campo-admin[readonly],
+.campo-admin[readonly]:focus {
+  background-color: var(--campo-lectura);
+  color: var(--texto-suave);
+  border-style: dashed;
+  cursor: default;
 }
 
 .campo-admin:focus {
@@ -265,6 +362,73 @@
   flex-wrap: wrap;
   gap: 12px;
   margin-top: 18px;
+}
+
+/* ---- Aviso de datos de ejemplo ---- */
+/* Va VISIBLE en la página, no como comentario HTML: un comentario protege al
+   que lee el código, no al que mira la pantalla, y estas tablas se muestran en
+   demos antes de que exista la base de datos. Sin este aviso, una fila de
+   relleno pasa por un registro real. Ámbar sobre el fondo del panel para que
+   se lea como advertencia y no como contenido. */
+.nota-ejemplo {
+  background-color: var(--nota-fondo);
+  border-left: 4px solid var(--ambar-boton);
+  border-radius: var(--radio-control);
+  padding: 12px 16px;
+  margin-bottom: 18px;
+  color: var(--nota-texto);
+  /* 1rem y no un tamaño menor: una advertencia más chica que el contenido que
+     advierte se lee como pie de página y se salta. */
+  font-size: 1rem;
+}
+
+.nota-ejemplo strong {
+  color: var(--ambar-boton);
+}
+
+/* ---- Dato ausente en una tabla ---- */
+/* Para distinguir "no hay dato" de un valor real: gris e itálica, para que
+   "Sin nombre" se lea como la ausencia del nombre y no como el nombre. Vive acá
+   y no en la hoja de una página porque cualquier tabla del panel lo necesita. */
+.sin-dato {
+  color: var(--texto-suave);
+  font-style: italic;
+}
+
+/* ---- Campo de monto con símbolo de moneda ---- */
+/*
+  El ₡ va como elemento aparte y no dentro del input porque los campos de monto
+  son type="number": si el símbolo formara parte del valor, el navegador lo
+  rechazaría, y además el teclado numérico del celular no lo puede escribir.
+  El símbolo va con aria-hidden en el HTML — el texto de ayuda del campo ya dice
+  que el monto es en colones, y repetirlo suelto solo estorba.
+
+  Está acá y no en la hoja de una página porque mostrar montos no es propio de
+  una sola pantalla: Facturas ya tiene campos de monto (hoy resueltos con un
+  placeholder "₡0", que es peor: el placeholder desaparece al escribir).
+*/
+.campo-con-simbolo {
+  display: flex;
+  align-items: stretch;
+}
+
+.simbolo-moneda {
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  background-color: var(--campo-fondo);
+  border: 1px solid var(--campo-borde);
+  border-right: none;
+  border-radius: var(--radio-control) 0 0 var(--radio-control);
+  color: var(--ambar-boton);
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+/* El campo pierde la esquina izquierda para quedar pegado al símbolo. */
+.campo-con-simbolo .campo-admin {
+  border-radius: 0 var(--radio-control) var(--radio-control) 0;
+  flex: 1;
 }
 
 /* ---- Bloque de datos de solo lectura (ficha/resumen) ---- */

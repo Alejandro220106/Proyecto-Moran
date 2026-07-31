@@ -1,0 +1,172 @@
+/*
+  Ventas manuales (vistas/Paginas/Admin/VentasManuales-admin.html).
+
+  NO es una hoja completa: se carga DESPUÉS de admin.css y solo agranda lo
+  necesario para que la pantalla se pueda usar con el pulgar. Todo lo demás
+  —panel, tabla, chips, botones ámbar, campo de monto con símbolo, marca de
+  dato ausente— lo sigue poniendo admin.css, así que esta pantalla no se
+  desincroniza del resto del panel.
+
+  Todo lo de acá va acotado bajo `.pagina-venta-manual`. No es ceremonia: ya
+  pasó una vez en este proyecto que `.campo-cantidad` significara una cosa en
+  el ámbito cliente (detalle-pedido.css) y otra acá. Acotando, un nombre
+  repetido no puede alcanzar a la otra pantalla.
+
+  Convención del proyecto: clases de Bootstrap en inglés, clases propias en
+  español. Ver la skill moran-frontend y CONTEXTO_PROYECTO.md.
+
+  Los colores vienen de tokens-admin.css; los pocos literales que quedan
+  (estados del botón de quitar) son propios de este control y no se usan en
+  ningún otro lado.
+
+  POR QUÉ ES DISTINTA AL RESTO DEL PANEL
+  Los demás módulos se usan sentado, frente a una computadora. Este se usa
+  parado en la ruta, con una mano, apenas se entrega el pedido. Eso cambia el
+  tamaño mínimo de todo lo que se toca y el orden en que aparece.
+*/
+
+
+/* ---- Campos grandes ---- */
+/*
+  48px de alto mínimo: es el objetivo táctil que recomiendan tanto Apple como
+  Google, y por debajo de eso se falla el toque con el pulgar en movimiento.
+  Bootstrap deja los campos en ~38px, que alcanza para mouse pero no para
+  esto.
+
+  16px de tamaño de letra NO es una elección estética: Safari en iOS hace zoom
+  automático sobre cualquier campo con letra menor a 16px al enfocarlo, y
+  después deja la página descuadrada. Es la razón por la que no se usa un
+  tamaño más chico aunque visualmente quedaría más compacto.
+*/
+.pagina-venta-manual .campo-grande {
+  min-height: 48px;
+  font-size: 1rem;
+}
+
+/* El selector nativo necesita algo más de aire a la derecha para que la
+   flecha no se monte sobre el nombre del producto. */
+.pagina-venta-manual select.campo-grande {
+  padding-right: 40px;
+}
+
+/* La marca "(opcional)" va con el peso normal para que no compita con el
+   nombre del campo, que es lo que se lee primero. */
+.pagina-venta-manual .marca-opcional {
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--texto-suave);
+}
+
+/* ---- Bloque de productos ---- */
+/* El fieldset trae borde y margen propios del navegador; se limpian y se le
+   deja solo la separación que hace falta. El <legend> no necesita reglas de
+   layout: el Reboot de Bootstrap ya le pone float/width/padding, y conviene
+   dejárselo — forzarlo a float:none lo devuelve al camino del "rendered
+   legend", donde el navegador le abre una muesca al borde del fieldset. */
+.pagina-venta-manual .bloque-productos {
+  border: none;
+  padding: 0;
+  margin: 26px 0;
+}
+
+.pagina-venta-manual .titulo-bloque {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--borde-admin);
+}
+
+/*
+  Cada línea es producto + cantidad + quitar.
+
+  Arranca apilada (una sola columna) porque es el caso del celular, que es
+  para lo que se hizo la pantalla; el layout de escritorio llega después en
+  el media query. Es al revés de las otras hojas del panel, que arrancan
+  anchas y se apilan al final — acá el móvil es el caso principal, no la
+  excepción.
+
+  El fondo propio de cada línea es lo que deja ver dónde termina un producto y
+  empieza el siguiente: sin eso, con tres o cuatro líneas, los campos se leen
+  como una sola lista larga.
+*/
+.pagina-venta-manual .linea-producto {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+  margin-bottom: 14px;
+  background-color: var(--linea-fondo);
+  border: 1px solid var(--borde-admin);
+  border-radius: var(--radio-panel);
+}
+
+.pagina-venta-manual .boton-quitar-linea {
+  min-height: 48px;
+  background-color: transparent;
+  border: 1px solid var(--rojo-peligro);
+  border-radius: var(--radio-control);
+  color: #f1919b;
+  font-weight: 700;
+}
+
+.pagina-venta-manual .boton-quitar-linea:hover {
+  background-color: var(--rojo-peligro);
+  color: #ffffff;
+}
+
+/* El anillo de foco lo pone admin.css; acá solo se repone el borde rojo, que
+   Bootstrap deja en transparent al enfocar (ver el comentario largo de
+   .pagina-admin .btn:focus-visible). */
+.pagina-venta-manual .boton-quitar-linea:focus-visible {
+  border-color: var(--rojo-peligro);
+  color: #f1919b;
+}
+
+/*
+  El botón de quitar de la primera línea nace deshabilitado (una venta sin
+  productos no existe). Bootstrap le baja la opacidad a 0.65 a todo botón
+  deshabilitado y sobre este fondo oscuro el texto queda ilegible — el mismo
+  problema que ya se corrigió en los botones "Próximamente" del catálogo. Se
+  fija la opacidad y se usa un gris que sí contrasta: 6.19:1, contra los
+  3.36:1 que daría dejando actuar a Bootstrap.
+*/
+.pagina-venta-manual .boton-quitar-linea:disabled {
+  opacity: 1;
+  border-color: #4a4a4a;
+  color: #9a9a9a;
+}
+
+.pagina-venta-manual .boton-agregar-linea {
+  width: 100%;
+  min-height: 48px;
+}
+
+/* ---- Botón de guardar ---- */
+/* Ancho completo y alto generoso: es la acción final y la que más se toca. */
+.pagina-venta-manual .boton-guardar {
+  width: 100%;
+  min-height: 54px;
+  font-size: 1.05rem;
+}
+
+/* ---- Pantallas anchas ---- */
+/*
+  Recién a partir de 700px la línea de producto pasa a una sola fila. El
+  ancho de la columna de cantidad es fijo y chico porque son uno o dos
+  dígitos; el producto se queda con todo el resto.
+  El botón de quitar se alinea abajo para que quede a la altura de los campos
+  y no de sus etiquetas.
+*/
+@media (min-width: 700px) {
+  .pagina-venta-manual .linea-producto {
+    grid-template-columns: 1fr 110px auto;
+    align-items: end;
+  }
+
+  .pagina-venta-manual .boton-agregar-linea,
+  .pagina-venta-manual .boton-guardar {
+    width: auto;
+    min-width: 240px;
+  }
+}

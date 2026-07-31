@@ -11,10 +11,13 @@
   el header que carga es el del cliente (logo, carrito, "Sobre nosotros"),
   que no corresponde a una pantalla de administración.
 
-  Los cinco módulos ya existen como páginas reales, así que todas las
+  Los siete módulos ya existen como páginas reales, así que todas las
   tarjetas son <a href> a su módulo (Inventario, GestionPedidos-admin,
-  BuscarPedidos-admin, Facturas-admin, Proveedores-admin), y los
-  "Accesos rápidos" también.
+  BuscarPedidos-admin, Facturas-admin, Proveedores-admin,
+  RecoleccionDiaria-admin, VentasManuales-admin), y los "Accesos rápidos"
+  también. Los dos accesos rápidos nuevos van de primeros porque son las
+  acciones que más se repiten en el día a día: registrar lo que se recolectó
+  y registrar una venta de ruta.
 
   Empleados y Reportes ya no están: el módulo de empleados se descartó por
   completo (se está quitando también de la base de datos) y Reportes era, por
@@ -123,6 +126,33 @@
                     <p>Registro y control de proveedores.</p>
                     <span>Ir al módulo →</span>
                 </a>
+
+                <a href="RecoleccionDiaria-admin.html" class="tarjeta-modulo" id="modulo-recoleccion">
+                    <h3>
+                        <!-- Canasta con un huevo: es lo que se recoge cada día. -->
+                        <svg class="icono-modulo" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M3 10.5h18l-1.8 8.2a2 2 0 0 1-2 1.6H6.8a2 2 0 0 1-2-1.6Z"/>
+                            <path d="M8.5 10.5c0-2.8 1.6-5 3.5-5s3.5 2.2 3.5 5"/>
+                        </svg>
+                        Recolección diaria
+                    </h3>
+                    <p>Registro de huevos recolectados y pollos procesados.</p>
+                    <span>Ir al módulo →</span>
+                </a>
+
+                <a href="VentasManuales-admin.html" class="tarjeta-modulo" id="modulo-ventas-manuales">
+                    <h3>
+                        <!-- Billete con moneda: venta cobrada de mano en mano. -->
+                        <svg class="icono-modulo" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M2.5 6.5h15v8h-15Z"/>
+                            <circle cx="10" cy="10.5" r="2.2"/>
+                            <path d="M6 17.5h15v-8"/>
+                        </svg>
+                        Ventas manuales
+                    </h3>
+                    <p>Registro de ventas de ruta, mostrador y encargos.</p>
+                    <span>Ir al módulo →</span>
+                </a>
             </div>
         </section>
 
@@ -159,6 +189,8 @@
               tiene formulario de alta; queda pendiente para cuando se agregue.
             -->
             <div class="acciones-rapidas">
+                <a href="VentasManuales-admin.html#formulario-venta-manual" class="btn boton-accion-rapida" id="boton-nueva-venta-manual">Registrar venta manual</a>
+                <a href="RecoleccionDiaria-admin.html#formulario-recoleccion" class="btn boton-accion-rapida" id="boton-nueva-recoleccion">Registrar recolección</a>
                 <a href="GestionPedidos-admin.html" class="btn boton-accion-rapida" id="boton-nuevo-pedido">Nuevo pedido</a>
                 <a href="Facturas-admin.html#formulario-nueva-factura" class="btn boton-accion-rapida" id="boton-nueva-factura">Nueva factura</a>
                 <a href="Proveedores-admin.html#formulario-proveedor" class="btn boton-accion-rapida" id="boton-agregar-proveedor">Agregar proveedor</a>
