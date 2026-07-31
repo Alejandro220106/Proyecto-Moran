@@ -52,8 +52,11 @@
   gap: 25px;
 }
 
-/* Las siete tarjetas de módulo son <a> (todos los módulos ya existen como
-   página real); el reset de decoración/display es para eso. */
+/* Las tarjetas de módulo son <a> (todos los módulos que aparecen ya existen
+   como página real); el reset de decoración/display es para eso. No se fija
+   la cantidad en este comentario a propósito: los módulos entran y salen
+   —empleados y reportes se eliminaron— y el grid es auto-fit, así que el
+   estilo no depende de cuántos haya. */
 .tarjeta-modulo {
   display: block;
   background-color: var(--panel-admin);

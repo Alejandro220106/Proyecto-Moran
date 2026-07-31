@@ -2,8 +2,8 @@
   Sistema de diseño COMPARTIDO del panel de administración.
 
   Lo usan las páginas admin nuevas (BuscarPedidos-admin, Facturas-admin,
-  Empleados-admin, Reportes-admin, Proveedores-admin) para no repetir en
-  cada una las mismas tablas, chips de estado y botones.
+  Proveedores-admin) para no repetir en cada una las mismas tablas, chips de
+  estado y botones.
 
   Los colores NO se declaran acá: viven en tokens-admin.css, que cargan las 8
   pantallas del panel (incluidas Home-admin / Inventario / GestionPedidos, que

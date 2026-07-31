@@ -11,10 +11,16 @@
   el header que carga es el del cliente (logo, carrito, "Sobre nosotros"),
   que no corresponde a una pantalla de administración.
 
-  Los siete módulos ya existen como páginas reales, así que todas las
+  Los cinco módulos ya existen como páginas reales, así que todas las
   tarjetas son <a href> a su módulo (Inventario, GestionPedidos-admin,
-  BuscarPedidos-admin, Facturas-admin, Empleados-admin, Reportes-admin,
-  Proveedores-admin), y los "Accesos rápidos" también.
+  BuscarPedidos-admin, Facturas-admin, Proveedores-admin), y los
+  "Accesos rápidos" también.
+
+  Empleados y Reportes ya no están: el módulo de empleados se descartó por
+  completo (se está quitando también de la base de datos) y Reportes era, por
+  dentro, el historial de puestos de esos mismos empleados —sin empleados no
+  le quedaba ningún dato que reportar—, así que se eliminaron los dos en vez
+  de dejar tarjetas que llevaran a pantallas vacías.
   Los datos del resumen (0, "Administrador", "1.0.0", "Hoy") son
   marcadores; en producción vendrán de la base de datos. Los ids ya están
   listos para engancharlos junto con el JavaScript de cada módulo.
@@ -104,30 +110,6 @@
                     <span>Ir al módulo →</span>
                 </a>
 
-                <a href="Empleados-admin.html" class="tarjeta-modulo" id="modulo-empleados">
-                    <h3>
-                        <svg class="icono-modulo" viewBox="0 0 24 24" aria-hidden="true">
-                            <circle cx="12" cy="8" r="3.5"/>
-                            <path d="M5 20.5c0-3.9 3.1-6.5 7-6.5s7 2.6 7 6.5"/>
-                        </svg>
-                        Empleados
-                    </h3>
-                    <p>Administración del personal.</p>
-                    <span>Ir al módulo →</span>
-                </a>
-
-                <a href="Reportes-admin.html" class="tarjeta-modulo" id="modulo-reportes">
-                    <h3>
-                        <svg class="icono-modulo" viewBox="0 0 24 24" aria-hidden="true">
-                            <path d="M3.5 20.5h17"/>
-                            <path d="M7 20.5v-6M12 20.5V5.5M17 20.5v-9"/>
-                        </svg>
-                        Reportes
-                    </h3>
-                    <p>Estadísticas e informes del sistema.</p>
-                    <span>Ir al módulo →</span>
-                </a>
-
                 <a href="Proveedores-admin.html" class="tarjeta-modulo" id="modulo-proveedores">
                     <h3>
                         <svg class="icono-modulo" viewBox="0 0 24 24" aria-hidden="true">
@@ -151,11 +133,6 @@
                 <div class="tarjeta-resumen">
                     <span id="total-pedidos">0</span>
                     <p>Pedidos</p>
-                </div>
-
-                <div class="tarjeta-resumen">
-                    <span id="total-empleados">0</span>
-                    <p>Empleados</p>
                 </div>
 
                 <div class="tarjeta-resumen">
@@ -183,10 +160,8 @@
             -->
             <div class="acciones-rapidas">
                 <a href="GestionPedidos-admin.html" class="btn boton-accion-rapida" id="boton-nuevo-pedido">Nuevo pedido</a>
-                <a href="Empleados-admin.html#formulario-empleado" class="btn boton-accion-rapida" id="boton-nuevo-empleado">Registrar empleado</a>
                 <a href="Facturas-admin.html#formulario-nueva-factura" class="btn boton-accion-rapida" id="boton-nueva-factura">Nueva factura</a>
                 <a href="Proveedores-admin.html#formulario-proveedor" class="btn boton-accion-rapida" id="boton-agregar-proveedor">Agregar proveedor</a>
-                <a href="Reportes-admin.html" class="btn boton-accion-rapida" id="boton-ver-reportes">Ver reportes</a>
             </div>
         </section>
 
