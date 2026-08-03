@@ -1072,6 +1072,26 @@ administración.
 
   Quedan **18 de 19 páginas con la jerarquía correcta**.
 
+  **Decisión del usuario sobre lo que falta**: los módulos pendientes no se
+  construyen ahora, se **marcan como "Próximamente"** y se agregarán cuando el
+  sitio esté casi completo. Se aplicó así:
+  - `Home-admin.html` gana dos tarjetas de módulo marcadas: **Registro de
+    lotes** (RF-28, prioridad alta) y **Mortalidad** (tabla completa del esquema
+    sin ninguna pantalla). Van como `<div>` y **no como `<a>`**, siguiendo el
+    criterio que el proyecto ya fijó con los productos "Próximamente" del
+    catálogo: no se renderiza un control con apariencia de interactivo que no
+    lleve a ningún lado. Sin `href` tampoco reciben foco de teclado.
+  - `Inventario.html` gana un aviso **visible** de que la pantalla es solo de
+    consulta, y de qué falta. Va visible y no en un comentario porque quien la
+    abre busca el botón de agregar hasta que se rinde.
+  - La atenuación es `opacity: 0.85`, la misma del catálogo, y **no menos**: con
+    0.6 el texto secundario cae a 4.13:1 y deja de cumplir AA; con 0.85 queda en
+    6.85:1.
+  - Detalle de cascada: el aviso va como `.tarjeta-modulo .aviso-proximamente`
+    y no como `.aviso-proximamente` a secas, porque `.tarjeta-modulo span` pinta
+    de ámbar todos los `<span>` de las tarjetas y le habría ganado —(0,1,1)
+    contra (0,1,0)—, dejando el aviso con aspecto de enlace.
+
   **La que falta es `index.html`, y su problema no son los encabezados: la
   página está vacía.** El `<main>` no tiene contenido y su hoja
   (`Recursos/Cliente/index.css`) es un archivo de cero bytes. Es la raíz del

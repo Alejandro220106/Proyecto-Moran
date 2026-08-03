@@ -48,6 +48,26 @@
   color: #bdbdbd;
 }
 
+/* Aviso de que el módulo todavía es de solo lectura. Mismo tratamiento que la
+   nota de "datos de ejemplo" del panel (admin.css): fondo cálido apagado y
+   filete ámbar a la izquierda, para que se lea como advertencia y no como
+   contenido. Los colores van literales porque esta hoja no carga admin.css.
+   #e8dcc8 sobre #2a2418 da 11.37:1. */
+.nota-pendiente {
+  max-width: 1100px;
+  margin: 0 auto 30px;
+  background-color: #2a2418;
+  border-left: 4px solid var(--ambar-boton);
+  border-radius: var(--radio-control);
+  padding: 14px 18px;
+  color: #e8dcc8;
+  line-height: 1.55;
+}
+
+.nota-pendiente strong {
+  color: var(--ambar-boton);
+}
+
 .grid-inventario {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(520px, 1fr));

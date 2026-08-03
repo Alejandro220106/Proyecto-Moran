@@ -112,6 +112,47 @@
   font-weight: 700;
 }
 
+/* ---- Módulos pendientes ---- */
+/*
+  Un módulo cuya página todavía no existe. Se atenúa la tarjeta completa y se
+  cambia el borde a punteado, que es la señal de "esto no está terminado" sin
+  necesidad de leer el rótulo.
+
+  La opacidad es 0.85, la misma que usan los productos "Próximamente" del
+  catálogo, y no menos: con 0.6 el texto secundario (#c0c0c0 sobre el panel)
+  cae a 4.13:1 y deja de cumplir AA. Con 0.85 queda en 6.85:1.
+
+  En el HTML son <div> y no <a>, así que no reciben foco de teclado ni cursor
+  de mano: no hay a dónde ir todavía.
+*/
+.tarjeta-modulo.proximamente {
+  opacity: 0.85;
+  border-style: dashed;
+  cursor: default;
+}
+
+/* El hover ámbar del resto de tarjetas no aplica acá: prometería que hay algo
+   que tocar. */
+.tarjeta-modulo.proximamente:hover {
+  border-color: var(--borde-admin);
+}
+
+/* Ocupa el lugar del "Ir al módulo →" de las tarjetas activas, pero en gris y
+   sin flecha: no invita a hacer clic.
+
+   Va escrito como ".tarjeta-modulo .aviso-proximamente" y no como
+   ".aviso-proximamente" a secas porque tiene que ganarle a ".tarjeta-modulo
+   span", que pinta de ámbar todos los <span> de las tarjetas. Con una sola
+   clase perdería —(0,1,0) contra (0,1,1)— y el aviso saldría ámbar, como si
+   fuera un enlace. */
+.tarjeta-modulo .aviso-proximamente {
+  color: var(--texto-suave);
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
 /* ---- Resumen del sistema ---- */
 .grid-resumen {
   display: grid;
