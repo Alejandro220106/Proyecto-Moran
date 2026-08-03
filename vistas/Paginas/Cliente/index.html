@@ -1,9 +1,19 @@
 <!DOCTYPE html>
 <!--
-  Página de inicio ("Productos"). Convertida desde index.php: ya no usa
-  PHP ni require_once para el header/footer -esos ahora son plantillas
-  HTML compartidas que se cargan con "../../Recursos/plantillas.js" (ver
-  Componentes/encabezado.html y pie-pagina.html)-.
+  Página de inicio. Convertida desde index.php: ya no usa PHP ni require_once
+  para el header/footer -esos ahora son plantillas HTML compartidas que se
+  cargan con "../../Recursos/plantillas.js" (ver Componentes/encabezado.html y
+  pie-pagina.html)-.
+
+  ESTA PÁGINA ESTÁ VACÍA. El <main> no tiene contenido y su hoja de estilos
+  (Recursos/Cliente/index.css) es un archivo de cero bytes. Es la raíz del
+  sitio: vistas/index.html redirige acá, así que es lo primero que ve quien
+  entra, y hoy muestra únicamente el header y el footer con un hueco en medio.
+
+  El <h1> de abajo sólo evita que el documento se quede sin tema —sin él, los
+  únicos encabezados de la página serían los del footer—, pero NO resuelve el
+  problema de fondo: falta construir la portada. Pendiente de decidir qué va
+  acá (bienvenida, productos destacados, acceso directo al catálogo).
 -->
 <html lang="es">
 <head>
@@ -19,7 +29,8 @@
     <div id="encabezado"></div>
 
     <main class="inicio">
-
+        <!-- Ver el comentario de cabecera: la portada está sin construir. -->
+        <h1 class="solo-lectores">Avícola La Morán — inicio</h1>
     </main>
 
     <!-- El footer compartido se inserta aquí en tiempo de carga. -->

@@ -1056,12 +1056,31 @@ administración.
   navega por encabezados. Subir los rótulos del footer a `<h2>` habría sido peor:
   arreglaba esas dos páginas y perforaba la jerarquía de las que sí tienen `h2`.
 
-  **Cinco páginas con problemas de encabezados que NO son de este cambio** y
-  quedan anotadas sin tocar:
-  - `catalogo.html`, `detalle-pedido.html` y `Contraseña-login.html` empiezan en
-    `<h2>`: no tienen `<h1>`.
-  - `index.html` y `pago.html` no tienen **ningún** encabezado propio. En esas
-    dos, los únicos encabezados del documento son los del footer.
+  **Cinco páginas más con problemas de encabezados previos**, corregidas en la
+  misma tanda a pedido del usuario. Todas con `.solo-lectores`, porque en las
+  cinco un título visible habría cambiado un diseño ya aprobado:
+  - `catalogo.html`, `detalle-pedido.html` y `pago.html`: `<h1>` oculto, que no
+    tenían.
+  - `Contraseña-login.html`: los dos `<h2>` que tenía son **los dos pasos del
+    mismo trámite**, así que ninguno servía como título de la página —promover
+    uno habría dejado al otro colgando como si fuera su subsección—. Lleva un
+    `<h1>` que los cubre a ambos.
+  - `pago.html` además tenía **dos tablas indistinguibles**: las dos con
+    encabezados "Producto" y "Cantidad", sin nada que dijera cuál era la de
+    huevos y cuál la de pollo. Un lector de pantalla las anunciaba como dos
+    tablas iguales. Se les puso `<caption>` oculto.
+
+  Quedan **18 de 19 páginas con la jerarquía correcta**.
+
+  **La que falta es `index.html`, y su problema no son los encabezados: la
+  página está vacía.** El `<main>` no tiene contenido y su hoja
+  (`Recursos/Cliente/index.css`) es un archivo de cero bytes. Es la raíz del
+  sitio —`vistas/index.html` redirige ahí—, así que es lo primero que ve quien
+  entra, y hoy muestra solo el header y el footer con un hueco en medio. Se le
+  puso un `<h1>` oculto para que el documento tenga tema, pero **no se le
+  inventó un `<h2>` para tapar el salto**: un encabezado que no titula nada es
+  maquillaje. Lo que falta es construir la portada, y eso es una decisión de
+  producto. Anotado en el comentario de cabecera del propio archivo.
 
   **Cuidado con los finales de línea (Windows).** Al reconstruir `estilos.css`
   concatenando el bloque del header (que venía del disco, en CRLF) con el bloque
