@@ -1128,3 +1128,74 @@ administración.
   historia del negocio), se construye esa página y se cambia el destino de las
   dos referencias de `vistas/index.html`. Queda anotado en su comentario de
   cabecera.
+- **2026-08-02 (5)** (rama `Alejandro`): dos cosas — se marcó el **carrito de
+  compras como "Próximamente"** y se cotejó todo lo construido contra el
+  **documento del proyecto integrador** (`integrador_LaMoran.pdf`, 81 páginas,
+  guardado en `Documentos del proyecto/`, fuera del repo).
+
+  **Carrito.** El negocio todavía no va a procesar datos bancarios. Los dos
+  accesos —el ítem del menú compartido y el botón "Agregar al carrito" del
+  detalle de pedido— dejan de ser enlaces y pasan a `<span>` marcados, mismo
+  criterio que los productos "Próximamente" del catálogo. `pago.html` no se
+  borró: queda construida y sin acceso, con un **aviso visible** arriba de todo
+  advirtiendo que no se ingresen datos de tarjeta porque no se procesan. Ese
+  aviso es el punto importante del cambio: la pantalla pide número y CVV, y
+  quien llegue por URL tiene que saberlo antes de escribir nada.
+
+  **HISTORIA REAL DEL NEGOCIO, por fin disponible.** Hasta ahora la regla era
+  "no inventar historia" y el párrafo de Sobre Nosotros era un texto de arranque
+  marcado como provisional. El documento la trae:
+  - Fundada el **20 de julio de 2023**.
+  - El nombre es en honor al **apellido del abuelo de la familia**.
+  - Ubicación exacta: **La Vega, distrito de Florencia, cantón de San Carlos,
+    provincia de Alajuela** (el sitio dice solo "San Carlos, Alajuela").
+  - Capacidad: **500 pollos de engorde y 100 gallinas ponedoras**.
+  - Empezó como un pequeño proyecto familiar; el sistema lo desarrollan
+    estudiantes de la UTN.
+
+  Con esto el `TEXTO A REEMPLAZAR` de `Sobre-Nosotros.html` ya se puede
+  sustituir sin inventar nada. **Pendiente de hacerlo.**
+
+  **Conflictos entre el documento y decisiones ya tomadas:**
+  1. **El carrito está EN el alcance aprobado**, con prioridad alta: el módulo
+     de Clientes y Pedidos incluye "gestión del carrito de compras,
+     procesamiento de pedidos en línea", y RF-06, RF-07 y RF-08 (pago con
+     tarjeta, guardar y actualizar tarjeta) son todos Alta. Hay 81 menciones de
+     "carrito" y 54 de "tarjeta", y las tablas `carrito`, `detalle_carrito`,
+     `tarjetas` y `pedidos` existen. Marcarlo "Próximamente" es una **desviación
+     deliberada del alcance**, decidida por el usuario. Queda anotado.
+  2. **El campo `rol` SÍ existe en el documento**: "El atributo rol determina el
+     nivel de privilegios dentro del sistema". El
+     `esquema_base_datos_avicola.md` no lo tiene, y por eso se había reportado
+     como hueco. **El documento lo resuelve: hay que agregarlo.**
+  3. **Los estados de pedido quedan resueltos a favor de la base de datos.** El
+     documento confirma `pendiente, en_camino, entregado, cancelado`. El
+     frontend, que usa "preparación" en 9 líneas de 4 archivos, es el que tiene
+     que cambiar.
+  4. **Numeración de requerimientos**: los RF coinciden entre el PDF y
+     `Requerimientos_Sistema.md` (RF-01 a RF-28). Los **RNF no**: el PDF tiene
+     huecos (faltan 3, 9, 14, 16, 17 y 22) y el .md los renumeró correlativos
+     01–17. Al citar un RNF hay que decir de cuál documento. Ejemplo: la
+     confidencialidad es RNF-04 en el .md y **RNF-05 en el PDF**.
+  5. **El documento dice MySQL** ("Herramientas de desarrollo: visual studio
+     code, mysql"). El script que existe es de PostgreSQL, hecho así a pedido
+     del usuario.
+
+  **Contradicciones internas del propio documento**, para que el equipo las
+  resuelva:
+  - El objetivo general incluye "**empleados**" y dos casos de uso listan
+    "Actor: Cliente, Empleado, Administrador", pero el **alcance define cuatro
+    módulos y ninguno es de empleados**, los roles son solo Administrador y
+    Cliente, y no hay tabla `empleados`. Eliminar el módulo fue coherente con
+    las partes operativas del documento, no con su objetivo general.
+  - El alcance dice "con **dos** roles definidos: Administrador." — anuncia dos
+    y lista uno.
+  - El resumen ejecutivo habla de "**cinco** módulos"; el alcance define cuatro.
+
+  **Lo que el documento confirma** (decisiones que ya estaban bien): colores
+  cálidos y amigables (RNF-07), botones grandes y visibles (RNF-08, que respalda
+  el enfoque móvil de ventas manuales), interfaz completamente en español
+  (RNF-15), fechas en dd/mm/aaaa (RNF-23), alertas automáticas de stock bajo, y
+  que las facturas son para **control interno** y no se integran con Hacienda —
+  o sea que el módulo de Facturas tiene un propósito real aunque le falte tabla.
+
