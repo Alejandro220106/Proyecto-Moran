@@ -171,8 +171,17 @@
   color: var(--texto-sobre);
   line-height: 1.78;
   max-width: 62ch;
-  margin: 0 0 52px;
+  margin: 0 0 22px;
   font-size: 1.02rem;
+}
+
+/* Entre dos párrafos seguidos alcanzan 22px: son el mismo bloque de lectura.
+   El último sí necesita los 52px, porque lo que sigue ya es otra sección
+   ("Qué ofrecemos") y sin ese aire el rótulo se pega al texto.
+   :last-of-type mira solo entre los <p> hermanos, así que sigue funcionando
+   si mañana se agrega un tercer párrafo. */
+.texto-sobre:last-of-type {
+  margin-bottom: 52px;
 }
 
 .texto-sobre strong {
