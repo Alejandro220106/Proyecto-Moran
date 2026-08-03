@@ -84,6 +84,34 @@ body{
     opacity: 0.6;
 }
 
+/* Ítem del menú que todavía no tiene destino. En el HTML es un <span>, no un
+   <a>: sin href no recibe foco de teclado ni cursor de mano, así que no
+   promete algo que no existe.
+
+   #5a6b73 da 5.55:1 sobre el blanco del header, de sobra para AA. No se usa un
+   gris más claro justamente porque el ítem tiene que seguir siendo LEGIBLE:
+   está desactivado, no escondido — la idea es que se sepa que el carrito
+   viene, no que desaparezca. */
+.enlace-proximamente {
+    color: #5a6b73;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 1.4;
+    cursor: default;
+}
+
+/* El rótulo va debajo y en tamaño chico para que no compita con el nombre del
+   ítem, pero con su propio color de marca para que se lea como una etiqueta de
+   estado y no como parte del texto. #7a5a2e sobre blanco da 6.31:1. */
+.enlace-proximamente small {
+    display: block;
+    color: #7a5a2e;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
 
 /* =========================
    UTILIDADES COMPARTIDAS

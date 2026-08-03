@@ -18,6 +18,40 @@
 }
 
 /* Lienzo: fondo verde oliva que cubre todo. */
+/* Aviso de que la pantalla no está activa. Rojo apagado y no ámbar: el ámbar
+   es el color de "esto se puede hacer" en todo el sitio, y este mensaje dice
+   justamente lo contrario. Es la única advertencia del sitio que previene un
+   daño concreto —que alguien teclee una tarjeta real—, así que va arriba de
+   todo y no se puede confundir con contenido.
+
+   #f4e4e0 sobre #6b2b22 da 8.54:1; el enlace en #ffd9a8 da 7.90:1. */
+.aviso-pago-inactivo {
+  max-width: 1000px;
+  margin: 0 auto 26px;
+  background-color: #6b2b22;
+  border-left: 5px solid #e8a87c;
+  border-radius: 3px;
+  padding: 16px 20px;
+  color: #f4e4e0;
+  line-height: 1.6;
+}
+
+.aviso-pago-inactivo strong {
+  display: block;
+  margin-bottom: 4px;
+  color: #ffffff;
+}
+
+.aviso-pago-inactivo a {
+  color: #ffd9a8;
+  font-weight: 700;
+}
+
+.aviso-pago-inactivo a:focus-visible {
+  outline: 2px solid #ffd9a8;
+  outline-offset: 3px;
+}
+
 .pago {
   background-color: var(--verde-pago);
   background-image: url("../Imagenes/fondo-verde.jpg");

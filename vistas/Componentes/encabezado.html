@@ -24,14 +24,31 @@
         <!-- Menú de navegación -->
         <!-- Enlaces con ../Cliente/ porque este encabezado se inyecta tanto
              en Paginas/Cliente/ como en Paginas/Admin/ (todas las vistas que usan este
-             header viven ahí, así que apuntan a páginas hermanas).
-             "CARRITO DE COMPRAS" apunta a pago.html, que hoy muestra el
-             resumen del pedido (lo más cercano a un carrito). -->
+             header viven ahí, así que apuntan a páginas hermanas). -->
         <nav class="menu-navegacion">
             <a href="../Cliente/productos.html">NUESTROS<br>PRODUCTOS</a>
             <a href="../Cliente/Sobre-Nosotros.html">SOBRE<br>NOSOTROS</a>
             <a href="../Cliente/Contacto.html">CONTACTO</a>
-            <a href="../Cliente/pago.html">CARRITO DE <br>COMPRAS</a>
+
+            <!--
+                CARRITO DE COMPRAS: pendiente. El negocio todavía no va a
+                procesar datos bancarios, así que el flujo de pago en línea no
+                se activa.
+
+                Va como <span> y no como <a>: sin destino real, un enlace sería
+                un control con apariencia de interactivo que no lleva a ningún
+                lado — el mismo criterio que ya usan los productos
+                "Próximamente" del catálogo y las tarjetas pendientes del panel.
+                Sin href tampoco recibe foco de teclado, así que quien navega
+                sin mouse no tropieza con él.
+
+                pago.html sigue construida y sin borrar: queda sin acceso a
+                propósito, esperando que se decida procesar pagos.
+            -->
+            <span class="enlace-proximamente">CARRITO DE <br>COMPRAS
+                <small>Próximamente</small>
+            </span>
+
             <a href="../Cliente/Actualizar-Datos.html">ACTUALIZAR<br>DATOS</a>
             <a href="../Cliente/login.html">CERRAR<br>SESIÓN</a>
         </nav>

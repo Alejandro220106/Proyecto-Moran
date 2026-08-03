@@ -53,7 +53,20 @@
                     <input type="text" id="indicacion" name="indicacion" class="form-control campo-pedido">
                 </div>
 
-                <a href="pago.html" class="btn boton-carrito">AGREGAR AL CARRITO</a>
+                <!--
+                    AGREGAR AL CARRITO: pendiente, por la misma razón que el
+                    ítem del menú. El carrito termina en la pantalla de pago, y
+                    el negocio todavía no va a procesar datos bancarios.
+
+                    Va como <span> y no como <a>, igual que en el header: sin
+                    destino real no se renderiza algo con apariencia de botón
+                    que no lleve a ningún lado. Cuando se active el pago, vuelve
+                    a ser <a href="pago.html">.
+                -->
+                <span class="boton-carrito boton-carrito-proximamente">
+                    AGREGAR AL CARRITO
+                    <small>Próximamente</small>
+                </span>
             </div>
 
             <!-- Columna 2: puntos de entrega principales, cada uno con su cantidad. -->

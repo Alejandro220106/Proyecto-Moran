@@ -37,6 +37,29 @@
              visible por diseño, pero sin <h1> el documento no tiene tema. -->
         <h1 class="solo-lectores">Pago del pedido</h1>
 
+        <!--
+            AVISO VISIBLE, no un comentario. Esta pantalla pide número de tarjeta
+            y CVV, y el negocio todavía no va a procesar datos bancarios. Los dos
+            accesos que llevaban acá (el ítem "Carrito de compras" del menú y el
+            botón "Agregar al carrito") quedaron marcados como pendientes, así
+            que hoy a esta página solo se llega escribiendo la dirección.
+
+            Quien llegue así tiene que saber, ANTES de escribir nada, que ningún
+            dato se va a procesar. Callarlo sería invitar a que alguien teclee
+            una tarjeta real en un formulario que no va a ningún lado.
+
+            La pantalla no se borró: está construida y lista para cuando se
+            decida activar los pagos.
+        -->
+        <p class="aviso-pago-inactivo">
+            <strong>Esta pantalla todavía no está activa.</strong>
+            El pago en línea aún no está disponible: no ingrese datos de su
+            tarjeta, porque no se procesan ni se guardan. Para hacer un pedido,
+            escríbanos por
+            <a href="Contacto.html">el formulario de contacto</a>
+            o al <a href="tel:+50660916609">+506 6091 6609</a>.
+        </p>
+
         <form class="formulario-pago">
 
             <!-- Resumen de productos: dos tablas (huevos / pollo). -->

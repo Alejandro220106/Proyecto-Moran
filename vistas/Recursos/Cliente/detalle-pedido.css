@@ -108,3 +108,32 @@
   background-color: var(--ambar-boton-hover);
   color: #ffffff;
 }
+
+/* Estado pendiente del botón: el carrito termina en la pantalla de pago, y el
+   negocio todavía no procesa datos bancarios.
+
+   Gris y no ámbar: el ámbar es el color de "esto se puede hacer" en todo el
+   sitio, y usarlo acá invitaría a un clic que no va a pasar nada. #ffffff sobre
+   #6b6b6b da 5.33:1, así que sigue perfectamente legible — está desactivado,
+   no escondido.
+
+   No lleva :hover a propósito. En el HTML es un <span>, así que tampoco recibe
+   foco de teclado ni cursor de mano. */
+.boton-carrito-proximamente {
+  background-color: #6b6b6b;
+  cursor: default;
+  text-align: center;
+}
+
+.boton-carrito-proximamente small {
+  display: block;
+  margin-top: 2px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  /* Mismo blanco que el texto principal: bajarlo a un gris claro sobre este
+     fondo ya rondaría el mínimo de AA con letra tan chica. */
+  color: #ffffff;
+  opacity: 0.9;
+}
