@@ -20,20 +20,10 @@
   color: #ffffff;
 }
 
-/* Enlace para volver al panel (Home-admin). Mismo estilo que el .enlace-volver
-   definido en admin.css; se repite aquí porque esta página no carga admin.css. */
-.enlace-volver {
-  display: inline-block;
-  color: var(--ambar-boton);
-  text-decoration: none;
-  font-weight: 600;
-  margin-bottom: 20px;
-}
-
-.enlace-volver:hover {
-  color: var(--ambar-boton-hover);
-  text-decoration: underline;
-}
+/* ---- Enlace "Volver al panel": eliminado ---- */
+/* Ya no existe: desde que hay barra lateral no hay a dónde volver, el panel
+   está siempre a la vista. La clase sigue viva en el ámbito cliente
+   (Contraseña-login), que es otra cosa y tiene su propia definición. */
 
 /* ---- Encabezado ---- */
 .encabezado-pedidos {

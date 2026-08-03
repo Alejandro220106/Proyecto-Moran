@@ -38,6 +38,7 @@
     <link rel="stylesheet" href="../../Recursos/estilos.css">
     <!-- Tokens de color del panel, compartidos por las 8 pantallas admin. -->
     <link rel="stylesheet" href="../../Recursos/Admin/tokens-admin.css">
+    <link rel="stylesheet" href="../../Recursos/Admin/lateral-admin.css">
     <link rel="stylesheet" href="../../Recursos/Admin/Home-admin.css">
 </head>
 <body>
@@ -46,154 +47,23 @@
     <div id="encabezado"></div>
 
     <!-- Contenido sobre fondo oscuro. -->
-    <main class="pagina-admin">
+    <div class="marco-admin">
+        <main class="pagina-admin">
 
         <section class="encabezado-admin">
             <h1>Panel de Administración</h1>
             <p>Bienvenido al panel de administración de Avícola La Morán.</p>
         </section>
 
-        <section class="seccion-admin">
-            <h2>Módulos del sistema</h2>
+        <!--
+          Ya NO hay una rejilla de tarjetas de módulo. La barra lateral las
+          lista en las ocho pantallas, así que repetirlas acá era navegación
+          duplicada: dos formas de llegar al mismo sitio, una encima de la otra.
 
-            <!--
-              Los íconos son SVG inline, no emoji: el emoji lo dibuja la fuente
-              del sistema (cambia de forma y de color entre Windows/Android/Linux
-              y no hereda el color de la marca), y el resto del sitio ya resuelve
-              sus íconos así (login, footer). Van con aria-hidden porque el
-              título de al lado ya nombra el módulo.
-            -->
-            <div class="grid-modulos">
-                <a href="Inventario.html" class="tarjeta-modulo" id="modulo-inventario">
-                    <h3>
-                        <svg class="icono-modulo" viewBox="0 0 24 24" aria-hidden="true">
-                            <path d="M12 3 21 7.5V16.5L12 21 3 16.5V7.5Z"/>
-                            <path d="M3 7.5 12 12 21 7.5M12 12V21"/>
-                        </svg>
-                        Inventario
-                    </h3>
-                    <p>Control de lotes, productos y existencias.</p>
-                    <span>Ir al módulo →</span>
-                </a>
-
-                <a href="GestionPedidos-admin.html" class="tarjeta-modulo" id="modulo-pedidos">
-                    <h3>
-                        <svg class="icono-modulo" viewBox="0 0 24 24" aria-hidden="true">
-                            <path d="M2.5 4h2.6l2.3 11h10.3l2-8H6"/>
-                            <circle cx="9" cy="19.5" r="1.5"/>
-                            <circle cx="17.5" cy="19.5" r="1.5"/>
-                        </svg>
-                        Gestión de pedidos
-                    </h3>
-                    <p>Administración de pedidos realizados.</p>
-                    <span>Ir al módulo →</span>
-                </a>
-
-                <a href="BuscarPedidos-admin.html" class="tarjeta-modulo" id="modulo-buscar-pedidos">
-                    <h3>
-                        <svg class="icono-modulo" viewBox="0 0 24 24" aria-hidden="true">
-                            <circle cx="11" cy="11" r="6.5"/>
-                            <path d="m15.8 15.8 5.2 5.2"/>
-                        </svg>
-                        Buscar pedidos
-                    </h3>
-                    <p>Consulta y seguimiento de pedidos.</p>
-                    <span>Ir al módulo →</span>
-                </a>
-
-                <a href="Facturas-admin.html" class="tarjeta-modulo" id="modulo-facturas">
-                    <h3>
-                        <svg class="icono-modulo" viewBox="0 0 24 24" aria-hidden="true">
-                            <path d="M6 3h12v18l-3-1.8L12 21l-3-1.8L6 21Z"/>
-                            <path d="M9.5 8.5h5M9.5 12.5h5"/>
-                        </svg>
-                        Facturas
-                    </h3>
-                    <p>Gestión de facturación y comprobantes.</p>
-                    <span>Ir al módulo →</span>
-                </a>
-
-                <a href="Proveedores-admin.html" class="tarjeta-modulo" id="modulo-proveedores">
-                    <h3>
-                        <svg class="icono-modulo" viewBox="0 0 24 24" aria-hidden="true">
-                            <path d="M2.5 6h11v10.5h-11Z"/>
-                            <path d="M13.5 9.5h3.7l3.3 3.4v3.6h-7Z"/>
-                            <circle cx="7" cy="18.5" r="1.5"/>
-                            <circle cx="17.5" cy="18.5" r="1.5"/>
-                        </svg>
-                        Proveedores
-                    </h3>
-                    <p>Registro y control de proveedores.</p>
-                    <span>Ir al módulo →</span>
-                </a>
-
-                <a href="RecoleccionDiaria-admin.html" class="tarjeta-modulo" id="modulo-recoleccion">
-                    <h3>
-                        <!-- Canasta con un huevo: es lo que se recoge cada día. -->
-                        <svg class="icono-modulo" viewBox="0 0 24 24" aria-hidden="true">
-                            <path d="M3 10.5h18l-1.8 8.2a2 2 0 0 1-2 1.6H6.8a2 2 0 0 1-2-1.6Z"/>
-                            <path d="M8.5 10.5c0-2.8 1.6-5 3.5-5s3.5 2.2 3.5 5"/>
-                        </svg>
-                        Recolección diaria
-                    </h3>
-                    <p>Registro de huevos recolectados y pollos procesados.</p>
-                    <span>Ir al módulo →</span>
-                </a>
-
-                <a href="VentasManuales-admin.html" class="tarjeta-modulo" id="modulo-ventas-manuales">
-                    <h3>
-                        <!-- Billete con moneda: venta cobrada de mano en mano. -->
-                        <svg class="icono-modulo" viewBox="0 0 24 24" aria-hidden="true">
-                            <path d="M2.5 6.5h15v8h-15Z"/>
-                            <circle cx="10" cy="10.5" r="2.2"/>
-                            <path d="M6 17.5h15v-8"/>
-                        </svg>
-                        Ventas manuales
-                    </h3>
-                    <p>Registro de ventas de ruta, mostrador y encargos.</p>
-                    <span>Ir al módulo →</span>
-                </a>
-
-                <!--
-                  MÓDULOS PENDIENTES. Van como <div>, no como <a>: sus páginas
-                  todavía no existen, y el proyecto ya decidió que no se renderiza
-                  un control con apariencia de interactivo que no lleve a ningún
-                  lado (mismo criterio que los productos "Próximamente" del
-                  catálogo). Sin href no reciben foco de teclado, así que quien
-                  navega sin mouse tampoco tropieza con ellos.
-
-                  Están acá y no ocultos porque el equipo necesita ver qué falta:
-                  los dos tienen respaldo en el diseño de la base de datos y en
-                  los requerimientos, no son ideas sueltas.
-                -->
-                <div class="tarjeta-modulo proximamente" id="modulo-lotes">
-                    <h3>
-                        <!-- Huevo dentro de un marco: el lote como unidad de rastreo. -->
-                        <svg class="icono-modulo" viewBox="0 0 24 24" aria-hidden="true">
-                            <path d="M12 3.5c2.6 0 4.7 3.6 4.7 7.1a4.7 4.7 0 0 1-9.4 0c0-3.5 2.1-7.1 4.7-7.1Z"/>
-                            <path d="M4 20.5h16"/>
-                        </svg>
-                        Registro de lotes
-                    </h3>
-                    <p>Ingreso de lotes de aves con su código de rastreo, raza, peso y fechas.</p>
-                    <span class="aviso-proximamente">Próximamente</span>
-                </div>
-
-                <div class="tarjeta-modulo proximamente" id="modulo-mortalidad">
-                    <h3>
-                        <!-- Línea descendente: la baja de aves del lote. -->
-                        <svg class="icono-modulo" viewBox="0 0 24 24" aria-hidden="true">
-                            <path d="M3.5 6.5 12 15l3-3 5.5 5.5"/>
-                            <path d="M20.5 12.5v5h-5"/>
-                        </svg>
-                        Mortalidad
-                    </h3>
-                    <p>Registro de bajas de aves por lote, con fecha y observaciones.</p>
-                    <span class="aviso-proximamente">Próximamente</span>
-                </div>
-            </div>
-        </section>
-
+          Con eso, esta pantalla deja de ser un menú y pasa a ser lo que su
+          título dice: el tablero. Muestra el estado del sistema y las acciones
+          que más se repiten.
+        -->
         <section class="seccion-admin">
             <h2>Resumen del sistema</h2>
 
@@ -256,7 +126,21 @@
             </div>
         </section>
 
-    </main>
+        </main>
+
+        <!--
+          La barra va DESPUÉS del <main> en el HTML, aunque se vea a la
+          izquierda. El orden visual lo da "order: -1" en lateral-admin.css.
+
+          No es capricho: la barra aporta tres <h2> (Granja, Ventas,
+          Administración). Puesta antes del <main>, esos tres encabezados
+          quedaban delante del <h1> de la página, y un <h2> sin ningún <h1>
+          previo es un esquema de encabezados inválido — le pasaba a las ocho
+          pantallas a la vez. Con la barra después, el <h1> vuelve a ser el
+          primer encabezado del documento y el orden de lectura es el correcto.
+        -->
+        <div id="lateral-admin"></div>
+    </div>
 
     <!-- Footer compartido. -->
     <div id="pie-pagina"></div>

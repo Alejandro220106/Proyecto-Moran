@@ -25,7 +25,11 @@
         <!-- Enlaces con ../Cliente/ porque este encabezado se inyecta tanto
              en Paginas/Cliente/ como en Paginas/Admin/ (todas las vistas que usan este
              header viven ahí, así que apuntan a páginas hermanas). -->
-        <nav class="menu-navegacion">
+        <!-- El aria-label no es decorativo: en las ocho pantallas del panel se
+         inyecta también la barra lateral, que es otro <nav>. Sin nombre, quien
+         navega por landmarks vería dos regiones "navegación" y solo una
+         identificada. -->
+    <nav class="menu-navegacion" aria-label="Navegación principal">
             <a href="../Cliente/productos.html">NUESTROS<br>PRODUCTOS</a>
             <a href="../Cliente/Sobre-Nosotros.html">SOBRE<br>NOSOTROS</a>
             <a href="../Cliente/Contacto.html">CONTACTO</a>

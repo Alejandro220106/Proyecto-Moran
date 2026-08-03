@@ -1,0 +1,140 @@
+<!--
+  Barra lateral del panel de administración. Se inyecta con fetch() desde
+  "../../Recursos/plantillas.js" en las OCHO pantallas del panel, igual que el
+  header y el footer.
+
+  POR QUÉ EXISTE. Antes, para pasar de un módulo a otro había que volver al
+  tablero: entrar, elegir, trabajar, volver, elegir de nuevo. Con la barra
+  siempre visible, cambiar de módulo es un clic desde cualquier pantalla. Por
+  eso también desaparecieron los enlaces "← Volver al panel" de las siete
+  páginas de módulo: ya no hay a dónde volver, el panel está siempre ahí.
+
+  LOS GRUPOS NO SON UN INVENTO. Granja, Ventas y Administración son los mismos
+  ámbitos que define el alcance del documento del proyecto. Con nueve módulos
+  —y van a ser más— una lista plana obliga a leerla entera cada vez.
+
+  EL ÍTEM ACTIVO LO MARCA EL JAVASCRIPT. Como este fragmento es el mismo para
+  las ocho páginas, no puede saber en cuál está; plantillas.js compara el
+  nombre del archivo abierto con cada href y le pone la clase .activo al que
+  corresponda.
+
+  LOS MÓDULOS PENDIENTES van como <span>, no como <a>: sus páginas no existen
+  todavía, y el proyecto ya decidió que no se renderiza un control con
+  apariencia de interactivo que no lleve a ningún lado. Sin href tampoco
+  reciben foco de teclado.
+
+  CONTADORES: el diseño los contempla (un número por módulo, junto al nombre),
+  pero NO se renderizan todavía porque no hay de dónde sacarlos y un número
+  inventado en el panel es exactamente lo que este proyecto evita. Cuando
+  exista la capa de datos, van como <span class="contador-lateral"> al final
+  de cada <a>, y el CSS ya está escrito.
+-->
+<nav class="lateral-admin" aria-label="Módulos del panel">
+
+    <!-- Vuelve al tablero. Es el único enlace que no pertenece a un grupo. -->
+    <a class="marca-lateral" href="../Admin/Home-admin.html">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+            <path d="M3 10.5h18l-1.8 8.2a2 2 0 0 1-2 1.6H6.8a2 2 0 0 1-2-1.6Z"/>
+            <path d="M8.5 10.5c0-2.8 1.6-5 3.5-5s3.5 2.2 3.5 5"/>
+        </svg>
+        Panel
+    </a>
+
+    <div class="grupo-lateral">
+        <h2 class="rotulo-lateral" id="grupo-granja">Granja</h2>
+        <ul class="lista-lateral" aria-labelledby="grupo-granja">
+            <li>
+                <a href="../Admin/RecoleccionDiaria-admin.html">
+                    <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
+                        <path d="M3 10.5h18l-1.8 8.2a2 2 0 0 1-2 1.6H6.8a2 2 0 0 1-2-1.6Z"/>
+                        <path d="M8.5 10.5c0-2.8 1.6-5 3.5-5s3.5 2.2 3.5 5"/>
+                    </svg>
+                    Recolección diaria
+                </a>
+            </li>
+            <li>
+                <a href="../Admin/Inventario.html">
+                    <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
+                        <path d="M12 3 21 7.5V16.5L12 21 3 16.5V7.5Z"/>
+                        <path d="M3 7.5 12 12 21 7.5M12 12V21"/>
+                    </svg>
+                    Inventario
+                </a>
+            </li>
+            <li>
+                <span class="pendiente-lateral">
+                    <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
+                        <path d="M3 10.5h18l-1.8 8.2a2 2 0 0 1-2 1.6H6.8a2 2 0 0 1-2-1.6Z"/>
+                        <path d="M8.5 10.5c0-2.8 1.6-5 3.5-5s3.5 2.2 3.5 5"/>
+                    </svg>
+                    Registro de lotes
+                    <em>Próximamente</em>
+                </span>
+            </li>
+            <li>
+                <span class="pendiente-lateral">
+                    <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
+                        <path d="M3.5 6.5 12 15l3-3 5.5 5.5"/><path d="M20.5 12.5v5h-5"/>
+                    </svg>
+                    Mortalidad
+                    <em>Próximamente</em>
+                </span>
+            </li>
+        </ul>
+    </div>
+
+    <div class="grupo-lateral">
+        <h2 class="rotulo-lateral" id="grupo-ventas">Ventas</h2>
+        <ul class="lista-lateral" aria-labelledby="grupo-ventas">
+            <li>
+                <a href="../Admin/VentasManuales-admin.html">
+                    <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
+                        <path d="M2.5 6.5h15v8h-15Z"/><circle cx="10" cy="10.5" r="2.2"/><path d="M6 17.5h15v-8"/>
+                    </svg>
+                    Ventas manuales
+                </a>
+            </li>
+            <li>
+                <a href="../Admin/GestionPedidos-admin.html">
+                    <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
+                        <path d="M2.5 4h2.6l2.3 11h10.3l2-8H6"/>
+                        <circle cx="9" cy="19.5" r="1.5"/><circle cx="17.5" cy="19.5" r="1.5"/>
+                    </svg>
+                    Gestión de pedidos
+                </a>
+            </li>
+            <li>
+                <a href="../Admin/BuscarPedidos-admin.html">
+                    <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
+                        <circle cx="11" cy="11" r="6.5"/><path d="m15.8 15.8 5.2 5.2"/>
+                    </svg>
+                    Buscar pedidos
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="grupo-lateral">
+        <h2 class="rotulo-lateral" id="grupo-administracion">Administración</h2>
+        <ul class="lista-lateral" aria-labelledby="grupo-administracion">
+            <li>
+                <a href="../Admin/Facturas-admin.html">
+                    <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
+                        <path d="M6 3h12v18l-3-1.8L12 21l-3-1.8L6 21Z"/><path d="M9.5 8.5h5M9.5 12.5h5"/>
+                    </svg>
+                    Facturas
+                </a>
+            </li>
+            <li>
+                <a href="../Admin/Proveedores-admin.html">
+                    <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
+                        <path d="M2.5 6h11v10.5h-11Z"/><path d="M13.5 9.5h3.7l3.3 3.4v3.6h-7Z"/>
+                        <circle cx="7" cy="18.5" r="1.5"/><circle cx="17.5" cy="18.5" r="1.5"/>
+                    </svg>
+                    Proveedores
+                </a>
+            </li>
+        </ul>
+    </div>
+
+</nav>

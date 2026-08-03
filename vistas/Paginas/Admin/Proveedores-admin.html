@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="../../Recursos/estilos.css">
     <!-- Tokens de color del panel, compartidos por las 8 pantallas admin. -->
     <link rel="stylesheet" href="../../Recursos/Admin/tokens-admin.css">
+    <link rel="stylesheet" href="../../Recursos/Admin/lateral-admin.css">
     <link rel="stylesheet" href="../../Recursos/Admin/admin.css">
 </head>
 <body>
@@ -28,10 +29,8 @@
     <!-- Header compartido. -->
     <div id="encabezado"></div>
 
-    <main class="pagina-admin">
-
-        <!-- Vuelve al tablero principal del panel. -->
-        <a href="Home-admin.html" class="enlace-volver">← Volver al panel</a>
+    <div class="marco-admin">
+        <main class="pagina-admin">
 
         <section class="encabezado-modulo">
             <h1>Gestión de Proveedores e Insumos</h1>
@@ -174,7 +173,21 @@
             </div>
         </section>
 
-    </main>
+        </main>
+
+        <!--
+          La barra va DESPUÉS del <main> en el HTML, aunque se vea a la
+          izquierda. El orden visual lo da "order: -1" en lateral-admin.css.
+
+          No es capricho: la barra aporta tres <h2> (Granja, Ventas,
+          Administración). Puesta antes del <main>, esos tres encabezados
+          quedaban delante del <h1> de la página, y un <h2> sin ningún <h1>
+          previo es un esquema de encabezados inválido — le pasaba a las ocho
+          pantallas a la vez. Con la barra después, el <h1> vuelve a ser el
+          primer encabezado del documento y el orden de lectura es el correcto.
+        -->
+        <div id="lateral-admin"></div>
+    </div>
 
     <!-- Footer compartido. -->
     <div id="pie-pagina"></div>

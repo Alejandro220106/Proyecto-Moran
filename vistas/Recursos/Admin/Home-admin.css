@@ -5,8 +5,11 @@
   español. Ver la skill moran-frontend y CONTEXTO_PROYECTO.md.
 
   Fondo oscuro y ámbar de la marca, igual que registro.css/Actualizar-Datos.css,
-  pero con su propio layout (tarjetas de módulos, resumen, accesos rápidos)
+  pero con su propio layout (resumen, accesos rápidos, información del sistema)
   porque esta pantalla no es un formulario.
+
+  Ya no tiene rejilla de módulos: desde que existe la barra lateral
+  (lateral-admin.css), esas tarjetas eran navegación duplicada.
 
   Los colores vienen de tokens-admin.css (enlazado antes que esta hoja); acá
   solo se consumen con var().
@@ -45,113 +48,11 @@
   font-size: 1.5rem;
 }
 
-/* ---- Módulos del sistema ---- */
-.grid-modulos {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 25px;
-}
-
-/* Las tarjetas de módulo son <a> (todos los módulos que aparecen ya existen
-   como página real); el reset de decoración/display es para eso. No se fija
-   la cantidad en este comentario a propósito: los módulos entran y salen
-   —empleados y reportes se eliminaron— y el grid es auto-fit, así que el
-   estilo no depende de cuántos haya. */
-.tarjeta-modulo {
-  display: block;
-  background-color: var(--panel-admin);
-  border: 1px solid var(--borde-admin);
-  border-radius: var(--radio-panel);
-  padding: 25px;
-  text-align: left;
-  text-decoration: none;
-  cursor: pointer;
-  color: #ffffff;
-}
-
-/* El hover solo cambia el borde a ámbar. Antes la tarjeta se levantaba
-   (translateY -5px) y proyectaba una sombra: es el tipo de efecto que en un
-   panel de trabajo distrae más de lo que ayuda, porque el contenido se mueve
-   cada vez que el cursor pasa por encima de una tarjeta. Marcar el borde
-   alcanza para indicar qué está apuntado. */
-.tarjeta-modulo:hover {
-  border-color: var(--ambar-boton);
-}
-
-/* Flex para que el ícono quede centrado con la línea del título en vez de
-   apoyado en la base del texto (el SVG es un inline-block y sin esto se
-   alinea por baseline). */
-.tarjeta-modulo h3 {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 15px;
-}
-
-/* Los SVG de módulo se dibujan solo con trazo y heredan currentColor, así
-   que toman el ámbar del hover de la tarjeta sin reglas extra. */
-.icono-modulo {
-  flex-shrink: 0;
-  width: 26px;
-  height: 26px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.7;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.tarjeta-modulo p {
-  color: #c0c0c0;
-  margin-bottom: 25px;
-  line-height: 1.5;
-}
-
-.tarjeta-modulo span {
-  color: var(--ambar-boton);
-  font-weight: 700;
-}
-
-/* ---- Módulos pendientes ---- */
-/*
-  Un módulo cuya página todavía no existe. Se atenúa la tarjeta completa y se
-  cambia el borde a punteado, que es la señal de "esto no está terminado" sin
-  necesidad de leer el rótulo.
-
-  La opacidad es 0.85, la misma que usan los productos "Próximamente" del
-  catálogo, y no menos: con 0.6 el texto secundario (#c0c0c0 sobre el panel)
-  cae a 4.13:1 y deja de cumplir AA. Con 0.85 queda en 6.85:1.
-
-  En el HTML son <div> y no <a>, así que no reciben foco de teclado ni cursor
-  de mano: no hay a dónde ir todavía.
-*/
-.tarjeta-modulo.proximamente {
-  opacity: 0.85;
-  border-style: dashed;
-  cursor: default;
-}
-
-/* El hover ámbar del resto de tarjetas no aplica acá: prometería que hay algo
-   que tocar. */
-.tarjeta-modulo.proximamente:hover {
-  border-color: var(--borde-admin);
-}
-
-/* Ocupa el lugar del "Ir al módulo →" de las tarjetas activas, pero en gris y
-   sin flecha: no invita a hacer clic.
-
-   Va escrito como ".tarjeta-modulo .aviso-proximamente" y no como
-   ".aviso-proximamente" a secas porque tiene que ganarle a ".tarjeta-modulo
-   span", que pinta de ámbar todos los <span> de las tarjetas. Con una sola
-   clase perdería —(0,1,0) contra (0,1,1)— y el aviso saldría ámbar, como si
-   fuera un enlace. */
-.tarjeta-modulo .aviso-proximamente {
-  color: var(--texto-suave);
-  font-weight: 700;
-  font-size: 0.85rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
+/* ---- Módulos del sistema: eliminado ---- */
+/* Acá vivían .grid-modulos, .tarjeta-modulo, .icono-modulo y
+   .aviso-proximamente. Se borraron junto con la rejilla de tarjetas del HTML:
+   desde que existe la barra lateral, esas tarjetas eran navegación duplicada.
+   Si algún día se quiere recuperar la rejilla, está en el historial de git. */
 
 /* ---- Resumen del sistema ---- */
 .grid-resumen {

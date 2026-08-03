@@ -1198,4 +1198,88 @@ administración.
   (RNF-15), fechas en dd/mm/aaaa (RNF-23), alertas automáticas de stock bajo, y
   que las facturas son para **control interno** y no se integran con Hacienda —
   o sea que el módulo de Facturas tiene un propósito real aunque le falte tabla.
+- **2026-08-02 (6)** (rama `Alejandro`): **el panel administrativo cambió de
+  modelo de navegación**. El usuario eligió la alternativa "barra lateral
+  agrupada" entre diez presentadas en un artifact, a partir de un tablero de
+  referencia que compartió. Después se le ofrecieron cuatro variaciones propias
+  sobre esa misma alternativa y confirmó quedarse con la original.
+
+  **El problema que resuelve.** Antes había que volver al tablero para cambiar
+  de módulo: entrar, elegir, trabajar, volver, elegir de nuevo. Ahora la barra
+  está en las ocho pantallas y cambiar de módulo es un clic desde cualquier
+  lado. Por eso desaparecieron los siete enlaces "← Volver al panel": ya no hay
+  a dónde volver, el panel está siempre a la vista.
+
+  **Los grupos no son un invento**: Granja, Ventas y Administración son los
+  mismos ámbitos que define el alcance del documento del proyecto. Con nueve
+  módulos —y van a ser más— una lista plana obliga a leerla entera cada vez.
+
+  **Archivos nuevos**: `Componentes/lateral-admin.html` (el fragmento, inyectado
+  por `plantillas.js` igual que el header y el footer) y
+  `Recursos/Admin/lateral-admin.css`.
+
+  **Por qué la hoja va aparte y no dentro de `admin.css`**: tres de las ocho
+  páginas —Home-admin, Inventario y GestionPedidos— **no cargan `admin.css`**,
+  tienen hoja propia desde antes. Meter la barra ahí la habría dejado sin
+  estilo justo en esas tres. Es la misma razón por la que `.enlace-volver`
+  estaba duplicado en tres hojas.
+
+  **`plantillas.js` marca el módulo abierto.** El fragmento es el mismo para las
+  ocho pantallas, así que no puede saber en cuál está: el script compara el
+  nombre del archivo abierto con el de cada enlace y le pone `.activo` y
+  `aria-current="page"` al que corresponda. Se compara solo el nombre del
+  archivo, no la ruta: la de la página es absoluta desde la raíz del servidor y
+  la del enlace es relativa, así que nunca coincidirían tal cual.
+
+  **Se eliminó la rejilla de tarjetas de módulo de `Home-admin.html`.** Con la
+  barra listando los nueve módulos en cada pantalla, esas tarjetas eran
+  navegación duplicada: dos formas de llegar al mismo sitio, una encima de la
+  otra. Con eso Home-admin deja de ser un menú y pasa a ser lo que su título
+  dice —el tablero—: resumen, accesos rápidos e información del sistema. Se
+  borraron también las cuatro reglas CSS que quedaron muertas
+  (`.grid-modulos`, `.tarjeta-modulo`, `.icono-modulo`, `.aviso-proximamente`)
+  y las tres definiciones de `.enlace-volver` del ámbito admin. La del ámbito
+  cliente sigue viva, que es otra cosa.
+
+  **Los contadores por módulo NO se renderizan todavía.** El diseño los
+  contempla y el CSS está escrito, pero no hay de dónde sacar los números y un
+  contador inventado en el panel es exactamente lo que este proyecto evita.
+  Queda documentado en el fragmento dónde van y qué tiene que hacer el JS.
+
+  **En pantallas angostas** (bajo 900px) la barra pasa de columna a franja
+  horizontal con scroll lateral, y no a un menú desplegable: un panel de
+  trabajo necesita ver a dónde puede ir sin abrir nada.
+
+  **Repetido el tropiezo de los finales de línea.** Al insertar el contenedor
+  en las ocho páginas con un script, se escribió LF en archivos que estaban en
+  CRLF y quedaron mezclados. Se normalizaron todas a CRLF. Es la segunda vez en
+  el día: conviene que cualquier script que edite HTML del repo **lea, normalice
+  y reescriba con el mismo fin de línea**, no que inserte texto crudo.
+
+  **Dos fallas que encontró la auditoría y hay que no repetir:**
+
+  1. **Los tres `<h2>` de la barra quedaban ANTES del `<h1>` de la página.** El
+     contenedor se había puesto delante del `<main>`, que es donde va
+     visualmente, y eso dejaba a las ocho pantallas con un `<h2>` antes de que
+     existiera ningún `<h1>` — un esquema de encabezados inválido. Corregido
+     poniendo la barra **después del `<main>` en el HTML** y devolviéndola a la
+     izquierda con `order: -1`. Separar el orden visual del orden del documento
+     es justamente para lo que sirve `order`.
+
+     **Mi propia verificación no lo detectó**, y vale saber por qué: el script
+     que revisaba la jerarquía ordenaba los niveles antes de compararlos, así
+     que un `h2` delante de un `h1` se veía igual que uno detrás. Al revisar
+     jerarquía hay que respetar el **orden del DOM**, nunca ordenar la lista.
+
+  2. **El rótulo "Próximamente" se ocultaba con `display:none` bajo 900px.** Eso
+     no lo esconde: lo borra del árbol de accesibilidad. En móvil esos dos
+     módulos quedaban distinguidos **solo por el gris del texto** —
+     imperceptible para baja visión e inexistente para un lector de pantalla,
+     que escucharía "Registro de lotes" igual que un módulo que sí funciona. Es
+     exactamente lo que prohíbe WCAG 1.4.1. Se cambió por la técnica de ocultar
+     visualmente conservando el nodo, la misma de `.solo-lectores`.
+
+  De paso, el `<nav>` del header compartido ganó `aria-label="Navegación
+  principal"`: en las ocho pantallas admin conviven dos `<nav>` y solo uno
+  estaba identificado.
 
