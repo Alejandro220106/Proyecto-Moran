@@ -879,3 +879,67 @@ administración.
   verificó sirviendo `vistas/` con `python -m http.server` y comprobando
   códigos HTTP, balance de etiquetas, sintaxis de JS y ratios de contraste
   por cálculo — pero **no hubo revisión visual en navegador**.
+- **2026-08-02** (rama `Alejandro`): **entraron las primeras fotos reales del
+  negocio**, en reemplazo de las de stock (Unsplash/Pexels) que estaban desde
+  el 2026-07-28.
+
+  La familia mandó 45 fotos por WhatsApp (11 MB, 1600×1200 sin optimizar). Se
+  catalogaron las 45 con tres agentes en paralelo y después se verificó a mano
+  cada finalista antes de asignarlo.
+
+  **Se sustituyeron 6 imágenes**: los cuatro cartones de huevos, el pollo
+  entero y la portada del catálogo.
+
+  **Verificación que no se puede saltar: el conteo.** Cada tarjeta anuncia
+  "Cantidad: 30 / 15 / 6 / 4", así que la foto tiene que mostrar exactamente
+  esa cantidad. Se contaron los huevos de cada foto candidata antes de
+  asignarla, y **se descartó una candidata que parecía un cartón de 15 pero
+  era uno de 30 recortado por el encuadre** — usarla habría sido tergiversar
+  el producto, del mismo tipo que inventar un precio. Los cuatro cartones
+  finales dan exacto: 6×5, 5×3, 3×2 y 2×2.
+
+  **El pollo entero cambió de concepto, no solo de archivo.** La foto de stock
+  era un pollo crudo estilizado sobre tabla de cortar con hierbas; la real
+  muestra los pollos **empacados en bolsa**, que es lo que el cliente
+  efectivamente recibe. El `alt` se actualizó en consecuencia, igual que el de
+  la portada (decía "Canasta con huevos" y ya no hay ninguna canasta). De paso
+  se unificó "Bandeja de 30" → "Cartón de 30", inconsistencia que ya se había
+  detectado antes.
+
+  **Herramienta**: se usó **Pillow**, no ImageMagick, que no está instalado en
+  este equipo. El script aplica `exif_transpose` antes de recortar — sin eso
+  las fotos verticales de celular se procesan acostadas, porque la rotación
+  vive en los metadatos y no en los píxeles.
+
+  **El recorte tuvo en cuenta que la foto se ve en un círculo.** Desde el
+  rediseño "etiqueta de finca", `.foto-etiqueta` es de 64×64 con
+  `border-radius: 50%`, así que las cuatro esquinas se pierden. Las 22 fotos
+  de huevos están tomadas sobre un mantel de hule rojo muy estampado
+  (girasoles y gallinas), que a ese tamaño le come el contraste al producto;
+  se recortó cerrado a propósito para que el cartón llene el círculo y el
+  mantel quede casi todo fuera. **Si en algún momento se repiten esas fotos
+  sobre madera clara o un paño liso, el catálogo entero mejora.**
+
+  **Lo que NO se cambió, y por qué:**
+  - `producto-pollo-pechuga`, `-muslo` y `-alas` siguen siendo de stock: entre
+    las 45 fotos no hay ninguna de esos cortes, lógico porque el negocio no los
+    vende (están como "Próximamente"). No se inventó un reemplazo.
+  - Los cuatro `fondo-*.jpg` siguen siendo las texturas de Unsplash. Las fotos
+    de la finca sirven como imagen, no como fondo parejo con texto encima.
+
+  **Falso positivo de la auditoría, anotado para que no se repita**: el
+  revisor de datos falsos reportó que `producto-pollo-alas.jpg` muestra alas
+  **cocidas** mientras el `alt` dice "crudas". Se verificó mirando la foto: son
+  crudas (piel pálida, cortes de preparación, sin dorar). El tono cálido de la
+  sartén y el tamaño chico inducen el error. No se cambió nada.
+
+  **Sobró material sin usar**: 15 fotos muy buenas de pollitos de engorde y de
+  gallinas ponedoras en el corral. No entran en ningún puesto del catálogo,
+  que solo tiene fotos de producto, pero serían ideales para `Sobre-Nosotros`,
+  que hoy **reutiliza dos fotos de producto** en vez de tener imágenes propias
+  de la finca. Queda propuesto, no hecho.
+
+  **Los 11 MB de originales** quedaron en
+  `vistas/Recursos/Imagenes/Imágenes reales del negocio/`, **excluidos de git**
+  (`.git/info/exclude`). Conviene sacarlos de `vistas/` del todo: lo que vive
+  ahí se despliega con el sitio.
