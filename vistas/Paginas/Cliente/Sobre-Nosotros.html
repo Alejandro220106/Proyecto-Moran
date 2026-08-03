@@ -1,20 +1,27 @@
 <!DOCTYPE html>
 <!--
   Sobre Nosotros (vista del cliente). Se llega aquí desde "SOBRE NOSOTROS"
-  en el header y desde dos enlaces del footer, que hasta ahora apuntaban a
-  "#" porque esta página no existía.
+  en el header y desde dos enlaces del footer.
 
   Página del sitio (no standalone): usa header/footer compartidos
-  (#encabezado / #pie-pagina + plantillas.js), y sigue la familia visual de
-  Contacto.html / registro.html (fondo oscuro, tarjeta, acento ámbar).
+  (#encabezado / #pie-pagina + plantillas.js).
 
-  IMPORTANTE sobre el contenido: aquí solo se escribió información que
-  consta en el propio proyecto (el eslogan del footer, los productos que
-  realmente se venden, y los datos de contacto e Instagram del footer). No
-  se inventó historia del negocio -año de fundación, tamaño de la granja,
-  premios, etc.-. El párrafo de "Quiénes somos" es un texto de arranque
-  deliberadamente breve: la familia Morán debería reemplazarlo por su
-  historia real (está marcado con un comentario más abajo).
+  DISEÑO: "inmersivo nocturno", elegido por el usuario entre seis propuestas
+  el 2026-08-02. La idea es que la fotografía real de la finca sostenga la
+  página, en vez de los paneles vacíos que tenía antes. Conserva la familia
+  visual del sitio —fondo oscuro y ámbar de marca— pero abre con una foto a
+  sangre en lugar de un título centrado sobre nada.
+
+  POR QUÉ CAMBIÓ: la versión anterior reutilizaba las miniaturas cuadradas
+  del catálogo (240x240) estirándolas a ~550px de ancho. Ampliadas 2,3 veces
+  se veían blandas y dejaban asomar el mantel de las fotos de producto. Ahora
+  la página tiene sus propias imágenes, recortadas del original a la
+  resolución que de verdad necesita.
+
+  IMPORTANTE sobre el contenido: aquí solo se escribió información que consta
+  en el propio proyecto (el eslogan del footer, los productos que realmente
+  se venden, y los datos de contacto e Instagram del footer). No se inventó
+  historia del negocio -año de fundación, tamaño de la granja, premios-.
 -->
 <html lang="es">
 <head>
@@ -31,14 +38,26 @@
     <!-- Header compartido. -->
     <div id="encabezado"></div>
 
-    <!-- Contenido sobre fondo oscuro. -->
     <main class="pagina-sobre">
-        <section class="contenedor-sobre">
 
-            <h1 class="titulo-sobre">Sobre nosotros</h1>
+        <!--
+          Portada a sangre. La foto es del corral real de la finca; el título y
+          el eslogan van encima, apoyados en el borde inferior, que es donde el
+          velo ya es lo bastante denso para que el texto se lea (ver el cálculo
+          en el CSS).
+        -->
+        <section class="escena-sobre">
+            <img src="../../Recursos/Imagenes/sobre-granja.jpg"
+                 alt="Gallinas ponedoras alrededor de los comederos en el corral de la finca">
 
-            <!-- Eslogan real de la marca (el mismo que usa el footer). -->
-            <p class="eslogan-sobre">«Lo mejor, con amor, siempre Morán.»</p>
+            <div class="texto-escena">
+                <h1 class="titulo-sobre">Sobre nosotros</h1>
+                <!-- Eslogan real de la marca, el mismo que usa el footer. -->
+                <p class="eslogan-sobre">«Lo mejor, con amor, siempre Morán.»</p>
+            </div>
+        </section>
+
+        <div class="cuerpo-sobre">
 
             <!--
                 TEXTO A REEMPLAZAR: este párrafo dice solo lo que se puede
@@ -53,13 +72,16 @@
             </p>
 
             <!-- Qué se vende hoy. Coincide con lo que ofrece productos.html. -->
-            <h2 class="subtitulo-sobre">Qué ofrecemos</h2>
+            <h2 class="rotulo-sobre">Qué ofrecemos</h2>
 
             <div class="rejilla-sobre">
 
-                <article class="tarjeta-sobre">
-                    <img src="../../Recursos/Imagenes/producto-huevos-30.jpg" alt="Huevos cafés frescos">
-                    <div class="cuerpo-tarjeta">
+                <article class="pieza-sobre">
+                    <!-- loading="lazy" solo en estas dos: quedan bajo el pliegue,
+                         a diferencia de la foto de portada, que se necesita ya. -->
+                    <img src="../../Recursos/Imagenes/sobre-huevos.jpg"
+                         alt="Bandeja de huevos cafés recién recolectados" loading="lazy">
+                    <div class="cuerpo-pieza">
                         <h3>Huevos</h3>
                         <p>
                             Huevo café fresco, en presentaciones de 30, 15, 6 y 4 unidades,
@@ -68,9 +90,10 @@
                     </div>
                 </article>
 
-                <article class="tarjeta-sobre">
-                    <img src="../../Recursos/Imagenes/producto-pollo-entero.jpg" alt="Pollo entero empacado, listo para entregar">
-                    <div class="cuerpo-tarjeta">
+                <article class="pieza-sobre">
+                    <img src="../../Recursos/Imagenes/sobre-pollo.jpg"
+                         alt="Pollos enteros crudos empacados en bolsa, listos para entregar" loading="lazy">
+                    <div class="cuerpo-pieza">
                         <h3>Pollo</h3>
                         <p>
                             Pollo entero fresco. Los cortes por pieza —pechuga, muslo y
@@ -82,7 +105,7 @@
             </div>
 
             <!-- Datos reales, los mismos que aparecen en el footer del sitio. -->
-            <h2 class="subtitulo-sobre">Dónde encontrarnos</h2>
+            <h2 class="rotulo-sobre">Dónde encontrarnos</h2>
 
             <ul class="datos-sobre">
                 <li><span class="etiqueta-dato">Ubicación</span> San Carlos, Alajuela</li>
@@ -106,7 +129,7 @@
                 <a href="Contacto.html" class="btn boton-sobre boton-sobre-secundario">Contáctenos</a>
             </div>
 
-        </section>
+        </div>
     </main>
 
     <!-- Footer compartido. -->

@@ -943,3 +943,130 @@ administración.
   `vistas/Recursos/Imagenes/Imágenes reales del negocio/`, **excluidos de git**
   (`.git/info/exclude`). Conviene sacarlos de `vistas/` del todo: lo que vive
   ahí se despliega con el sitio.
+- **2026-08-02 (2)** (rama `Alejandro`): se **rediseñó `Sobre-Nosotros.html`**
+  por completo. El usuario eligió la dirección **"inmersivo nocturno"** entre
+  seis propuestas presentadas en un artifact aparte (las otras cinco fueron:
+  etiqueta de finca, cartón de huevos, rótulo de zinc, editorial fotográfico y
+  bitácora de finca).
+
+  **Por qué se rehízo.** La página reutilizaba las miniaturas cuadradas del
+  catálogo (240×240) estirándolas a ~550px de ancho: ampliadas 2,3 veces se
+  veían blandas y dejaban asomar el mantel de las fotos de producto. Además el
+  layout era un panel centrado con dos tarjetitas, que no aprovechaba nada de
+  la fotografía real que ya existía.
+
+  **Imágenes propias**, recortadas del original a la resolución que de verdad
+  necesitan: `sobre-granja.jpg` (1600×800, el corral con las ponedoras — foto
+  que no se usaba en ninguna parte), `sobre-huevos.jpg` y `sobre-pollo.jpg`
+  (1200×700). Calidad 88.
+
+  **El diseño**: portada a sangre con la foto del corral, el título y el
+  eslogan encima sobre un velo en degradado, y el resto del contenido en
+  columna debajo. Conserva el fondo oscuro y el ámbar de marca que ya usan
+  `Contacto.css` y `registro.css`.
+
+  **El detalle que puede volver la página ilegible en silencio.** El texto de
+  la portada va sobre la foto, así que su legibilidad depende de cuán denso sea
+  el velo justo donde cae el bloque de texto. Lo contraintuitivo es que **el
+  caso exigente es la pantalla chica, no la grande**: el bloque de texto tiene
+  alto fijo, así que en una portada corta ocupa una fracción mayor y arranca
+  proporcionalmente más arriba, donde el velo todavía es claro. Con los topes
+  iniciales el eslogan ámbar daba **4.81:1 en móvil** (pasaba AA, sin margen) y
+  6.54:1 en escritorio. Se adelantó el tope denso del 66% al 55% y ahora el
+  peor caso es **6.48:1**. El cálculo quedó escrito en el CSS: si alguien
+  cambia el alto del bloque de texto, hay que rehacerlo.
+
+  **Dos bugs heredados que esta página arrastraba** y se corrigieron de paso:
+  - `.boton-sobre` ponía texto blanco sobre el ámbar `#d99a4e`: **2.42:1**. Es
+    el mismo error que el panel admin corrigió el 2026-07-28, pero esta página
+    de cliente se había quedado atrás. Ahora usa `#111111` (7.81:1).
+  - Los botones no tenían indicador de foco por el bug de Bootstrap ya
+    documentado (`.btn:focus-visible` usa variables que solo existen dentro de
+    las variantes `.btn-*`). Se repuso a mano, igual que en `admin.css`.
+
+  **Nombres**: se conservaron `.pagina-sobre`, `.titulo-sobre`,
+  `.eslogan-sobre`, `.texto-sobre`, `.datos-sobre`, `.etiqueta-dato`,
+  `.acciones-sobre` y los dos `.boton-sobre*`. Se renombraron
+  `.tarjeta-sobre` → `.pieza-sobre`, `.cuerpo-tarjeta` → `.cuerpo-pieza` y
+  `.subtitulo-sobre` → `.rotulo-sobre`; son nuevas `.escena-sobre`,
+  `.texto-escena` y `.cuerpo-sobre`. Verificado que ninguna choca con otra hoja
+  del proyecto.
+
+  **Sin revisión visual**: sigue sin haber navegador en este equipo. Todo se
+  midió por cálculo y se comprobó sirviendo el sitio, pero nadie vio la página
+  renderizada.
+- **2026-08-02 (3)** (rama `Alejandro`): se **rediseñó el footer compartido**.
+  El usuario eligió la dirección **"editorial en columnas"** entre seis
+  propuestas presentadas en un artifact aparte (las otras cinco: banda compacta,
+  membrete en papel, banda kraft, pizarrón de mostrador y acciones directas).
+
+  **Alcance**: el footer se inyecta en **18 de las 19 páginas**, incluidas las
+  ocho del panel admin. Es el componente de mayor alcance del sitio.
+
+  **El hallazgo que motivó la mitad del trabajo: el footer repetía sus
+  enlaces.** Tenía OCHO enlaces para sólo CUATRO destinos.
+  - `productos.html` aparecía **cuatro veces**: "Nuestros Productos", "Pedido de
+    pollo", "Pedido de huevos" y "NUESTROS PRODUCTOS". Los dos "pedidos" no
+    llevaban a pedir nada distinto: iban al mismo listado. La sección que los
+    agrupaba se llamaba "SERVICIOS", que prometía algo que no existe.
+  - `Sobre-Nosotros.html` aparecía **dos veces**.
+  - El menú inferior ("CERRAR SESIÓN", "NUESTROS PRODUCTOS", "SOBRE NOSOTROS")
+    repetía **entero** enlaces que el header ya tiene en todas las páginas, así
+    que se quitó completo. Cerrar sesión sigue en el header, que es donde
+    corresponde: es una acción de sesión, no navegación de pie.
+
+  Ahora hay **cinco enlaces y cinco destinos distintos**, y se sumó Contacto,
+  que el footer no ofrecía.
+
+  **Otros cambios de fondo**:
+  - Correo y teléfono pasaron de texto suelto a enlaces `mailto:` y `tel:`. En
+    el celular, tocar el número llama.
+  - El eslogan dejó de ser un `<h2>` de 32px en mayúsculas y pasó a ser un `<p>`
+    serif en itálica, la misma voz que el login y Sobre Nosotros. De paso deja
+    de meter un `<h2>` ajeno en la jerarquía de encabezados de cada página.
+  - El formulario de suscripción ganó **etiqueta visible**. Antes se resolvía
+    con `aria-label` sobre el placeholder: servía al lector de pantalla, pero no
+    a quien mira, porque el placeholder desaparece apenas se empieza a escribir.
+  - **Foco de teclado**: ni los enlaces del footer ni los del header tenían
+    indicador propio; dependían del anillo por defecto del navegador, que sobre
+    el azul del footer daba **3.09:1** en Chrome —pasaba raspando— y no está
+    garantizado en Firefox ni Safari. Ahora los dos lo declaran explícito.
+
+  **Se soltó la textura `fondo-azul.jpg`** y quedó azul sólido `#12333f`. Pesaba
+  **332 KB**, el 15% de todas las imágenes del sitio, para una franja que el
+  degradado oscurecía tanto que la trama casi no se leía. **El archivo quedó sin
+  usar**: se puede borrar.
+
+  **Error propio que vale anotar**: los primeros ratios que se escribieron en
+  los comentarios estaban calculados contra el azul viejo (`#17485e`), no contra
+  el nuevo. Uno de esos errores llegó a justificar una decisión equivocada —se
+  había introducido un ámbar propio `#e0a95c` "porque el de marca no llega a
+  4.5:1", cuando sobre el azul nuevo el de marca da **5.53:1** y cumple de
+  sobra. Se volvió al ámbar de siempre. Moraleja: al cambiar un color de fondo
+  hay que **recalcular todos los ratios contra el fondo nuevo**, no arrastrar
+  los del anterior.
+
+  **Efecto secundario del cambio, detectado por la auditoría y corregido.** Al
+  quitar el `<h2>` del eslogan, las páginas que solo tenían `<h1>` pasaron a
+  saltar del nivel 1 a los `<h3>` del footer. Afectaba a `Contacto.html` y
+  `Actualizar-Datos.html`. Se corrigió **en el origen**, no en el componente
+  compartido: cada una lleva ahora un `<h2>` con la nueva clase utilitaria
+  `.solo-lectores`. Va oculto porque visible sería redundante con el título
+  ("Contáctenos" seguido de "Formulario de contacto"), pero existe para quien
+  navega por encabezados. Subir los rótulos del footer a `<h2>` habría sido peor:
+  arreglaba esas dos páginas y perforaba la jerarquía de las que sí tienen `h2`.
+
+  **Cinco páginas con problemas de encabezados que NO son de este cambio** y
+  quedan anotadas sin tocar:
+  - `catalogo.html`, `detalle-pedido.html` y `Contraseña-login.html` empiezan en
+    `<h2>`: no tienen `<h1>`.
+  - `index.html` y `pago.html` no tienen **ningún** encabezado propio. En esas
+    dos, los únicos encabezados del documento son los del footer.
+
+  **Cuidado con los finales de línea (Windows).** Al reconstruir `estilos.css`
+  concatenando el bloque del header (que venía del disco, en CRLF) con el bloque
+  nuevo (escrito en LF), el archivo quedó mezclado: 86 líneas CRLF y 225 LF. Se
+  normalizó todo a CRLF y se verificó que **las 86 líneas del header quedaran
+  byte a byte idénticas** a las del commit anterior. Es exactamente el riesgo
+  que anota la sección de entorno: un diff enorme que parece un cambio y no lo
+  es.
