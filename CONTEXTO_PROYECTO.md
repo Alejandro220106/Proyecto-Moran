@@ -1092,15 +1092,11 @@ administración.
     de ámbar todos los `<span>` de las tarjetas y le habría ganado —(0,1,1)
     contra (0,1,0)—, dejando el aviso con aspecto de enlace.
 
-  **La que falta es `index.html`, y su problema no son los encabezados: la
-  página está vacía.** El `<main>` no tiene contenido y su hoja
-  (`Recursos/Cliente/index.css`) es un archivo de cero bytes. Es la raíz del
-  sitio —`vistas/index.html` redirige ahí—, así que es lo primero que ve quien
-  entra, y hoy muestra solo el header y el footer con un hueco en medio. Se le
-  puso un `<h1>` oculto para que el documento tenga tema, pero **no se le
-  inventó un `<h2>` para tapar el salto**: un encabezado que no titula nada es
-  maquillaje. Lo que falta es construir la portada, y eso es una decisión de
-  producto. Anotado en el comentario de cabecera del propio archivo.
+  **La que faltaba era `index.html`, y su problema no eran los encabezados: la
+  página estaba vacía.** El `<main>` no tenía contenido y su hoja
+  (`Recursos/Cliente/index.css`) era un archivo de cero bytes. Siendo la raíz
+  del sitio, quien entraba veía el header y el footer con un hueco en medio.
+  **Resuelto el mismo día** — ver la entrada siguiente.
 
   **Cuidado con los finales de línea (Windows).** Al reconstruir `estilos.css`
   concatenando el bloque del header (que venía del disco, en CRLF) con el bloque
@@ -1109,3 +1105,26 @@ administración.
   byte a byte idénticas** a las del commit anterior. Es exactamente el riesgo
   que anota la sección de entorno: un diff enorme que parece un cambio y no lo
   es.
+- **2026-08-02 (4)** (rama `Alejandro`): **la portada del sitio pasó a ser el
+  catálogo**. `vistas/index.html` (la redirección de entrada) ahora apunta a
+  `Paginas/Cliente/productos.html` en vez de a `Paginas/Cliente/index.html`.
+
+  **Se eliminaron `Paginas/Cliente/index.html` y `Recursos/Cliente/index.css`.**
+  La primera estaba vacía —`<main>` sin contenido— y la segunda era un archivo
+  de cero bytes. Solo las referenciaba la redirección de la raíz, así que
+  borrarlas no rompe nada.
+
+  **No se duplicó el catálogo.** La alternativa era copiar el contenido de
+  `productos.html` dentro de `index.html`, y eso habría dejado dos copias de la
+  misma pantalla para mantener en sincronía. Con la redirección, el catálogo
+  sigue viviendo en un solo archivo.
+
+  Consecuencia buena y no buscada: la navegación ya era coherente con esto. El
+  header y el footer llevan "Nuestros productos" a `productos.html`, así que
+  ahora la raíz y el menú apuntan al mismo lugar en vez de a dos páginas
+  distintas.
+
+  **Si algún día se quiere una portada propia** (bienvenida, destacados,
+  historia del negocio), se construye esa página y se cambia el destino de las
+  dos referencias de `vistas/index.html`. Queda anotado en su comentario de
+  cabecera.

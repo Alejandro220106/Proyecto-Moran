@@ -2,18 +2,28 @@
 <!--
   Redirección de entrada. Las páginas reales del sitio viven en Paginas/;
   este archivo solo existe para que al abrir la raíz del sitio (/) el
-  navegador vaya directo a la página de inicio. No necesita CSS ni recursos.
+  navegador vaya directo a la portada. No necesita CSS ni recursos.
+
+  LA PORTADA ES EL CATÁLOGO. Antes la raíz llevaba a Paginas/Cliente/index.html,
+  una página que quedó vacía: su <main> no tenía contenido y su hoja de estilos
+  era un archivo de cero bytes, así que quien entraba al sitio veía el header y
+  el footer con un hueco en medio. Esa página se eliminó y ahora la raíz apunta
+  directamente a productos.html —"Nuestros productos"—, que ya está construido.
+
+  Esto NO duplica el catálogo: sigue viviendo en un solo archivo. Si algún día
+  se quiere una portada distinta (bienvenida, destacados, historia del negocio),
+  se construye esa página y se cambia el destino de las dos referencias de abajo.
 -->
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <!-- Redirección inmediata a la página de inicio. -->
-    <meta http-equiv="refresh" content="0; url=Paginas/Cliente/index.html">
+    <!-- Redirección inmediata al catálogo. -->
+    <meta http-equiv="refresh" content="0; url=Paginas/Cliente/productos.html">
     <title>La Morán</title>
 </head>
 <body>
     <!-- Respaldo por si la redirección automática no ocurre. -->
     <p>Si no se redirige automáticamente, entrá a
-       <a href="Paginas/Cliente/index.html">la página de inicio</a>.</p>
+       <a href="Paginas/Cliente/productos.html">nuestros productos</a>.</p>
 </body>
 </html>
