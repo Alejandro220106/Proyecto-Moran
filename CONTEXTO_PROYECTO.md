@@ -1319,4 +1319,43 @@ administración.
   - **Las tres contradicciones del documento** (el objetivo general que todavía
     menciona empleados, los "dos roles" que listan uno, los "cinco módulos"
     contra cuatro): se corrigen en el documento, no en el código.
+- **2026-08-02 (8)** (rama `Alejandro`): **arreglo de la barra lateral, que se
+  veía rota**. El usuario la abrió en el navegador y apareció a la derecha,
+  cortada y con un hueco debajo.
+
+  **La causa.** El ancho, el `flex-shrink` y el `order: -1` estaban puestos
+  sobre `.lateral-admin`, que es el `<nav>` **dentro** del contenedor. El hijo
+  del contenedor flex es el `<div id="lateral-admin">`, no el nav: esas
+  propiedades, puestas en un nieto, **no hacen absolutamente nada**. El div
+  quedaba sin ancho ni orden y el flex lo mandaba donde le tocara.
+
+  **La solución** fue más simple que el problema: se le puso una clase propia al
+  contenedor (`.ranura-lateral`) y ahí van el ancho y el `flex-shrink`. Y se
+  eliminó el `order: -1` por completo, porque la barra volvió a ir **antes** del
+  `<main>`, que es su lugar natural.
+
+  Eso se pudo hacer porque **los rótulos de grupo dejaron de ser `<h2>` y ahora
+  son `<p>`**. Eran encabezados solo por costumbre: nombran cada lista vía
+  `aria-labelledby`, que funciona con cualquier elemento. Como encabezados
+  obligaban a mover la barra al final del DOM para no meter tres `<h2>` delante
+  del `<h1>`; como párrafos, el problema desaparece y no hace falta ningún
+  truco de orden.
+
+  **Y un incidente que vale más que el arreglo.** Al reubicar el bloque en las
+  ocho páginas se usó una expresión regular con un cuantificador anidado
+  (`<!--
+(?:[^
+]*
+)*?-->` seguido del `<div>`). El motor hizo *backtracking*
+  desde el comentario de cabecera de cada archivo hasta el contenedor y **borró
+  todo lo del medio**: las ocho páginas quedaron en 181 bytes de los ~7.000 que
+  tenían. Se recuperaron con `git checkout` y se rehízo la edición con búsqueda
+  de texto exacto (`find`/`rfind`), con tres asserts de seguridad: que el
+  comentario esté a menos de 900 caracteres del ancla, que el tamaño no cambie
+  más de 500 bytes, y que el archivo siga conteniendo `<h1>`, `</main>` y
+  `</html>`.
+
+  **La regla para la próxima**: para editar HTML del repo con un script, usar
+  búsqueda de texto exacto, nunca una expresión regular con cuantificadores
+  anidados. Y comprobar el tamaño del resultado antes de escribir.
 

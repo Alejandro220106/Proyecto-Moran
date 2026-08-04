@@ -13,6 +13,12 @@
   ámbitos que define el alcance del documento del proyecto. Con nueve módulos
   —y van a ser más— una lista plana obliga a leerla entera cada vez.
 
+  LOS RÓTULOS DE GRUPO SON <p>, NO <h2>. Nombran cada lista vía
+  aria-labelledby, que funciona con cualquier elemento — no hace falta que sean
+  encabezados. Y como encabezados eran un problema: la barra se dibuja antes que
+  el contenido, así que tres <h2> por delante del <h1> de la página dejaban a
+  las ocho pantallas con un esquema de encabezados inválido.
+
   EL ÍTEM ACTIVO LO MARCA EL JAVASCRIPT. Como este fragmento es el mismo para
   las ocho páginas, no puede saber en cuál está; plantillas.js compara el
   nombre del archivo abierto con cada href y le pone la clase .activo al que
@@ -41,7 +47,7 @@
     </a>
 
     <div class="grupo-lateral">
-        <h2 class="rotulo-lateral" id="grupo-granja">Granja</h2>
+        <p class="rotulo-lateral" id="grupo-granja">Granja</p>
         <ul class="lista-lateral" aria-labelledby="grupo-granja">
             <li>
                 <a href="../Admin/RecoleccionDiaria-admin.html">
@@ -84,7 +90,7 @@
     </div>
 
     <div class="grupo-lateral">
-        <h2 class="rotulo-lateral" id="grupo-ventas">Ventas</h2>
+        <p class="rotulo-lateral" id="grupo-ventas">Ventas</p>
         <ul class="lista-lateral" aria-labelledby="grupo-ventas">
             <li>
                 <a href="../Admin/VentasManuales-admin.html">
@@ -115,7 +121,7 @@
     </div>
 
     <div class="grupo-lateral">
-        <h2 class="rotulo-lateral" id="grupo-administracion">Administración</h2>
+        <p class="rotulo-lateral" id="grupo-administracion">Administración</p>
         <ul class="lista-lateral" aria-labelledby="grupo-administracion">
             <li>
                 <a href="../Admin/Facturas-admin.html">

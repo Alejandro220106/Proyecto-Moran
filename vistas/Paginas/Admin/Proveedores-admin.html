@@ -30,6 +30,11 @@
     <div id="encabezado"></div>
 
     <div class="marco-admin">
+        <!-- Barra lateral de módulos. Va antes del <main>, que es donde se ve.
+             Sus rótulos de grupo NO son encabezados (son <p>), así que no meten
+             <h2> por delante del <h1> de la página. -->
+        <div id="lateral-admin" class="ranura-lateral"></div>
+
         <main class="pagina-admin">
 
         <section class="encabezado-modulo">
@@ -175,18 +180,6 @@
 
         </main>
 
-        <!--
-          La barra va DESPUÉS del <main> en el HTML, aunque se vea a la
-          izquierda. El orden visual lo da "order: -1" en lateral-admin.css.
-
-          No es capricho: la barra aporta tres <h2> (Granja, Ventas,
-          Administración). Puesta antes del <main>, esos tres encabezados
-          quedaban delante del <h1> de la página, y un <h2> sin ningún <h1>
-          previo es un esquema de encabezados inválido — le pasaba a las ocho
-          pantallas a la vez. Con la barra después, el <h1> vuelve a ser el
-          primer encabezado del documento y el orden de lectura es el correcto.
-        -->
-        <div id="lateral-admin"></div>
     </div>
 
     <!-- Footer compartido. -->

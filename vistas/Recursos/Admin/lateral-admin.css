@@ -32,17 +32,28 @@
   min-width: 0;
 }
 
+/*
+  La ranura donde plantillas.js inyecta la barra.
+
+  El ancho y el flex-shrink van ACÁ y no en .lateral-admin, y es un error fácil
+  de cometer: el hijo del contenedor flex es este <div>, no el <nav> que va
+  adentro. Puestas en el <nav> —que es un nieto— esas propiedades no hacen
+  absolutamente nada, y la barra termina donde el flex la deje.
+*/
+.ranura-lateral {
+  flex-shrink: 0;
+  width: 208px;
+}
+
 
 /* ---- La barra ---- */
+/* La barra llena la ranura. El ancho lo fija .ranura-lateral; acá solo se
+   ocupa todo el espacio que esa ranura da, a lo ancho y a lo alto — el alto
+   importa para que el fondo del panel llegue hasta abajo en vez de cortarse
+   donde termina el último enlace. */
 .lateral-admin {
-  /* Se dibuja primero aunque en el HTML vaya DESPUÉS del <main>.
-     El motivo está en el comentario de cada página: la barra aporta tres <h2>,
-     y puestos antes del <h1> dejaban a las ocho pantallas con un esquema de
-     encabezados inválido. Separar el orden visual del orden del documento es
-     justamente para lo que sirve "order". */
-  order: -1;
-  width: 208px;
-  flex-shrink: 0;
+  width: 100%;
+  min-height: 100%;
   background-color: var(--panel-admin);
   /* Filete separador. Es decorativo: no se le exige el 3:1 de WCAG 1.4.11
      porque no identifica un control ni transmite información —la barra se
@@ -209,8 +220,13 @@
     flex-direction: column;
   }
 
-  .lateral-admin {
+  /* La ranura suelta su ancho fijo: en columna la barra ocupa todo el ancho. */
+  .ranura-lateral {
     width: 100%;
+  }
+
+  .lateral-admin {
+    min-height: 0;
     border-right: none;
     border-bottom: 1px solid var(--borde-admin);
     padding: 12px 0;
