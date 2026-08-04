@@ -61,8 +61,8 @@
             </article>
 
             <article class="tarjeta-resumen">
-                <span class="cifra-resumen" id="pedidos-preparacion">0</span>
-                <span>En preparación</span>
+                <span class="cifra-resumen" id="pedidos-en-camino">0</span>
+                <span>En camino</span>
             </article>
 
             <article class="tarjeta-resumen">
@@ -91,7 +91,7 @@
                     <select id="estado-pedido" name="estado_pedido" class="form-select campo-filtro">
                         <option value="">Todos</option>
                         <option value="pendiente">Pendiente</option>
-                        <option value="preparacion">En preparación</option>
+                        <option value="en_camino">En camino</option>
                         <option value="entregado">Entregado</option>
                         <option value="cancelado">Cancelado</option>
                     </select>
@@ -179,7 +179,7 @@
                         <td>0000-0000</td>
                         <td>00/00/0000</td>
                         <td>₡0</td>
-                        <td><span class="estado preparacion">En preparación</span></td>
+                        <td><span class="estado en-camino">En camino</span></td>
                         <td>
                             <button class="btn boton-tabla" data-pedido-id="2" data-accion="ver">Ver</button>
                             <button class="btn boton-tabla" data-pedido-id="2" data-accion="editar">Editar</button>
@@ -230,7 +230,7 @@
                 <h3>Estado del pedido</h3>
                 <select id="detalle-estado-select" class="form-select" aria-label="Cambiar estado del pedido">
                     <option value="pendiente">Pendiente</option>
-                    <option value="preparacion">En preparación</option>
+                    <option value="en_camino">En camino</option>
                     <option value="entregado">Entregado</option>
                     <option value="cancelado">Cancelado</option>
                 </select>

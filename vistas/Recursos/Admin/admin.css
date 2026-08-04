@@ -272,8 +272,13 @@
 }
 
 /* Azul oscurecido respecto al #3d8bfd original: con blanco encima ese tono
-   daba 3.33:1 y el chip va en negrita chica, que exige 4.5:1. Este da 6.04:1. */
-.estado.preparacion {
+   daba 3.33:1 y el chip va en negrita chica, que exige 4.5:1. Este da 6.04:1.
+
+   La clase se llama "en-camino" en kebab-case, como manda la convención del
+   proyecto, pero el atributo value del <option> es "en_camino" con guion bajo:
+   ese tiene que coincidir CARÁCTER POR CARÁCTER con el valor del enumerado de
+   la base de datos. No son el mismo texto a propósito. */
+.estado.en-camino {
   background-color: #1a5fc4;
   color: #ffffff;
 }

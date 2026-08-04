@@ -1282,4 +1282,41 @@ administración.
   De paso, el `<nav>` del header compartido ganó `aria-label="Navegación
   principal"`: en las ocho pantallas admin conviven dos `<nav>` y solo uno
   estaba identificado.
+- **2026-08-02 (7)** (rama `Alejandro`): se cerraron dos de los pendientes que
+  venían acumulándose.
+
+  **1. Los estados de pedido ya no contradicen a la base de datos.** El
+  frontend usaba "En preparación" en 9 lugares de 4 archivos; el documento del
+  proyecto define `pendiente, en_camino, entregado, cancelado`. **Manda el
+  documento**, así que se cambió el sitio, no el esquema. Ahora los cuatro
+  valores coinciden carácter por carácter con el enumerado.
+
+  **Un detalle que no hay que "corregir" después por parecer inconsistente**: el
+  atributo `value` del `<option>` es `en_camino`, con guion bajo, porque tiene
+  que ser idéntico al valor del enumerado; la clase CSS es `.en-camino`, en
+  kebab-case, porque esa es la convención del proyecto. **No son el mismo texto
+  a propósito** y así quedó documentado en `admin.css`.
+
+  Si el negocio realmente distingue "lo estoy armando" de "ya va en camino",
+  entonces hacen falta **cinco** estados y hay que agregarlo también en el
+  documento y en el esquema — no alcanza con revertir esto.
+
+  **2. Los 11 MB de originales salieron de `vistas/`.** Estaban en
+  `vistas/Recursos/Imagenes/Imágenes reales del negocio/`; ahora viven en
+  `Fotos originales/`, en la raíz del proyecto. Seguían excluidos de git, pero
+  cualquier despliegue de `vistas/` se los habría llevado. `vistas/Recursos/
+  Imagenes/` queda con 16 archivos, todos optimizados.
+
+  **Lo que NO se tocó, y por qué:**
+  - **El script de PostgreSQL**, incluido el `ALTER TABLE` que agrega el campo
+    `rol` — el usuario pidió expresamente no tocarlo. Sigue siendo el bloqueo
+    más serio del proyecto: sin ese campo no hay autenticación, y sin
+    autenticación el panel queda abierto a cualquiera que escriba la URL.
+  - **El logo** (1.318 KB para mostrarse a 130×130, el 52% del peso de todas
+    las imágenes): la regla del proyecto dice que no se modifica ni se
+    regenera. Una copia a 260 px daría el mismo aspecto con 94 KB, pero eso lo
+    decide el equipo.
+  - **Las tres contradicciones del documento** (el objetivo general que todavía
+    menciona empleados, los "dos roles" que listan uno, los "cinco módulos"
+    contra cuatro): se corrigen en el documento, no en el código.
 

@@ -205,7 +205,7 @@
 
 /* Azul oscurecido respecto al #3d8bfd original: con blanco encima ese tono
    daba 3.33:1 y el chip va en negrita chica, que exige 4.5:1. Este da 6.04:1. */
-.preparacion {
+.en-camino {
   background-color: #1a5fc4;
   color: #ffffff;
 }
