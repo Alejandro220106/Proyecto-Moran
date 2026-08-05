@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<!--
+  Registro de lotes, módulo del panel de administración. Se llega desde
+  "Registro de lotes" en la barra lateral.
+
+  POR QUÉ EXISTE
+  Es el requerimiento RF-28, de prioridad alta, y hasta ahora no tenía ninguna
+  pantalla: los lotes SE MOSTRABAN en Inventario, pero no había forma de dar
+  uno de alta. El lote es además la unidad de rastreo de toda la granja — de él
+  cuelgan la mortalidad y la recolección diaria—, así que sin poder crearlo
+  esas dos pantallas registran contra una lista vacía.
+
+  QUÉ REGISTRA, y por qué cada campo
+  - Código de lote: el identificador de rastreo. Es ÚNICO: dos lotes no pueden
+    compartirlo, porque es lo que permite seguir un grupo de aves de punta a
+    punta de su ciclo.
+  - Tipo de ave: pollos o gallinas. El requerimiento pide explícitamente
+    "separar los lotes de pollos y gallinas", y no es un detalle cosmético: un
+    lote de engorde y uno de postura tienen ciclos y destinos distintos.
+  - Raza, cantidad inicial y peso inicial promedio: los datos de entrada.
+  - Fecha de ingreso y fecha estimada de salida: el ciclo previsto.
+  - Estado: en qué fase del ciclo está.
+
+  LA CANTIDAD VIGENTE NO SE PIDE NI SE GUARDA. Solo se registra con cuántas
+  aves entró el lote. Las que quedan se calculan restando la mortalidad y los
+  pollos ya procesados. Guardar además un "quedan N" crearía dos verdades que
+  tarde o temprano se contradicen.
+
+  Usa footer compartido (#pie-pagina) y barra lateral (#lateral-admin). NO usa
+  header: el panel dejó de cargar el del sitio público.
+
+  El formulario no tiene "action" todavía. Las filas de la tabla son de ejemplo
+  y están marcadas como tales de forma visible. Solo frontend por ahora.
+-->
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de lotes | La Morán</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../estilos/base.css">
+    <!-- Tokens de color del panel, compartidos por las pantallas admin. -->
+    <link rel="stylesheet" href="../../estilos/admin/tokens-admin.css">
+    <link rel="stylesheet" href="../../estilos/admin/lateral-admin.css">
+    <link rel="stylesheet" href="../../estilos/admin/admin.css">
+</head>
+<body>
+
+    <!--
+      SIN HEADER. El panel no carga el encabezado compartido: ese header es del
+      sitio público —logo grande, catálogo, carrito, "Sobre nosotros"— y no le
+      sirve a quien viene a trabajar. "Cerrar sesión" vive en la franja
+      superior derecha, no acá.
+    -->
+
+    <div id="barra-superior-admin"></div>
+
+    <div class="marco-admin">
+        <!-- Barra lateral de módulos. Va antes del <main>, que es donde se ve.
+             Sus rótulos de grupo NO son encabezados (son <p>), así que no meten
+             <h2> por delante del <h1> de la página. -->
+        <div id="lateral-admin" class="ranura-lateral"></div>
+
+        <main class="pagina-admin">
+
+        <section class="encabezado-modulo">
+            <h1>Registro de Lotes</h1>
+            <p>Ingreso de lotes de aves y seguimiento de su ciclo de vida.</p>
+        </section>
+
+        <!-- Alta de un lote -->
+        <section class="panel-admin">
+            <div class="titulo-panel">
+                <h2>Registrar lote nuevo</h2>
+            </div>
+
+            <form id="formulario-lote">
+                <div class="rejilla-campos">
+                    <div class="grupo-campo">
+                        <label for="codigo-lote">Código de lote</label>
+                        <input type="text" id="codigo-lote" name="codigo_lote"
+                               class="form-control campo-admin" required
+                               autocomplete="off" aria-describedby="ayuda-codigo">
+                        <small id="ayuda-codigo" class="ayuda-campo">Único e irrepetible: es lo que permite rastrear el lote todo su ciclo.</small>
+                    </div>
+
+                    <div class="grupo-campo">
+                        <label for="tipo-ave">Tipo de ave</label>
+                        <!--
+                          En plural y con estos dos valores exactos porque así
+                          están definidos en el origen de datos. Separar pollos
+                          de gallinas es un pedido explícito del requerimiento:
+                          un lote de engorde y uno de postura tienen ciclos
+                          distintos.
+                        -->
+                        <select id="tipo-ave" name="tipo_ave" class="form-select campo-admin" required>
+                            <option value="">Seleccionar…</option>
+                            <option value="pollos">Pollos (engorde)</option>
+                            <option value="gallinas">Gallinas (postura)</option>
+                        </select>
+                    </div>
+
+                    <div class="grupo-campo">
+                        <label for="raza-lote">Raza</label>
+                        <input type="text" id="raza-lote" name="raza"
+                               class="form-control campo-admin" required autocomplete="off">
+                    </div>
+
+                    <div class="grupo-campo">
+                        <label for="cantidad-inicial">Cantidad de aves</label>
+                        <!-- min=1: un lote de cero aves no es un lote. -->
+                        <input type="number" id="cantidad-inicial" name="cantidad_inicial"
+                               class="form-control campo-admin" min="1" step="1"
+                               inputmode="numeric" required
+                               aria-describedby="ayuda-cantidad-lote">
+                        <small id="ayuda-cantidad-lote" class="ayuda-campo">Aves con las que entra el lote. Las que quedan se calculan solas.</small>
+                    </div>
+
+                    <div class="grupo-campo">
+                        <label for="peso-inicial">Peso inicial promedio</label>
+                        <!-- step 0.01 porque el peso lleva decimales; el símbolo
+                             va en el texto de ayuda y no dentro del campo, que
+                             es numérico y no lo aceptaría. -->
+                        <input type="number" id="peso-inicial" name="peso_inicial_promedio"
+                               class="form-control campo-admin" min="0.01" step="0.01"
+                               inputmode="decimal" required
+                               aria-describedby="ayuda-peso">
+                        <small id="ayuda-peso" class="ayuda-campo">Promedio por ave, en kilogramos.</small>
+                    </div>
+
+                    <div class="grupo-campo">
+                        <label for="estado-lote">Estado del ciclo</label>
+                        <select id="estado-lote" name="estado" class="form-select campo-admin" required>
+                            <option value="">Seleccionar…</option>
+                            <option value="niñez">Niñez</option>
+                            <option value="engorde/en postura">Engorde / en postura</option>
+                            <option value="listo/vieja">Listo / vieja</option>
+                        </select>
+                    </div>
+
+                    <div class="grupo-campo">
+                        <label for="fecha-ingreso">Fecha de ingreso</label>
+                        <input type="date" id="fecha-ingreso" name="fecha_ingreso"
+                               class="form-control campo-admin" required>
+                    </div>
+
+                    <div class="grupo-campo">
+                        <label for="fecha-salida">Fecha estimada de salida <span class="marca-opcional">(opcional)</span></label>
+                        <input type="date" id="fecha-salida" name="fecha_estimada_salida"
+                               class="form-control campo-admin"
+                               aria-describedby="ayuda-salida">
+                        <small id="ayuda-salida" class="ayuda-campo">Se puede dejar en blanco y completarla después.</small>
+                    </div>
+                </div>
+
+                <div class="fila-botones">
+                    <button type="submit" class="btn boton-exito" id="boton-registrar-lote">Registrar lote</button>
+                    <button type="reset" class="btn boton-ambar" id="boton-limpiar-lote">Limpiar</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Lotes registrados -->
+        <section class="panel-admin">
+            <div class="titulo-panel">
+                <h2>Lotes registrados</h2>
+                <button class="btn boton-ambar" id="boton-actualizar-lotes">Actualizar</button>
+            </div>
+
+            <p class="nota-ejemplo">
+                <strong>Datos de ejemplo.</strong> Las filas de abajo muestran solamente
+                el formato de la tabla. No corresponden a ningún lote real: los
+                registros verdaderos aparecerán acá cuando el módulo esté conectado
+                a la base de datos.
+            </p>
+
+            <!--
+              tabindex="0" + role="region": un contenedor que scrollea pero no es
+              enfocable no se puede desplazar con teclado en Firefox ni Safari.
+            -->
+            <div class="tabla-scroll" tabindex="0" role="region" aria-label="Lotes registrados">
+                <table class="tabla-admin" id="tabla-lotes-registrados">
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Tipo</th>
+                            <th>Raza</th>
+                            <th>Aves</th>
+                            <th>Peso inicial</th>
+                            <th>Ingreso</th>
+                            <th>Salida estimada</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!--
+                          Fechas en 00/00/0000 y cantidades en 0 a propósito:
+                          un valor plausible acá se confunde con un lote real al
+                          mostrar la pantalla. Las fechas van en dd/mm/aaaa, el
+                          formato acordado para todo el sistema.
+                        -->
+                        <tr>
+                            <td>Lote de ejemplo 1</td>
+                            <td>Pollos</td>
+                            <td>—</td>
+                            <td>0</td>
+                            <td>0,00 kg</td>
+                            <td>00/00/0000</td>
+                            <td>00/00/0000</td>
+                            <td><span class="estado activo">Engorde</span></td>
+                        </tr>
+                        <tr>
+                            <td>Lote de ejemplo 2</td>
+                            <td>Gallinas</td>
+                            <td>—</td>
+                            <td>0</td>
+                            <td>0,00 kg</td>
+                            <td>00/00/0000</td>
+                            <td>—</td>
+                            <td><span class="estado pendiente">Niñez</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        </main>
+    </div>
+
+    <!-- Footer compartido. -->
+    <div id="pie-pagina"></div>
+
+    <script src="../../scripts/plantillas.js" defer></script>
+    <!-- fechas-admin.js va PRIMERO: define las utilidades que usa el
+         siguiente. Los dos llevan defer, que respeta el orden. -->
+    <script src="../../scripts/admin/fechas-admin.js" defer></script>
+    <script src="../../scripts/admin/RegistroLotes.js" defer></script>
+</body>
+</html>

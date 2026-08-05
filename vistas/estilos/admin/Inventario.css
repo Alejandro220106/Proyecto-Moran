@@ -1,0 +1,316 @@
+/*
+  Estilos del módulo de inventario (vistas/paginas/admin/Inventario.html).
+
+  Convención del proyecto: clases de Bootstrap en inglés, clases propias en
+  español. Ver la skill moran-frontend y CONTEXTO_PROYECTO.md.
+
+  Fondo oscuro y ámbar de la marca, igual que Home-admin.css, pero con su
+  propio layout (tarjetas con tablas en vez de tarjetas de módulo).
+
+  Los colores vienen de tokens-admin.css (enlazado antes que esta hoja); acá
+  solo se consumen con var().
+*/
+
+
+.pagina-inventario {
+  background-color: var(--fondo-admin);
+  min-height: 100vh;
+  padding: 45px 25px;
+  color: #ffffff;
+}
+
+/* ---- Enlace "Volver al panel": eliminado ---- */
+/* Ya no existe: desde que hay barra lateral no hay a dónde volver, el panel
+   está siempre a la vista. La clase sigue viva en el ámbito cliente
+   (Contraseña-login), que es otra cosa y tiene su propia definición. */
+
+.encabezado-pagina {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.encabezado-pagina h1 {
+  font-size: 2.4rem;
+  margin-bottom: 10px;
+}
+
+.encabezado-pagina p {
+  color: #bdbdbd;
+}
+
+/* Aviso de que el módulo todavía es de solo lectura. Mismo tratamiento que la
+   nota de "datos de ejemplo" del panel (admin.css): fondo cálido apagado y
+   filete ámbar a la izquierda, para que se lea como advertencia y no como
+   contenido. Los colores van literales porque esta hoja no carga admin.css.
+   #e8dcc8 sobre #2a2418 da 11.37:1. */
+.nota-pendiente {
+  max-width: 1100px;
+  margin: 0 auto 30px;
+  background-color: #2a2418;
+  border-left: 4px solid var(--ambar-boton);
+  border-radius: var(--radio-control);
+  padding: 14px 18px;
+  color: #e8dcc8;
+  line-height: 1.55;
+}
+
+.nota-pendiente strong {
+  color: var(--ambar-boton);
+}
+
+/* Los enlaces a los módulos de alta van ámbar Y subrayados. El subrayado no es
+   decoración: el ámbar contra el texto vecino (#e8dcc8) da 1.79:1, muy por
+   debajo del 3:1 que WCAG 1.4.1 exige cuando el color es lo único que
+   distingue un enlace del texto que lo rodea. Con el subrayado, el color deja
+   de ser el único indicio. Contra el fondo de la nota da 6.37:1. */
+.nota-pendiente a {
+  color: var(--ambar-boton);
+  text-decoration: underline;
+  font-weight: 700;
+}
+
+.nota-pendiente a:hover {
+  color: #f2c98a;   /* 9.90:1 sobre el fondo de la nota */
+}
+
+.grid-inventario {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(520px, 1fr));
+  gap: 30px;
+}
+
+/* overflow-x incondicional, no solo bajo 650px: la tabla de lotes tiene 6
+   columnas y hoy no desborda porque las celdas son "-" de relleno, pero con
+   datos reales (código de lote, raza, fechas) se pasa del ancho de la tarjeta
+   mucho antes de llegar a móvil. El resto del panel ya lo hace siempre. */
+.tarjeta {
+  background-color: var(--panel-admin);
+  border: 1px solid var(--borde-admin);
+  border-radius: var(--radio-panel);
+  padding: 25px;
+  overflow-x: auto;
+}
+
+.titulo-seccion {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.titulo-seccion h2 {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+/* Botón ámbar de la marca, sobre la base .btn de Bootstrap (mismo tono que
+   login/detalle-pedido/registro/Home-admin). */
+.boton-actualizar-tabla {
+  background-color: var(--ambar-boton);
+  color: var(--ambar-texto);
+  border: none;
+  border-radius: var(--radio-control);
+  padding: 10px 18px;
+  font-weight: 700;
+}
+
+.boton-actualizar-tabla:hover {
+  background-color: var(--ambar-boton-hover);
+  color: var(--ambar-texto);
+}
+
+/* Tablas, escopadas bajo .tarjeta (no elementos sueltos) para no chocar
+   con otras tablas si este CSS llegara a compartirse más adelante. */
+.tarjeta table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tarjeta thead {
+  background-color: #2b2b2b;
+}
+
+.tarjeta th {
+  padding: 12px;
+  text-align: left;
+  color: #ffffff;
+}
+
+.tarjeta td {
+  padding: 12px;
+  border-top: 1px solid #444444;
+}
+
+.tarjeta tbody tr:hover {
+  background-color: #292929;
+}
+
+/* ---- Aviso de stock mínimo (RF-21) ---- */
+/*
+  El resumen que va arriba de la tabla de productos terminados: cuántos
+  productos quedaron en su mínimo o por debajo.
+
+  Tiene tres estados y cada uno con su color, pero NO solo con su color: el
+  texto ya dice lo que pasa ("Sin datos para evaluar", "3 productos bajo el
+  mínimo"), así que quien no distingue el rojo del verde se entera igual. El
+  color acelera la lectura, no la sostiene.
+
+  Los tres literales van escritos y no como variables porque son propios de
+  este aviso: --rojo-peligro es el rojo de "eliminar", una acción destructiva,
+  y este no es un botón sino una advertencia de fondo apagado. Reutilizar ese
+  token acá haría que cambiar el rojo de los botones cambiara el del aviso.
+*/
+.aviso-stock {
+  margin: 0 0 16px;
+  padding: 11px 15px;
+  border-left: 4px solid;
+  border-radius: var(--radio-control);
+  font-size: 0.94rem;
+  line-height: 1.5;
+}
+
+/* Estado actual: no hay base de datos, así que no hay nada que evaluar.
+   Gris deliberado — un aviso verde diría "todo bien", y no lo sabemos. */
+.aviso-stock.sin-datos {
+  background-color: #1a1a1a;
+  border-left-color: #757575;   /* 3.93:1 contra el fondo de la página */
+  color: var(--texto-suave);    /* 9.26:1 */
+}
+
+/* Hay productos en el mínimo o por debajo. Lo pone el JavaScript. */
+.aviso-stock.alerta {
+  background-color: #2e1a1c;
+  border-left-color: #dc3545;   /* 4.00:1 */
+  color: #f6d6d9;               /* 12.13:1 */
+}
+
+.aviso-stock.alerta strong {
+  color: #f1919b;               /* 7.23:1 */
+}
+
+/* Ningún producto bajo el mínimo. También lo pone el JavaScript. */
+.aviso-stock.todo-bien {
+  background-color: #16261e;
+  border-left-color: var(--verde-guardar);
+  color: #cfe8da;               /* 12.19:1 */
+}
+
+/* ---- Leyenda de estados ---- */
+/* Lista sin viñetas y en línea: son tres pares chip + explicación, y apilados
+   ocupaban tres renglones enteros arriba de la tabla. Con flex-wrap bajan solos
+   a varias líneas en pantalla angosta en vez de desbordar. */
+.leyenda-stock {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  list-style: none;
+  margin: 0 0 18px;
+  padding: 0;
+  font-size: 0.85rem;
+  color: var(--texto-suave);    /* 8.67:1 sobre la tarjeta */
+}
+
+.leyenda-stock li {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+/* ---- Chip de estado de stock ---- */
+/*
+  Mismo aspecto que el chip .estado de admin.css, pero declarado acá porque
+  esta pantalla NO carga admin.css (solo tokens-admin.css + esta hoja). Es una
+  duplicación consciente y acotada: importar toda la hoja del panel por un chip
+  traería el resto de sus reglas encima de las de esta pantalla.
+
+  Los colores de fondo sí son los mismos que los de admin.css a propósito: un
+  verde de "está bien" y un rojo de "está mal" distintos en dos pantallas del
+  mismo panel se leen como si significaran cosas distintas.
+*/
+.estado-stock {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: var(--radio-control);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.estado-stock.suficiente {
+  background-color: #198754;
+  color: #ffffff;               /* 4.53:1 */
+}
+
+/* Amarillo con texto oscuro, no blanco: sobre este amarillo el blanco daría
+   1.66:1. Con #111111 da 12.49:1. Mismo criterio que .estado.pendiente. */
+.estado-stock.bajo {
+  background-color: #ffcc00;
+  color: #111111;
+}
+
+.estado-stock.agotado {
+  background-color: #dc3545;
+  color: #ffffff;               /* 4.53:1 */
+}
+
+/* Sin dato todavía: va hueco, con borde en vez de relleno, para que no compita
+   con los tres que sí informan algo. El borde da 3.54:1 contra la tarjeta, por
+   encima del 3:1 que WCAG pide para un elemento gráfico que delimita. */
+.estado-stock.sin-datos {
+  background-color: transparent;
+  border: 1px solid #757575;
+  color: var(--texto-suave);    /* 8.67:1 */
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+/* Botón "Ver" dentro de la tabla, más angosto que el de "Actualizar". */
+.boton-tabla {
+  background-color: var(--ambar-boton);
+  color: var(--ambar-texto);
+  border: none;
+  border-radius: var(--radio-control);
+  padding: 7px 15px;
+}
+
+.boton-tabla:hover {
+  background-color: var(--ambar-boton-hover);
+  color: var(--ambar-texto);
+}
+
+/* ---- Sin movimiento ---- */
+/* Bootstrap le aplica su propia transición a .btn, .form-control y .form-select
+   (~0.15s en color, borde y sombra). Como el panel se quiere estático, no basta
+   con no declarar transiciones propias: hay que anular las del framework.
+   Va acotado a .pagina-inventario para no afectar las vistas de cliente, que sí
+   conservan sus efectos. */
+.pagina-inventario .btn,
+.pagina-inventario .form-control,
+.pagina-inventario .form-select {
+  transition: none;
+}
+
+@media (max-width: 1100px) {
+  .grid-inventario {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 650px) {
+  .pagina-inventario {
+    padding: 25px 15px;
+  }
+
+  .titulo-seccion {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .tarjeta table {
+    min-width: 650px;
+  }
+}

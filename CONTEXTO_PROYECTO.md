@@ -1,6 +1,6 @@
 # Contexto del proyecto — Proyecto-Morán / Eggs Unlimited
 
-Última actualización: 2026-07-22
+Última actualización: 2026-08-04
 
 Este documento resume el contexto y las convenciones del proyecto para que
 cualquier persona del equipo (o una sesión futura de IA) pueda retomarlo sin
@@ -13,6 +13,36 @@ Aplicación **web** (el `README.md` la describe como "de escritorio", pero en
 la práctica es un sitio servido con PHP/HTML) para "La Morán", una empresa de
 distribución de huevo y pollo que se presenta bajo la marca **"Eggs Unlimited"**
 ("Any egg, anywhere"). Ver `README.md` para la lista de integrantes del equipo.
+
+### Alcance vigente (definido el 2026-08-04)
+
+El sitio sirve **por ahora** para dos cosas, en palabras de Alejandro:
+«inventariado de nuestros productos, y registrar compras ya hechas» — donde
+"compras" son **las que les hacen a ellos**: ventas de ruta y de finca que ya
+ocurrieron y se anotan después. En la base de datos eso es `ventas` con
+`tipo_venta = 'manual'`.
+
+**No es una tienda en línea.** Nadie compra desde el sitio. Eso reordena las
+prioridades de todo el proyecto:
+
+| | Módulos | Estado |
+|---|---|---|
+| **Centrales** | Inventario, Ventas manuales | Son el producto |
+| **Que los alimentan** | Recolección diaria (así entra el producto), Registro de lotes y Mortalidad (así se cuentan las aves) | Necesarios |
+| **Fuera de alcance por ahora** | Gestión de pedidos, Buscar pedidos, Facturas | Se conservan, no se invierte en ellos |
+
+Gestión de pedidos y Buscar pedidos quedan fuera porque un pedido solo existe
+si hubo venta web, y eso no va a ocurrir todavía. Facturas queda fuera porque
+es el lado proveedor (lo que *ellos* compran) y además no tiene tabla en el
+esquema.
+
+El catálogo, el carrito y `pago.html` quedan de **vitrina**: el carrito ya está
+marcado "Próximamente" y `pago.html` —que pide número de tarjeta y CVV— solo se
+alcanza escribiendo la URL. El producto real es el panel de administración.
+
+**Consecuencia de diseño:** poner "Pedidos" como cifra principal del tablero
+está mal; esa cifra va a ser 0 indefinidamente. Lo que manda es el inventario y
+lo registrado del día.
 
 ## Stack tecnológico y decisiones
 
@@ -1358,4 +1388,100 @@ administración.
   **La regla para la próxima**: para editar HTML del repo con un script, usar
   búsqueda de texto exacto, nunca una expresión regular con cuantificadores
   anidados. Y comprobar el tamaño del resultado antes de escribir.
+- **2026-08-03** (rama `Alejandro`, **sin subir al repo**: el usuario pidió
+  explícitamente no hacer commit/push hasta nueva indicación). Se resolvieron
+  los tres pendientes que listaba el aviso de Inventario, y de paso se movió
+  "Cerrar sesión".
+
+  **1. Registro de lotes** (`RegistroLotes-admin.html`, RF-28, prioridad alta).
+  No existía ninguna pantalla de alta: los lotes se *mostraban* en Inventario
+  pero no había forma de crear uno, y sin lote no hay contra qué registrar
+  mortalidad ni recolección. Campos: código (único), tipo de ave (pollos /
+  gallinas — el requerimiento pide separarlos explícitamente), raza, cantidad
+  inicial, peso inicial promedio, fecha de ingreso, fecha estimada de salida
+  (opcional) y estado del ciclo. **La cantidad vigente no se pide ni se
+  guarda**: se calcula restando mortalidad y procesado, y guardar un "quedan N"
+  aparte crearía dos verdades que se contradicen.
+
+  **2. Mortalidad** (`Mortalidad-admin.html`). Tampoco existía, y sin ella la
+  cantidad de un lote nunca baja. Campos: lote (obligatorio), fecha, cantidad
+  (mínimo 1) y observaciones (opcional — obligarla llevaría a rellenar con
+  "sin causa", que es peor que dejarlo vacío).
+
+  Las dos comparten la utilidad de fecha (ver `fechas-admin.js` más abajo) y
+  arrancan con la fecha de hoy puesta; en Registro de lotes solo el campo
+  "Fecha de ingreso", no el de salida estimada, que es opcional y a futuro.
+
+  **3. Aviso de stock mínimo en Inventario** (RF-21: "notificar cuando la
+  cantidad... sea menor al límite establecido"). Se agregó a la tabla de
+  Productos terminados: columnas "Mínimo" y "Estado", un resumen con
+  `role="status"` arriba de la tabla y una leyenda de los tres estados
+  (Suficiente / Bajo / Agotado). El umbral **no se fija en el HTML**: en la
+  base de datos cada producto tiene su propio `stock_minimo`
+  (`inventario_productos`), así que "Mínimo" es una columna, no un número
+  fijo. Cada chip de estado lleva el texto escrito ("Bajo", no solo un color),
+  así que la información no depende solo del color. Hoy todo dice "Sin datos"
+  porque no hay base de datos conectada.
+
+  **Consecuencia en Inventario.html**: los "0" de relleno en las cuatro tablas
+  se cambiaron por "—". Un 0 afirma "no queda ninguno" — un dato falso sobre el
+  inventario real si no hay conexión a la base — mientras que el guion no
+  afirma nada. La nota de "pendiente" se reescribió: ya no dice que faltan las
+  tres cosas (ahora existen) sino que enlaza a las dos pantallas nuevas y
+  aclara que las cantidades siguen en "—" por falta de base de datos.
+
+  **4. Barra lateral: ya no quedan módulos "Próximamente".** Registro de
+  lotes y Mortalidad pasan de `<span class="pendiente-lateral">` a `<a>` real.
+  El estilo `.pendiente-lateral` se retiró de `lateral-admin.css` al quedar
+  sin uso — sigue documentado en el comentario de cabecera del fragmento para
+  el próximo módulo que se agregue sin pantalla todavía. El tablero
+  (`Home-admin.html`) suma un acceso rápido "Registrar baja de aves"; **no**
+  uno para lotes, a propósito — un lote entra cada varias semanas, no es una
+  acción diaria, y llenar los accesos rápidos de módulos ocasionales los
+  vuelve una segunda barra lateral.
+
+  **5. "Cerrar sesión" se movió al pie de la barra lateral a una franja fija
+  arriba a la derecha de todo el panel** (petición explícita del usuario
+  mientras se hacía lo anterior). Nuevo fragmento compartido
+  `barra-superior-admin.html`, inyectado por `plantillas.js` igual que el
+  footer y la barra lateral, en un contenedor `<div id="barra-superior-admin">`
+  que ahora llevan las diez páginas admin, **antes** de `.marco-admin`. No es
+  el header del sitio público: no lleva logo ni navegación, solo el enlace de
+  salir. El estilo viejo `.salir-lateral` (que empujaba el enlace al pie con
+  `margin-top: auto`) se quitó de `lateral-admin.css` junto con su variante
+  para pantallas angostas.
+
+  **`fechas-admin.js` (nuevo)**: la utilidad de fecha que ya usaba Recolección
+  diaria se extrajo a un archivo compartido antes de escribirla una tercera vez
+  para Mortalidad y una cuarta para Registro de lotes. Tiene la sutileza de
+  zona horaria documentada en el propio archivo: `new Date('AAAA-MM-DD')` se
+  interpreta como medianoche UTC, que en Costa Rica (UTC-6) cae el día
+  anterior — verificado, el método directo daba "Viernes" donde correspondía
+  "Sábado". Se carga con `defer` antes que el script de cada pantalla, que
+  también lleva `defer`: el orden de aparición se respeta.
+
+  **Un desliz propio, detectado y corregido antes de dar por terminado**: las
+  dos pantallas nuevas usaban dos clases que no existían todavía
+  (`.sin-dato-admin` en vez de `.sin-dato`, ya definida en `admin.css`; y
+  `.marca-opcional-admin` en vez de `.marca-opcional`, que solo existía
+  acotada a `.pagina-venta-manual` en `VentasManuales.css`). Se corrigió el
+  primer nombre y se promovió `.marca-opcional` a regla compartida en
+  `admin.css`, retirando la copia acotada — la iban a necesitar tres pantallas,
+  no una.
+
+  **Verificación**: servidor local (`python -m http.server`), los tres
+  fragmentos nuevos y las diez páginas responden 200; `<div>` balanceados y
+  llaves `{}` balanceadas en los cuatro CSS tocados; jerarquía de encabezados
+  comprobada **simulando la inyección real** de header/barra/footer y
+  **sin ordenar la lista** (la lección de la sesión anterior) — ningún `h2`
+  antes del `h1` en ninguna de las diez páginas; contrastes de los colores
+  nuevos calculados con la fórmula de WCAG (chips de stock 4.53:1 a 12.49:1,
+  franja superior 8.67:1 / 7.19:1 en hover, enlaces nuevos de la nota de
+  Inventario 6.37:1 y subrayados porque el color solo no alcanza el 3:1 de
+  WCAG 1.4.1 contra el texto vecino).
+
+  **Sigue pendiente, sin tocar** (fuera del alcance de hoy): el campo `rol`
+  bloqueando la autenticación, las tres contradicciones del documento del
+  proyecto, el peso del logo. Nada de esto se subió al repo — el usuario pidió
+  esperar su confirmación antes de cualquier commit o push.
 

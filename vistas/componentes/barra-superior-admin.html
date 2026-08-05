@@ -1,0 +1,25 @@
+<!--
+  Franja superior del panel de administración. Se inyecta con fetch() desde
+  "../../scripts/plantillas.js" en las diez pantallas del panel, ARRIBA de
+  .marco-admin (que es la barra lateral y el contenido, lado a lado).
+
+  POR QUÉ EXISTE
+  "Cerrar sesión" vivía al pie de la barra lateral. Ahí competía por atención
+  con los módulos, y en una pantalla con muchos grupos quedaba fuera de la
+  vista inicial. Salir de sesión es una acción que conviene tener siempre a
+  mano y en el lugar donde la convención web la espera: arriba a la derecha.
+
+  NO ES EL HEADER DEL SITIO PÚBLICO. No lleva logo ni navegación del catálogo,
+  solo esto. El panel sigue sin cargar encabezado.html: esta franja es angosta
+  a propósito, para no devolverle al panel el alto que se le quitó al sacar el
+  header (ver el comentario "SIN HEADER" en cada página admin).
+-->
+<div class="barra-superior-admin">
+    <a class="salir-superior" href="../cliente/login.html">
+        <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
+            <path d="M14.5 8.5V6a1.5 1.5 0 0 0-1.5-1.5H6A1.5 1.5 0 0 0 4.5 6v12A1.5 1.5 0 0 0 6 19.5h7a1.5 1.5 0 0 0 1.5-1.5v-2.5"/>
+            <path d="M10 12h9.5m0 0-3-3m3 3-3 3"/>
+        </svg>
+        Cerrar sesión
+    </a>
+</div>

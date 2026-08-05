@@ -1,0 +1,395 @@
+/*
+  Barra lateral del panel de administración
+  (vistas/componentes/lateral-admin.html).
+
+  Convención del proyecto: clases de Bootstrap en inglés, clases propias en
+  español. Ver la skill moran-frontend y CONTEXTO_PROYECTO.md.
+
+  Esta hoja la cargan las DIEZ pantallas del panel. Existe como archivo propio,
+  y no dentro de admin.css, porque tres de esas diez (Home-admin, Inventario y
+  GestionPedidos) no cargan admin.css: tienen hoja propia desde antes. Meterla
+  ahí habría dejado la barra sin estilo justo en esas tres.
+
+  Los colores vienen de tokens-admin.css, que todas ya cargaban.
+  Los contrastes citados están calculados con la fórmula de WCAG.
+*/
+
+
+/* ---- Armazón: barra + contenido, lado a lado ---- */
+/* Envuelve al <main> de cada página. El <main> conserva su propia clase
+   (.pagina-admin, .pagina-inventario, .pagina-pedidos), así que no hace falta
+   tocar ninguna de las hojas que ya existían. */
+.marco-admin {
+  display: flex;
+  align-items: stretch;
+}
+
+/* min-width:0 no es opcional: sin él, una tabla ancha dentro del contenido
+   estira el flex y empuja la barra fuera de la pantalla, en vez de hacer
+   scroll dentro de su propio contenedor. */
+.marco-admin > main {
+  flex: 1;
+  min-width: 0;
+}
+
+/*
+  La ranura donde plantillas.js inyecta la barra.
+
+  El ancho y el flex-shrink van ACÁ y no en .lateral-admin, y es un error fácil
+  de cometer: el hijo del contenedor flex es este <div>, no el <nav> que va
+  adentro. Puestas en el <nav> —que es un nieto— esas propiedades no hacen
+  absolutamente nada, y la barra termina donde el flex la deje.
+*/
+.ranura-lateral {
+  flex-shrink: 0;
+  width: 208px;
+}
+
+
+/* ---- La barra ---- */
+/* La barra llena la ranura. El ancho lo fija .ranura-lateral; acá solo se
+   ocupa todo el espacio que esa ranura da, a lo ancho y a lo alto — el alto
+   importa para que el fondo del panel llegue hasta abajo en vez de cortarse
+   donde termina el último enlace. */
+/* display:flex en columna no es decorativo: es lo que permite que
+   .datos-sesion use margin-top:auto y se pegue al fondo de la barra cuando
+   sobra alto. Sin esto quedaría flotando debajo del último módulo. */
+.lateral-admin {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100%;
+  background-color: var(--panel-admin);
+  /* Filete separador. Es decorativo: no se le exige el 3:1 de WCAG 1.4.11
+     porque no identifica un control ni transmite información —la barra se
+     reconoce por su contenido—. Se usa el token del panel para que combine con
+     el resto de bordes del sistema. */
+  border-right: 1px solid var(--borde-admin);
+  padding: 18px 0 28px;
+}
+
+
+/* ---- Vuelta al tablero ---- */
+.marca-lateral {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 0 16px 16px;
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.marca-lateral:hover {
+  color: var(--ambar-boton);
+}
+
+/* Estando en el tablero, el enlace "Panel" se marca igual que un módulo
+   abierto. Sin esto, en esa pantalla la barra no señalaría nada y parecería no
+   saber dónde está. Lleva la misma clase que los módulos, se la pone el mismo
+   JavaScript. */
+.marca-lateral.activo {
+  color: var(--ambar-boton);
+}
+
+.marca-lateral.activo::after {
+  content: "";
+  flex: 1;
+  height: 2px;
+  background-color: var(--ambar-boton);
+  margin-left: 4px;
+}
+
+.marca-lateral svg {
+  flex-shrink: 0;
+  fill: none;
+  stroke: var(--ambar-boton);
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+
+/* ---- Grupos ---- */
+.grupo-lateral {
+  margin-bottom: 4px;
+}
+
+/* Es un <p>, NO un encabezado: nombra su lista vía aria-labelledby, que
+   funciona con cualquier elemento. Como <h2> metía cuatro encabezados por
+   delante del <h1> de cada página, porque la barra se dibuja antes. */
+.rotulo-lateral {
+  margin: 0;
+  padding: 15px 18px 6px;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--texto-suave);   /* 8.67:1 sobre el panel */
+}
+
+.lista-lateral {
+  list-style: none;
+  margin: 0;
+  padding: 0 8px;
+}
+
+.lista-lateral a {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 10px;
+  border-radius: var(--radio-control);
+  font-size: 0.82rem;
+  text-decoration: none;
+  color: var(--texto-suave);   /* 8.67:1 */
+}
+
+.lista-lateral svg {
+  flex-shrink: 0;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.lista-lateral a:hover {
+  background-color: var(--linea-fondo);
+  color: #ffffff;
+}
+
+/* El foco va declarado a mano: sin esto dependería del anillo por defecto del
+   navegador, que sobre este fondo no está garantizado en todos. El ámbar da
+   6.74:1 contra el panel. */
+.lista-lateral a:focus-visible,
+.marca-lateral:focus-visible {
+  outline: 2px solid var(--ambar-boton);
+  outline-offset: -2px;
+}
+
+
+/* ---- Grupo "Registrar": acciones, no módulos ---- */
+/*
+  Se diferencian de la lista de módulos por el "+" y por un poco menos de peso
+  tipográfico, no por color: si estas seis fueran ámbar competirían con la marca
+  del módulo abierto, que es lo único que tiene derecho a ese color en la barra.
+*/
+.mas-accion {
+  flex-shrink: 0;
+  width: 15px;
+  text-align: center;
+  color: var(--ambar-boton);   /* 6.74:1 sobre el panel de la barra */
+  font-weight: 700;
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+/* La lista de acciones va un punto más chica que la de módulos: son seis ítems
+   arriba de todo y a igual tamaño empujaban los módulos fuera de la vista
+   inicial en una pantalla de portátil. */
+.lista-acciones a {
+  font-size: 0.82rem;
+}
+
+/* ---- Datos de la sesión ---- */
+/*
+  Al pie de la barra, separados por un filete. margin-top:auto los empuja abajo
+  cuando la barra es más alta que su contenido — la barra es flex en columna,
+  así que esto funciona sin position ni alturas fijas.
+
+  El filete es decorativo: solo separa dos bloques que ya se distinguen por
+  posición y tamaño, así que su 1.29:1 no incumple nada. Si fuera lo único que
+  comunicara la separación, tendría que llegar a 3:1.
+*/
+.datos-sesion {
+  margin: auto 0 0;
+  padding: 14px 16px 0;
+  border-top: 1px solid var(--borde-admin);
+  font-size: 0.72rem;
+  line-height: 1.4;
+}
+
+.datos-sesion dt {
+  color: #9a9a9a;              /* 5.79:1 */
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  font-size: 0.62rem;
+}
+
+.datos-sesion dd {
+  margin: 0 0 9px;
+  color: #cfcfcf;              /* 10.46:1 */
+}
+
+.datos-sesion dd:last-child {
+  margin-bottom: 0;
+}
+
+
+/* ---- Módulo abierto ---- */
+/* La clase la pone plantillas.js comparando el archivo abierto con cada href:
+   este fragmento es el mismo para las diez páginas y no puede saber en cuál
+   está. Texto oscuro sobre el ámbar, no blanco: blanco daría 2.42:1 y este es
+   el mismo error que el panel ya corrigió una vez. Con #111111 da 7.81:1. */
+.lista-lateral a.activo {
+  background-color: var(--ambar-boton);
+  color: var(--ambar-texto);
+  font-weight: 700;
+}
+
+.lista-lateral a.activo:hover {
+  background-color: var(--ambar-boton);
+  color: var(--ambar-texto);
+}
+
+/* El anillo compartido de .lista-lateral a:focus-visible es ámbar hacia
+   ADENTRO (outline-offset: -2px). Sobre el fondo ámbar de .activo eso es
+   ámbar contra ámbar, 1:1: el enlace en el que ya se está parado —el único de
+   los diez que puede pasar esto— se queda sin indicador de foco. Se saca el
+   anillo hacia AFUERA, donde cae sobre el fondo oscuro de la barra y vuelve a
+   dar 6.74:1. Mismo criterio que .pagina-admin .btn:focus-visible en
+   admin.css para los botones ámbar. */
+.lista-lateral a.activo:focus-visible {
+  outline-offset: 2px;
+}
+
+
+
+/* ---- Franja superior: Cerrar sesión ---- */
+/*
+  Lo único que se rescató del header del sitio público, que el panel dejó de
+  cargar. Vivía al pie de la barra lateral; se movió arriba a la derecha
+  porque es el lugar donde la convención web pone la sesión activa, y porque
+  al pie de una barra con varios grupos quedaba fuera de la vista inicial.
+
+  Es una franja aparte y no parte de .lateral-admin: así queda arriba de TODO
+  el panel (barra + contenido), no solo arriba de la barra.
+
+  position:sticky + top:0 es lo que la mantiene visible al hacer scroll. Sin
+  eso "fija" era solo una intención en el comentario: en cualquier pantalla
+  con más contenido que el alto de la ventana —el caso normal de Registro de
+  lotes, Mortalidad o Inventario, con formulario y tabla— la franja se iba
+  hacia arriba con el resto y "Cerrar sesión" dejaba de estar a mano
+  justamente cuando la pantalla es larga. El fondo propio (--panel-admin) es
+  necesario para que tape el contenido que pasa por debajo al pegarse arriba.
+
+  justify-content:flex-end y no un ancho fijo: hoy es el único elemento de la
+  franja, pero si el panel suma algo más arriba (una migaja de pan, un nombre
+  de usuario) esto ya reserva el lado derecho para "salir" sin reacomodar nada.
+*/
+.barra-superior-admin {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px 20px;
+  background-color: var(--panel-admin);
+  border-bottom: 1px solid var(--borde-admin);
+}
+
+.salir-superior {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 12px;
+  border-radius: var(--radio-control);
+  color: var(--texto-suave);   /* 8.67:1 sobre el panel */
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.salir-superior svg {
+  flex-shrink: 0;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Rojo apagado y no el ámbar: salir no es una acción más del panel, y el ámbar
+   es el color de "esto se puede hacer" en todo el sitio. #f1919b da 7.19:1. */
+.salir-superior:hover {
+  background-color: var(--linea-fondo);
+  color: #f1919b;
+}
+
+.salir-superior:focus-visible {
+  outline: 2px solid var(--ambar-boton);
+  outline-offset: -2px;
+}
+
+/* ---- Pantallas angostas ---- */
+/*
+  Debajo de 900px la barra pasa de columna a franja horizontal sobre el
+  contenido. Se eligió eso y no un menú desplegable porque un panel de trabajo
+  necesita ver a dónde puede ir sin abrir nada: los grupos se ponen en fila y
+  la franja hace scroll lateral si no cabe.
+*/
+@media (max-width: 900px) {
+  .marco-admin {
+    flex-direction: column;
+  }
+
+  /* La ranura suelta su ancho fijo: en columna la barra ocupa todo el ancho. */
+  .ranura-lateral {
+    width: 100%;
+  }
+
+  .lateral-admin {
+    min-height: 0;
+    border-right: none;
+    border-bottom: 1px solid var(--borde-admin);
+    padding: 12px 0;
+    display: flex;
+    /* flex-direction EXPLÍCITO. La regla de escritorio ahora declara
+       "column" (lo necesita .datos-sesion para pegarse abajo), y sin esta
+       línea la franja horizontal lo heredaría y se dibujaría apilada. */
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 4px;
+    overflow-x: auto;
+  }
+
+  /*
+    Los datos de la sesión no entran en la franja horizontal: son tres pares
+    nombre-valor y en una tira que ya scrollea lateralmente solo empujarían los
+    módulos fuera de vista.
+
+    Acá sí se usa display:none —y no la técnica de ocultar visualmente— porque
+    no transmiten estado ni identifican un control: son informativos y estáticos.
+    Cuando exista la sesión de verdad, su lugar propio es la pantalla de cuenta.
+  */
+  .datos-sesion {
+    display: none;
+  }
+
+  .marca-lateral {
+    padding: 8px 14px;
+    flex-shrink: 0;
+  }
+
+  .grupo-lateral {
+    flex-shrink: 0;
+    margin-bottom: 0;
+  }
+
+  .rotulo-lateral {
+    padding: 0 10px 4px;
+  }
+
+  .lista-lateral {
+    display: flex;
+    gap: 2px;
+    padding: 0 4px;
+  }
+
+  .lista-lateral a {
+    white-space: nowrap;
+  }
+}

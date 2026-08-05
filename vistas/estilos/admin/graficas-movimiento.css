@@ -1,0 +1,374 @@
+/*
+  Gráficas de movimiento de productos, del tablero
+  (vistas/paginas/admin/Home-admin.html).
+
+  Convención del proyecto: clases de Bootstrap en inglés, clases propias en
+  español. Ver la skill moran-frontend y CONTEXTO_PROYECTO.md.
+
+  Son DOS gráficas y no una sola por elección, no por acumulación:
+
+  - EL MAPA DE CALOR contesta "¿qué se mueve, y qué día?". Muestra los cinco
+    productos a la vez sin necesitar un color por producto — que es lo que la vuelve
+    legible para quien no distingue bien el color. Va como <table> de verdad,
+    con <th scope>, así que un lector de pantalla la recorre como lo que es.
+  - LOS PEQUEÑOS MÚLTIPLOS contestan "¿cuál producto se comporta distinto?".
+    Una gráfica diminuta por producto, con LA MISMA ESCALA y UN SOLO color: al no competir
+    por color, lo que se compara es la forma de la curva.
+
+  POR QUÉ NO SE APILARON VARIAS LÍNEAS DE COLORES EN UN CUADRO
+  Porque no se distinguen. Ocho tonos categóricos es el techo absoluto, y aun
+  con cinco los vecinos se confunden bajo algunos tipos de daltonismo. Las dos
+  formas de acá resuelven "varias series" sin gastar un color por producto, así
+  que siguen funcionando cuando entren los cortes de pollo.
+
+  LOS COLORES DE GRÁFICA VIVEN ACÁ Y NO EN tokens-admin.css a propósito:
+  ninguna otra pantalla los usa, y tokens-admin es la hoja que cargan las diez.
+  Si mañana otra pantalla grafica, se suben allá.
+
+  Contrastes calculados con la fórmula de WCAG contra la superficie real de la
+  tarjeta (#202020). La rampa se recalibró: la versión anterior tenía un paso
+  intermedio donde ni el texto claro ni el oscuro llegaban a 4.5:1.
+*/
+
+.graficas-movimiento {
+  /* Rampa secuencial de un solo tono, luminancia estrictamente creciente.
+     Un solo tono y no un arcoíris: en una rampa de magnitud el color tiene que
+     leerse como "más" o "menos", y para eso solo puede variar una cosa. */
+  --paso-0: #241d12;
+  --paso-1: #43331a;
+  --paso-2: #63471f;
+  --paso-3: #7f5d24;
+  --paso-4: #b28839;
+  --paso-5: #e8bd72;
+
+  /* Texto dentro de la celda. Cambia de claro a oscuro entre el paso 3 y el 4
+     porque es ahí donde la rampa cruza. Peor caso: 4.50:1 en el paso 3. */
+  --cifra-clara: #e6ded0;
+  --cifra-oscura: #191308;
+
+  /* Serie única de los pequeños múltiplos. Validada como categórico contra la
+     superficie del panel: pasa las seis comprobaciones del verificador. */
+  --serie: #2f9e6b;
+
+  --txt-1: #ececec;   /* 13.79:1 sobre la tarjeta */
+  --txt-2: #a8a8a8;   /*  6.85:1 */
+  --txt-3: #8a8a8a;   /*  4.72:1 — el mínimo que sigue siendo texto legible */
+
+  margin-bottom: 45px;
+}
+
+/* ---- Encabezado de la sección ---- */
+/* Hereda el filete ámbar de .seccion-admin h2 de Home-admin.css: esta sección
+   es una más del tablero y no debe verse como un injerto. */
+.graficas-movimiento > h2 {
+  margin-bottom: 20px;
+  border-left: 5px solid var(--ambar-boton);
+  padding-left: 12px;
+  font-size: 1.5rem;
+}
+
+/*
+  Aviso de datos de ejemplo. VA VISIBLE, no como comentario en el código.
+
+  Una gráfica es mucho más creíble que una tabla: una curva que sube convence
+  aunque los números sean inventados. Por eso este aviso es más insistente que
+  el de las tablas del panel — quien vea esta pantalla tiene que saber, antes de
+  mirar las gráficas, que no está viendo el negocio real.
+*/
+.aviso-ejemplo-grafica {
+  background-color: var(--nota-fondo);
+  border: 1px solid var(--ambar-boton);
+  border-left-width: 4px;
+  border-radius: var(--radio-control);
+  padding: 13px 17px;
+  margin-bottom: 20px;
+  color: var(--nota-texto);       /* 11.37:1 sobre --nota-fondo */
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.aviso-ejemplo-grafica strong {
+  color: var(--ambar-boton);
+}
+
+/* ---- Barra de filtro ---- */
+/*
+  Una sola fila arriba de las dos gráficas. El estado va al lado y no debajo
+  para que se lea junto a los botones, que es donde se está mirando al elegir.
+*/
+.barra-filtro {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 16px;
+  margin-bottom: 16px;
+}
+
+.filtro-rango {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+/*
+  Botón de rango. El borde es #757575 y no el --borde-admin del resto del
+  panel: este SÍ delimita un control, y WCAG 1.4.11 le exige 3:1 contra el
+  fondo. --borde-admin da 1.29:1 — sirve para separar bloques, no para dibujar
+  el contorno de algo que se pulsa. Este da 3.54:1, el mismo criterio que ya
+  usa --campo-borde para los campos de formulario.
+*/
+.boton-rango {
+  background-color: transparent;
+  border: 1px solid #757575;
+  border-radius: var(--radio-control);
+  padding: 6px 14px;
+  font-size: 0.8rem;
+  color: var(--txt-2);          /* 6.85:1 */
+  cursor: pointer;
+}
+
+.boton-rango:hover {
+  border-color: var(--ambar-boton);
+  color: var(--txt-1);
+}
+
+/* El elegido va en ámbar con texto oscuro: blanco sobre este ámbar daría
+   2.42:1, el mismo error que el panel ya corrigió una vez. Con --ambar-texto
+   (#111111) da 7.81:1. */
+.boton-rango.activo {
+  background-color: var(--ambar-boton);
+  border-color: var(--ambar-boton);
+  color: var(--ambar-texto);
+  font-weight: 700;
+}
+
+/* Anillo hacia AFUERA. Hacia adentro se perdería sobre el fondo ámbar del
+   botón elegido, que es justo el que más se enfoca. */
+.boton-rango:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+}
+
+.estado-rango {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--txt-3);          /* 4.72:1 */
+}
+
+/* ---- Tarjeta que contiene cada gráfica ---- */
+.rejilla-graficas {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+.tarjeta-grafica {
+  background-color: var(--panel-admin);
+  border: 1px solid var(--borde-admin);
+  border-radius: var(--radio-panel);
+  padding: 22px;
+}
+
+.tarjeta-grafica h3 {
+  margin: 0 0 3px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--txt-1);
+}
+
+.tarjeta-grafica .subtitulo-grafica {
+  margin: 0 0 18px;
+  font-size: 0.8rem;
+  color: var(--txt-3);
+}
+
+.tarjeta-grafica .lectura {
+  margin: 16px 0 0;
+  font-size: 0.8rem;
+  color: var(--txt-3);
+}
+
+.tarjeta-grafica .lectura strong {
+  color: var(--txt-2);
+}
+
+/* ---- Mapa de calor ---- */
+/* El contenedor scrollea solo: con ocho productos y siete días la tabla se
+   pasa del ancho de la tarjeta mucho antes de llegar a móvil. tabindex="0" lo
+   hace desplazable con teclado, que sin él no lo es en Firefox ni Safari. */
+.envoltura-mapa {
+  overflow-x: auto;
+}
+
+.mapa-calor {
+  /* border-spacing y no border-collapse: la separación de 3px entre celdas es
+     lo único que delimita la celda más oscura (#241d12), que contra la tarjeta
+     da 1.02:1 — o sea, invisible. Sin ese aire, una fila de valores bajos se
+     lee como un bloque negro continuo. */
+  border-collapse: separate;
+  border-spacing: 3px;
+  width: 100%;
+  min-width: 620px;
+}
+
+.mapa-calor th {
+  font-weight: 500;
+  font-size: 0.72rem;
+  color: var(--txt-2);
+  text-align: center;
+  padding: 4px 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* El nombre del producto: es encabezado de fila, así que no va en mayúsculas
+   ni condensado — se lee como texto normal. */
+.mapa-calor th[scope="row"] {
+  text-align: left;
+  white-space: nowrap;
+  padding-right: 14px;
+  color: var(--txt-1);
+  font-size: 0.83rem;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.mapa-calor td {
+  text-align: center;
+  padding: 10px 6px;
+  border-radius: 2px;
+  font-variant-numeric: tabular-nums;
+  font-size: 0.78rem;
+  min-width: 48px;
+}
+
+/* El número va SIEMPRE escrito en la celda. El color es un acelerador de
+   lectura, no el dato: quien no lo distinga sigue teniendo la cifra. Es la
+   misma regla que WCAG 1.4.1 y la razón por la que esta gráfica no necesita
+   una alternativa aparte. */
+.mapa-calor td .cifra-celda {
+  font-weight: 600;
+}
+
+/* ---- Escala del mapa ---- */
+.escala-mapa {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 15px;
+  font-size: 0.75rem;
+  color: var(--txt-3);
+}
+
+.escala-mapa .pasos-escala {
+  display: flex;
+  gap: 3px;
+}
+
+.escala-mapa .pasos-escala span {
+  display: block;
+  width: 28px;
+  height: 12px;
+  border-radius: 2px;
+}
+
+/* ---- Pequeños múltiplos ---- */
+/*
+  auto-fit con un mínimo de 180px: en pantalla ancha entran cinco por fila y en
+  angosta bajan solas. No se fija el número de columnas porque la barra lateral
+  come 208px y el ancho útil cambia según el zoom del navegador.
+*/
+.rejilla-multiples {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 2px;
+}
+
+.ficha-multiple {
+  background-color: var(--linea-fondo);
+  border: 1px solid var(--borde-admin);
+  border-radius: 2px;
+  padding: 14px 16px;
+}
+
+.ficha-multiple .nombre-multiple {
+  font-size: 0.82rem;
+  color: var(--txt-1);
+  margin-bottom: 2px;
+}
+
+.ficha-multiple .total-multiple {
+  font-size: 1.15rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--txt-1);
+  margin-bottom: 9px;
+}
+
+.ficha-multiple .total-multiple small {
+  font-size: 0.7rem;
+  color: var(--txt-3);
+}
+
+.ficha-multiple svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* ---- Globo de datos ---- */
+/*
+  Una gráfica en HTML es interactiva por naturaleza; sin el globo, el valor
+  exacto de una celda o de un punto se pierde.
+
+  Se muestra tanto con el ratón encima como con el foco de teclado: si solo
+  respondiera al ratón, la información sería inalcanzable para quien navega
+  con Tab, y eso convierte un detalle en una barrera.
+*/
+.globo-dato {
+  position: fixed;
+  z-index: 200;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, -120%);
+  background-color: #0d0d0d;
+  border: 1px solid #4a4a4a;
+  border-radius: var(--radio-control);
+  padding: 8px 12px;
+  font-size: 0.76rem;
+  color: var(--txt-1);
+  white-space: nowrap;
+  line-height: 1.5;
+}
+
+.globo-dato.visible {
+  opacity: 1;
+}
+
+.globo-dato .titulo-globo {
+  display: block;
+  color: var(--txt-2);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom: 3px;
+}
+
+/* El foco tiene que verse sobre CUALQUIER paso de la rampa, y el ámbar de
+   marca se pierde sobre los pasos claros. Blanco puro contrasta con los seis. */
+.graficas-movimiento [tabindex="0"]:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 1px;
+}
+
+/* ---- Sin movimiento ---- */
+/* El panel se quiere estático. Acá además importa por otra razón: una gráfica
+   que se anima al aparecer obliga a esperar para leer el dato. */
+.graficas-movimiento * {
+  transition: none;
+}
+
+@media (max-width: 768px) {
+  .tarjeta-grafica {
+    padding: 16px;
+  }
+}

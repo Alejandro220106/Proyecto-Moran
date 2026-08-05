@@ -1,0 +1,189 @@
+/*
+  Estilos del detalle del pedido (vistas/paginas/cliente/detalle-pedido.html).
+
+  Convención del proyecto: clases de Bootstrap en inglés, clases propias en
+  español. Ver la skill moran-frontend y CONTEXTO_PROYECTO.md.
+  Nota de rutas: este CSS vive en estilos/cliente/, así que las imágenes
+  se referencian con "../../imagenes/..." — dos niveles arriba.
+*/
+
+:root {
+  --verde-pedido: #6f7d45;   /* respaldo mientras carga fondo-verde.jpg */
+  --campo-fondo: #d9d9d9;    /* gris claro de los inputs, como en el diseño */
+  --campo-borde: #c2c2c2;
+  --ambar-boton: #d99a4e;
+  --ambar-boton-hover: #c4863a;
+}
+
+/* Lienzo: fondo verde oliva que cubre todo. */
+.detalle-pedido {
+  background-color: var(--verde-pedido);
+  background-image: url("../../imagenes/fondo-verde.jpg");
+  background-size: cover;
+  background-position: center;
+  padding: 40px 24px;
+}
+
+/* Contenedor del formulario, centrado y con ancho máximo. */
+.formulario-pedido {
+  max-width: 1040px;
+  margin: 0 auto;
+}
+
+/* Cada grupo etiqueta + campo. */
+.grupo-campo {
+  margin-bottom: 20px;
+}
+
+/* Etiquetas: blancas, en mayúsculas, sobre el verde. */
+.etiqueta-campo {
+  display: block;
+  color: #ffffff;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+/* Campos de texto (gris claro), sobre la base .form-control de Bootstrap. */
+.campo-pedido {
+  background-color: var(--campo-fondo);
+  border: 1px solid var(--campo-borde);
+}
+
+.campo-pedido:focus {
+  background-color: #ffffff;
+}
+
+/* Fila: dirección de entrega (ancha) + su cantidad (angosta). */
+.fila-entrega {
+  display: flex;
+  gap: 8px;
+}
+
+.fila-entrega .campo-pedido {
+  flex: 1 1 auto;
+}
+
+/* Campo de cantidad angosto junto a cada punto de entrega. */
+.campo-cantidad {
+  flex: 0 0 64px;
+  width: 64px;
+  text-align: center;
+  background-color: var(--campo-fondo);
+  border: 1px solid var(--campo-borde);
+}
+
+/* Título de la sección de múltiples puntos. */
+.titulo-multiples {
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+/* Nota aclaratoria al pie de la columna de múltiples puntos. */
+.nota-entrega {
+  color: #f0f2e6;
+  font-size: 0.82rem;
+  margin-top: 8px;
+}
+
+/* Botón AGREGAR AL CARRITO (ámbar de la marca) sobre la base .btn. */
+.boton-carrito {
+  display: inline-block;
+  margin-top: 12px;
+  background-color: var(--ambar-boton);
+  color: #ffffff;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  padding: 10px 26px;
+  border: none;
+}
+
+.boton-carrito:hover {
+  background-color: var(--ambar-boton-hover);
+  color: #ffffff;
+}
+
+/* Estado pendiente del botón: el carrito termina en la pantalla de pago, y el
+   negocio todavía no procesa datos bancarios.
+
+   Gris y no ámbar: el ámbar es el color de "esto se puede hacer" en todo el
+   sitio, y usarlo acá invitaría a un clic que no va a pasar nada. #ffffff sobre
+   #6b6b6b da 5.33:1, así que sigue perfectamente legible — está desactivado,
+   no escondido.
+
+   No lleva :hover a propósito. En el HTML es un <span>, así que tampoco recibe
+   foco de teclado ni cursor de mano. */
+.boton-carrito-proximamente {
+  background-color: #6b6b6b;
+  cursor: default;
+  text-align: center;
+}
+
+.boton-carrito-proximamente small {
+  display: block;
+  margin-top: 2px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  /* Mismo blanco que el texto principal: bajarlo a un gris claro sobre este
+     fondo ya rondaría el mínimo de AA con letra tan chica. */
+  color: #ffffff;
+  opacity: 0.9;
+}
+
+
+/* ---- Pantallas angostas ---- */
+/*
+  Era la única hoja del proyecto sin media queries, y sí las necesitaba: la
+  fila de entrega es un flex de "dirección ancha + cantidad angosta", y en un
+  teléfono de 360px la dirección se quedaba con unos 270px — no cabe el nombre
+  de un barrio de San Carlos y el texto se corta.
+
+  Debajo de 560px se apila: la dirección toma el ancho completo y la cantidad
+  va abajo. Se le pone un ancho fijo chico y no el 100% porque una cantidad son
+  uno o dos dígitos, y un campo de ancho completo para dos dígitos invita a
+  escribir otra cosa.
+
+  48px de alto mínimo en todo lo que se toca: es el objetivo táctil que
+  recomiendan Apple y Google, y por debajo se falla el toque con el pulgar. Es
+  el mismo criterio que ya usa VentasManuales.css, que también se opera de pie.
+*/
+@media (max-width: 560px) {
+  .detalle-pedido {
+    padding: 26px 16px;
+  }
+
+  .fila-entrega {
+    flex-wrap: wrap;
+  }
+
+  .fila-entrega .campo-pedido {
+    flex: 1 1 100%;
+  }
+
+  .campo-cantidad {
+    flex: 0 0 92px;
+    width: 92px;
+  }
+
+  /* 16px de letra NO es estética: Safari en iOS hace zoom automático sobre
+     cualquier campo con letra menor a 16px al enfocarlo, y después deja la
+     página descuadrada. */
+  .campo-pedido {
+    min-height: 48px;
+    font-size: 1rem;
+  }
+
+  .boton-carrito,
+  .boton-carrito-proximamente {
+    width: 100%;
+    min-height: 52px;
+  }
+}
