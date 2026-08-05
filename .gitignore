@@ -3,3 +3,6 @@ env
 .claude/
 Documentos del proyecto/
 basedatos/
+
+# Dependencias de Node: se reinstalan con "npm install".
+node_modules/

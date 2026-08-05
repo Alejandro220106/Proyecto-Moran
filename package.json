@@ -1,0 +1,18 @@
+{
+  "name": "proyecto-moran",
+  "version": "1.0.0",
+  "description": "Avícola La Morán — sitio e inventario. Servidor Express + PostgreSQL.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "iniciar": "node --env-file=.env logica/servidor.js",
+    "dev": "node --env-file=.env --watch logica/servidor.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "pg": "^8.13.1"
+  },
+  "engines": {
+    "node": ">=20.6.0"
+  }
+}
