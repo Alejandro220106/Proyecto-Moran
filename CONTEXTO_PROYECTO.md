@@ -1485,3 +1485,99 @@ administración.
   proyecto, el peso del logo. Nada de esto se subió al repo — el usuario pidió
   esperar su confirmación antes de cualquier commit o push.
 
+- **2026-08-07** (rama `Daniel`): se cotejó el documento de esquema de base de
+  datos del equipo (`esquema_base_datos_avicola.md`, fuera del repo, en
+  `~/Documentos/Integrador/`) contra `Requerimientos_Sistema.md`, contra el
+  código ya escrito en `logica/modelos/` y contra las pantallas ya
+  construidas en `vistas/paginas/`, para confirmar si el esquema cubre todo
+  lo que el proyecto ya construyó. Regla seguida, pedida explícitamente por
+  el usuario: **el esquema se adapta a la pantalla ya construida, no al
+  revés** — no se tocó ni una página para que calzara con el esquema.
+
+  Lo que ya calzaba perfecto y no se tocó: `inventario_productos`, `ventas`,
+  `detalle_ventas`, `lotes` y `mortalidad` — coinciden columna por columna
+  con `logica/modelos/inventario.js` y `ventaManual.js`, que ya están
+  escritos contra esos nombres exactos.
+
+  Se agregaron 6 tablas y se modificaron 2, todas trazables a un campo de
+  una pantalla ya construida que no tenía dónde guardarse:
+
+  1. **`usuario.rol`** (`cliente`/`administrador`) — el hueco más importante:
+     sin esto no hay forma de restringir el panel a administradores (RNF-04),
+     y es el mismo bloqueo que `README.md` ya marca como el más serio del
+     proyecto (entrada del 2026-08-03/04 de este documento). No se resolvió
+     acá, solo se le dio la columna que le faltaba en el esquema.
+  2. **`usuario.cedula` / `usuario.direccion`** — los pide
+     `Actualizar-Datos.html` y no existían.
+  3. **`codigos_recuperacion`** (tabla nueva) — `Contraseña-login.html` pide
+     un código de 8 dígitos, no un enlace mágico; ese código necesita
+     guardarse con vencimiento y marca de uso (RF-18).
+  4. **`proveedores.estado`** (activo/inactivo) — `Proveedores-admin.html` ya
+     tiene el selector; RF-12 pide listar solo los activos.
+  5. **`ordenes_compra`** (tabla nueva) — el formulario "Emitir orden de
+     compra" de `Proveedores-admin.html` no tenía dónde guardarse.
+  6. **`pedidos.punto_entrega` / `punto_adicional` → `puntos_entrega_pedido`**
+     (tabla nueva) — `detalle-pedido.html` ya pide hasta 7 puntos de entrega
+     (principal, alternativo, preferencia + 4 adicionales), cada uno con su
+     propia cantidad; 2 campos de texto plano no alcanzan para eso (RF-23).
+     `pedidos` conserva un campo `indicacion` para la nota general de cómo
+     llegar (RF-22), que es distinta de las direcciones.
+  7. **`facturas` + `detalle_factura_productos` + `detalle_factura_insumos`**
+     (3 tablas nuevas) — el hueco más grande encontrado. `Facturas-admin.html`
+     ya es un módulo completo (folio, forma de pago, estado, líneas de
+     producto y líneas de insumo por separado) sin ninguna tabla detrás; RF-04
+     tampoco tenía dónde apoyarse. Se revisó si el dato de forma de pago debía
+     ir en `ventas` en cambio, pero `VentasManuales-admin.html` no lo pide —
+     solo `Facturas-admin.html`, así que quedó ahí.
+  8. **`mensajes_contacto`** (tabla nueva) — `Contacto.html` es un formulario
+     completo sin ningún lugar donde guardar lo enviado.
+
+  **No se aplicó ningún cambio de código ni de base de datos real** — el
+  usuario pidió explícitamente solo actualizar el documento de esquema
+  (fuera del repo) y registrar el cambio acá. La creación real de la base
+  sigue pendiente de `basedatos/esquema_postgres.sql`, que no está en el
+  repo (ver `REQUISITOS.md`).
+
+  **Reverificación pedida por el usuario, antes de confirmar que quedó
+  alineado**: al releer el documento contra las pantallas por segunda vez se
+  encontraron **2 campos más** que la primera pasada no había cubierto, los
+  dos en el gestor de pedidos de `BuscarPedidos-admin.html`:
+  `pedidos.tiempo_entrega` (input de texto libre, ej. "30-45 min") y
+  `pedidos.observaciones` (nota del administrador, distinta de `indicacion`
+  que es la nota del cliente). Se agregaron a `pedidos` en la misma
+  revisión, marcados en el documento como detectados en la reverificación
+  para que quede trazable que no salieron de la primera pasada.
+
+- **2026-08-07 (2)** (rama `Daniel`): el usuario generó
+  `esquema_avicola_postgres.sql` (también fuera del repo, en
+  `~/Documentos/Integrador/`) a partir del documento de esquema de la
+  entrada anterior, y pidió revisar que el SQL fuera coherente con el
+  proyecto. Un primer hallazgo (texto con acentos aparentemente corrupto en
+  el ENUM `estado_lote` y en la columna `contraseña`) resultó ser solo un
+  artefacto de cómo se pegó el archivo en la conversación — **el archivo
+  real en disco ya estaba en UTF-8 correcto**; se verificó con `file` y
+  `grep` directo contra el archivo antes de tocar nada, para no "corregir"
+  algo que no estaba roto.
+
+  Sí se encontraron y corrigieron **3 columnas `NOT NULL` sin valor por
+  defecto** que `logica/modelos/ventaManual.js` (código ya escrito) nunca
+  inserta explícitamente — con el esquema tal como estaba, **toda venta
+  manual iba a fallar** apenas se conectara la base real:
+  - `ventas.fecha_venta` → se le agregó `DEFAULT CURRENT_TIMESTAMP`.
+  - `detalle_ventas.subtotal` → se convirtió en columna generada
+    (`GENERATED ALWAYS AS (cantidad * precio_unitario) STORED`) en vez de
+    ponerle un default fijo — respeta la misma filosofía que ya declaran
+    los comentarios de `ventaManual.js` ("el total lo calcula PostgreSQL,
+    no JavaScript") y no requiere tocar el INSERT ya escrito.
+  - `carrito.fecha_creacion` → mismo problema, pero preventivo: todavía no
+    hay código que inserte en `carrito` (el carrito web sigue
+    "Próximamente"), así que no rompía nada hoy, pero habría repetido el
+    mismo error apenas alguien escribiera ese código. Se le agregó
+    `DEFAULT CURRENT_TIMESTAMP` también.
+
+  El resto del archivo (13 tipos ENUM, 20 tablas, 20 llaves foráneas, orden
+  de creación respetando dependencias, índices) se verificó correcto contra
+  el documento de esquema y contra `inventario.js`/`ventaManual.js` — sin
+  más cambios. Como en la entrada anterior, nada de esto se aplicó a una
+  base de datos real ni al repositorio del proyecto.
+
